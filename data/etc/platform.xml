@@ -183,9 +183,20 @@
     <!-- This is a core platform component that needs to freely run in the background -->
     <allow-in-power-save package="com.android.cellbroadcastreceiver" />
     <allow-in-power-save package="com.android.shell" />
+    <allow-in-power-save package="com.android.deskclock" />
+    <allow-in-power-save package="com.android.gallery3d" />
 
     <!-- These are the packages that are white-listed to be able to run as system user -->
     <system-user-whitelisted-app package="com.android.settings" />
+    <system-user-whitelisted-app package="com.DeviceTest" />
+    <system-user-whitelisted-app package="com.cghs.stresstest" />
+    <system-user-whitelisted-app package="android.rockchip.update.service" />
+    <system-user-whitelisted-app package="com.friendlyarm.SerialPortDemo" />
+
+    <!-- Some customer may use these aosp app, adapt to api 26 -->
+    <system-user-whitelisted-app package="com.android.gallery3d" />
+    <system-user-whitelisted-app package="com.android.music" />
+    <system-user-whitelisted-app package="android.rk.RockVideoPlayer" />
 
     <!-- These are the packages that shouldn't run as system user -->
     <system-user-blacklisted-app package="com.android.wallpaper.livepicker" />

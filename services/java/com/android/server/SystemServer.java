@@ -114,6 +114,7 @@ import com.android.server.usage.UsageStatsService;
 import com.android.server.vr.VrManagerService;
 import com.android.server.webkit.WebViewUpdateService;
 import com.android.server.wm.WindowManagerService;
+import com.android.server.RkDisplayDeviceManagementService;
 
 import dalvik.system.VMRuntime;
 
@@ -174,6 +175,8 @@ public final class SystemServer {
             "com.android.server.lowpan.LowpanService";
     private static final String ETHERNET_SERVICE_CLASS =
             "com.android.server.ethernet.EthernetService";
+    private static final String PPPOE_SERVICE_CLASS =
+            "com.android.server.pppoe.PppoeService";
     private static final String JOB_SCHEDULER_SERVICE_CLASS =
             "com.android.server.job.JobSchedulerService";
     private static final String LOCK_SETTINGS_SERVICE_CLASS =
@@ -1112,6 +1115,12 @@ public final class SystemServer {
                     traceEnd();
                 }
 
+                if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_PPPOE)) {
+                    traceBeginAndSlog("StartPppoeService");
+                    mSystemServiceManager.startService(PPPOE_SERVICE_CLASS);
+                    traceEnd();
+                }
+
                 traceBeginAndSlog("StartConnectivityService");
                 try {
                     connectivity = new ConnectivityService(
@@ -1462,6 +1471,19 @@ public final class SystemServer {
                 traceBeginAndSlog("StartTvRemoteService");
                 mSystemServiceManager.startService(TvRemoteService.class);
                 traceEnd();
+            }
+
+            // $_rbox_$_modify_$
+            if("box".equals(SystemProperties.get("ro.target.product")) ||
+               "atv".equals(SystemProperties.get("ro.target.product")) ||
+               "true".equals(SystemProperties.get("ro.rk.hdmisetting"))) {
+                try {
+                    ServiceManager.addService(
+                        "drm_device_management",
+                        new RkDisplayDeviceManagementService(context));
+                } catch (Throwable e) {
+                    Slog.e(TAG, "Failure starting kDisplayDeviceManagement Service", e);
+                }
             }
 
             if (!disableNonCoreServices) {

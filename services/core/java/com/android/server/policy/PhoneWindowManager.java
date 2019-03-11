@@ -265,7 +265,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     static final String TAG = "WindowManager";
     static final boolean DEBUG = false;
     static final boolean localLOGV = false;
-    static final boolean DEBUG_INPUT = false;
+    static final boolean DEBUG_INPUT = true;
     static final boolean DEBUG_KEYGUARD = false;
     static final boolean DEBUG_LAYOUT = false;
     static final boolean DEBUG_SPLASH_SCREEN = false;
@@ -523,6 +523,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     boolean mSystemReady;
     boolean mSystemBooted;
     boolean mHdmiPlugged;
+    boolean mDPlugged;
     HdmiControl mHdmiControl;
     IUiModeManager mUiModeManager;
     int mUiMode;
@@ -835,6 +836,51 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private static final int MSG_REQUEST_TRANSIENT_BARS_ARG_STATUS = 0;
     private static final int MSG_REQUEST_TRANSIENT_BARS_ARG_NAVIGATION = 1;
 
+    private int screenWidth;
+    private int screenHeight;
+    private String mstate = null;
+    private float mdeltax, mdeltay;
+    boolean keydown;
+
+    public Handler mKeyMouseHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch(msg.what){
+            case KeyEvent.KEYCODE_TV_KEYMOUSE_LEFT:
+                mdeltax = -1.0f;
+                mdeltay = 0;
+                break;
+            case KeyEvent.KEYCODE_TV_KEYMOUSE_RIGHT:
+                mdeltax = 1.0f;
+                mdeltay = 0;
+                break;
+            case KeyEvent.KEYCODE_TV_KEYMOUSE_UP:
+                mdeltax = 0;
+                mdeltay = -1.0f;
+                break;
+            case KeyEvent.KEYCODE_TV_KEYMOUSE_DOWN:
+                mdeltax = 0;
+                mdeltay = 1.0f;
+                break;
+            case KeyEvent.KEYCODE_TV_KEYMOUSE_MODE_SWITCH:
+                mdeltax = 0;
+                mdeltay = 0;
+                break;
+            default:
+                break;
+            }
+
+            try {
+                mWindowManager.dispatchMouse(mdeltax,mdeltay,screenWidth,screenHeight);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            if (keydown) {
+                mKeyMouseHandler.sendEmptyMessageDelayed(msg.what,30);
+            }
+        }
+    };
+
     private class PolicyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -937,6 +983,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     };
 
+    private UEventObserver mDPObserver = new UEventObserver() {
+        @Override
+        public void onUEvent(UEventObserver.UEvent event) {
+            setDPlugged("1".equals(event.get("SWITCH_STATE")));
+        }
+    };
+
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
@@ -979,6 +1032,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.Global.POLICY_CONTROL), false, this,
                     UserHandle.USER_ALL);
             updateSettings();
+        }
+
+        // this method is added for shutdown animation.
+        public void unRegister() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
         }
 
         @Override public void onChange(boolean selfChange) {
@@ -2029,6 +2088,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Intent.EXTRA_DOCK_STATE_UNDOCKED);
         }
 
+        //register for screenshot broadcasts
+        filter=new IntentFilter();
+        filter.addAction("android.intent.action.SCREENSHOT");
+        context.registerReceiver(mScreenshotReceiver, filter);
+
         // register for dream-related broadcasts
         filter = new IntentFilter();
         filter.addAction(Intent.ACTION_DREAMING_STARTED);
@@ -2038,6 +2102,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // register for multiuser-relevant broadcasts
         filter = new IntentFilter(Intent.ACTION_USER_SWITCHED);
         context.registerReceiver(mMultiuserReceiver, filter);
+
+        filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SHUTDOWN);
+        context.registerReceiver(mShutdownanimationReceiver, filter);
 
         // monitor for system gestures
         mSystemGestures = new SystemGesturesPointerEventListener(context,
@@ -2122,6 +2190,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         // Controls rotation and the like.
         initializeHdmiState();
+        initializeDPState();
 
         // Match current screen state.
         if (!mPowerManager.isInteractive()) {
@@ -2272,6 +2341,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 // $ adb shell setprop config.override_forced_orient true
                 // $ adb shell wm size reset
                 !"true".equals(SystemProperties.get("config.override_forced_orient"));
+        mForceDefaultOrientation |= (0 != SystemProperties.getInt("config.default_display_rotation", 0));
     }
 
     /**
@@ -3343,6 +3413,22 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             Log.d(TAG, "interceptKeyTi keyCode=" + keyCode + " down=" + down + " repeatCount="
                     + repeatCount + " keyguardOn=" + keyguardOn + " mHomePressed=" + mHomePressed
                     + " canceled=" + canceled);
+        }
+
+        mstate = SystemProperties.get("sys.KeyMouse.mKeyMouseState");
+        if (mstate.equals("on") && ((keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_LEFT)
+                || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_RIGHT)
+                || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_UP)
+                || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_DOWN)
+                || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_MODE_SWITCH))) {
+            keydown = down;
+            mKeyMouseHandler.sendEmptyMessage(keyCode);
+            //return -1;
+        }
+
+        if (mstate.equals("on") && ((keyCode == KeyEvent.KEYCODE_ENTER)
+                ||(keyCode == KeyEvent.KEYCODE_DPAD_CENTER))) {
+            return -1;
         }
 
         // If we think we might have a volume down & power key chord on the way
@@ -5828,6 +5914,51 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         setHdmiPlugged(!mHdmiPlugged);
     }
 
+    void setDPlugged(boolean plugged) {
+        if (mDPlugged != plugged) {
+            mDPlugged = plugged;
+            updateRotation(true, true);
+            Intent intent = new Intent(ACTION_DP_PLUGGED);
+            intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
+            intent.putExtra(EXTRA_DP_PLUGGED_STATE, plugged);
+            mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+        }
+    }
+
+    void initializeDPState() {
+        boolean plugged = false;
+        // watch for DP plug messages if the hdmi switch exists
+        if (new File("/sys/devices/virtual/switch/cdn-dp/state").exists()) {
+            mHDMIObserver.startObserving("DEVPATH=/devices/virtual/switch/cdn-dp");
+
+            final String filename = "/sys/class/switch/cdn-dp/state";
+            FileReader reader = null;
+            try {
+                reader = new FileReader(filename);
+                char[] buf = new char[15];
+                int n = reader.read(buf);
+                if (n > 1) {
+                    plugged = 0 != Integer.parseInt(new String(buf, 0, n-1));
+                }
+            } catch (IOException ex) {
+                Slog.w(TAG, "Couldn't read DP state from " + filename + ": " + ex);
+            } catch (NumberFormatException ex) {
+                Slog.w(TAG, "Couldn't read DP state from " + filename + ": " + ex);
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                    }
+                }
+            }
+        }
+        // This dance forces the code in setDPlugged to run.
+        // Always do this so the sticky intent is stuck (to false) if there is no DP.
+        mDPlugged = !plugged;
+        setDPlugged(!mDPlugged);
+    }
+
     final Object mScreenshotLock = new Object();
     ServiceConnection mScreenshotConnection = null;
 
@@ -5955,8 +6086,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         // Basic policy based on interactive state.
         int result;
+         boolean isBox = "box".equals(SystemProperties.get("ro.target.product"));
         boolean isWakeKey = (policyFlags & WindowManagerPolicy.FLAG_WAKE) != 0
                 || event.isWakeKey();
+        if(isBox){
+            isWakeKey = false;
+        }
         if (interactive || (isInjected && !isWakeKey)) {
             // When the device is interactive or the key is injected pass the
             // key to the application.
@@ -6387,7 +6522,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     /** {@inheritDoc} */
     @Override
     public int interceptMotionBeforeQueueingNonInteractive(long whenNanos, int policyFlags) {
-        if ((policyFlags & FLAG_WAKE) != 0) {
+        boolean isBox = "box".equals(SystemProperties.get("ro.target.product"));
+        if (!isBox && (policyFlags & FLAG_WAKE) != 0) {
             if (wakeUp(whenNanos / 1000000, mAllowTheaterModeWakeFromMotion,
                     "android.policy:MOTION")) {
                 return 0;
@@ -6401,7 +6537,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // If we have not passed the action up and we are in theater mode without dreaming,
         // there will be no dream to intercept the touch and wake into ambient.  The device should
         // wake up in this case.
-        if (isTheaterModeEnabled() && (policyFlags & FLAG_WAKE) != 0) {
+        if (!isBox && isTheaterModeEnabled() && (policyFlags & FLAG_WAKE) != 0) {
             wakeUp(whenNanos / 1000000, mAllowTheaterModeWakeFromMotionWhenNotDreaming,
                     "android.policy:MOTION");
         }
@@ -6550,6 +6686,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mBroadcastWakeLock.release();
     }
 
+    BroadcastReceiver mScreenshotReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            mHandler.post(mScreenshotRunnable);
+        }
+    };
+
+
     BroadcastReceiver mDockReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -6603,6 +6749,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mLastSystemUiFlags = 0;
                     updateSystemUiVisibilityLw();
                 }
+            }
+        }
+    };
+
+
+    BroadcastReceiver mShutdownanimationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_SHUTDOWN.equals(intent.getAction())
+                    && intent.getIntExtra("PLAY_SHUTDOWN_ANIMATION",0)==1) {
+                mSettingsObserver.unRegister();
+                mOrientationListener.disable();
             }
         }
     };
@@ -6796,7 +6954,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mWindowManagerDrawComplete = false;
             mScreenOnListener = screenOnListener;
 
-            if (mKeyguardDelegate != null) {
+            if ((mKeyguardDelegate != null) && !mHasFeatureLeanback) {
                 mHandler.removeMessages(MSG_KEYGUARD_DRAWN_TIMEOUT);
                 mHandler.sendEmptyMessageDelayed(MSG_KEYGUARD_DRAWN_TIMEOUT,
                         getKeyguardDrawnTimeout());
@@ -6804,7 +6962,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             } else {
                 if (DEBUG_WAKEUP) Slog.d(TAG,
                         "null mKeyguardDelegate: setting mKeyguardDrawComplete.");
-                finishKeyguardDrawn();
+                    mHandler.sendEmptyMessage(MSG_KEYGUARD_DRAWN_COMPLETE);
             }
         }
     }
@@ -6846,6 +7004,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mWindowManagerDrawComplete = true;
         }
 
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                updateOrientationListenerLp();
+            }
+        }, 100);
+
         finishScreenTurningOn();
     }
 
@@ -6853,7 +7017,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         synchronized (mLock) {
             // We have just finished drawing screen content. Since the orientation listener
             // gets only installed when all windows are drawn, we try to install it again.
-            updateOrientationListenerLp();
+            //updateOrientationListenerLp();
         }
         final ScreenOnListener listener;
         final boolean enableScreen;
@@ -7089,7 +7253,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
 
         if (mForceDefaultOrientation) {
-            return Surface.ROTATION_0;
+            int defaultRotation = SystemProperties.getInt("config.default_display_rotation", 0);
+            if (defaultRotation < Surface.ROTATION_0 || defaultRotation > Surface.ROTATION_270) {
+                defaultRotation = Surface.ROTATION_0;
+            }
+            return defaultRotation;
         }
 
         synchronized (mLock) {

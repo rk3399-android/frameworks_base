@@ -220,6 +220,7 @@
     <protected-broadcast android:name="android.btopp.intent.action.TRANSFER_COMPLETE" />
     <protected-broadcast android:name="android.btopp.intent.action.ACCEPT" />
     <protected-broadcast android:name="android.btopp.intent.action.DECLINE" />
+    <protected-broadcast android:name="android.btopp.intent.action.OPEN_RECEIVED_FILES" />
     <protected-broadcast android:name="com.android.bluetooth.gatt.REFRESH_BATCHED_SCAN" />
     <protected-broadcast android:name="com.android.bluetooth.pbap.authchall" />
     <protected-broadcast android:name="com.android.bluetooth.pbap.userconfirmtimeout" />
@@ -227,6 +228,7 @@
     <protected-broadcast android:name="com.android.bluetooth.pbap.authcancelled" />
     <protected-broadcast android:name="com.android.bluetooth.sap.USER_CONFIRM_TIMEOUT" />
     <protected-broadcast android:name="com.android.bluetooth.sap.action.DISCONNECT_ACTION" />
+    <protected-broadcast android:name="android.intent.action.USB_CAMERA" />
 
     <protected-broadcast android:name="android.hardware.display.action.WIFI_DISPLAY_STATUS_CHANGED" />
 
@@ -342,6 +344,8 @@
             android:name="android.net.ConnectivityService.action.PKT_CNT_SAMPLE_INTERVAL_ELAPSED" />
     <protected-broadcast android:name="android.net.scoring.SCORE_NETWORKS" />
     <protected-broadcast android:name="android.net.scoring.SCORER_CHANGED" />
+    <protected-broadcast android:name="android.net.ethernet.ETHERNET_STATE_CHANGED" />
+    <protected-broadcast android:name="android.net.pppoe.PPPOE_STATE_CHANGED" />
     <protected-broadcast android:name="android.intent.action.EXTERNAL_APPLICATIONS_AVAILABLE" />
     <protected-broadcast android:name="android.intent.action.EXTERNAL_APPLICATIONS_UNAVAILABLE" />
     <protected-broadcast android:name="android.intent.action.AIRPLANE_MODE" />
@@ -355,6 +359,7 @@
     <protected-broadcast android:name="com.android.server.ACTION_TRIGGER_IDLE" />
 
     <protected-broadcast android:name="android.intent.action.HDMI_PLUGGED" />
+    <protected-broadcast android:name="android.intent.action.DP_PLUGGED" />
 
     <protected-broadcast android:name="android.intent.action.PHONE_STATE" />
 

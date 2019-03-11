@@ -106,6 +106,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.lang.reflect.Constructor;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
@@ -334,6 +338,7 @@ public class PackageParser {
     private static boolean sCompatibilityModeEnabled = true;
     private static final int PARSE_DEFAULT_INSTALL_LOCATION =
             PackageInfo.INSTALL_LOCATION_UNSPECIFIED;
+    private static final String DELETE_APK_FILE = "/cache/deleteApkFile.dat";
     private static final int PARSE_DEFAULT_TARGET_SANDBOX = 1;
 
     static class ParsePackageItemArgs {
@@ -619,6 +624,53 @@ public class PackageParser {
         return path.endsWith(".apk");
     }
 
+    public static boolean readDeleteFile(ArrayList<String> list) {
+        File deleteApkFile = new File(DELETE_APK_FILE);
+        if (!deleteApkFile.exists()) {
+            Slog.w(TAG,"deliteApkFile not exist");
+            return true;
+        }
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(deleteApkFile));
+            String name = null;
+            while(null != (name = br.readLine())) {
+                list.add(name);
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+                br = null;
+            }
+        }
+    }
+
+    public static final boolean isDeleteApk(File scanFile,int parseFlags,ArrayList<String> list) {
+        PackageParser pp = new PackageParser();
+        final PackageParser.Package pkg;
+        try {
+            pkg = pp.parsePackage(scanFile, parseFlags);
+        } catch (PackageParserException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (list.contains(pkg.packageName)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Generate and return the {@link PackageInfo} for a parsed package.
      *
@@ -840,6 +892,8 @@ public class PackageParser {
     @Deprecated
     public final static int PARSE_IS_EPHEMERAL = 1<<11;
     public final static int PARSE_FORCE_SDK = 1<<12;
+    public final static int PARSE_IS_PREINSTALL = 1<<13;
+    public final static int PARSE_IS_PREBUNDLED_DIR = 1<<14;
 
     private static final Comparator<String> sSplitNameComparator = new SplitNameComparator();
 
@@ -1612,6 +1666,11 @@ public class PackageParser {
             // about verifying integrity.
             boolean signatureSchemeRollbackProtectionsEnforced =
                     (parseFlags & PARSE_IS_SYSTEM_DIR) == 0;
+            if (signatureSchemeRollbackProtectionsEnforced
+                && (parseFlags & PackageParser.PARSE_IS_PREBUNDLED_DIR) != 0) {
+                signatureSchemeRollbackProtectionsEnforced = false;
+                Slog.w(TAG, "PARSE_IS_PREBUNDLED_DIR " + apkPath + " signatureSchemeRollbackProtectionsEnforced set false");
+            }
             jarFile = new StrictJarFile(
                     apkPath,
                     !verified, // whether to verify JAR signature

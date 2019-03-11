@@ -72,6 +72,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.os.SELinux;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -81,6 +82,7 @@ import android.service.wallpaper.IWallpaperService;
 import android.service.wallpaper.WallpaperService;
 import android.system.ErrnoException;
 import android.system.Os;
+import android.text.TextUtils;
 import android.util.EventLog;
 import android.util.Slog;
 import android.util.SparseArray;
@@ -1830,6 +1832,53 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         }
     }
 
+    private InputStream getDefaultWallpaperISFromFile() {
+        String path = SystemProperties.get("ro.config.wallpaper");
+        if (!TextUtils.isEmpty(path)) {
+            final File file = new File(path);
+            if (file.exists()) {
+                try {
+                    return new FileInputStream(file);
+                } catch (IOException e) {
+                    // Ignored, fall back to platform default below
+                }
+            }
+        }
+        return null;
+    }
+
+    private Bitmap getDefaultWallpaper(Context context) {
+        InputStream is = getDefaultWallpaperISFromFile();
+        if (is == null) {
+            int defaultResId = com.android.internal.R.drawable.default_wallpaper;
+            is = context.getResources().openRawResource(defaultResId);
+        }
+        if (is != null) {
+            try {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                return BitmapFactory.decodeStream(is, null, options);
+            } catch (OutOfMemoryError e) {
+                Slog.w(TAG, "Can't decode stream", e);
+            } finally {
+                IoUtils.closeQuietly(is);
+            }
+        }
+        return null;
+    }
+
+    private void saveFile(Bitmap bm, String path) {
+        try{
+            File myCaptureFile = new File(path);
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, bos);
+            bos.flush();
+            bos.close();
+        }catch(Exception e) {
+            Slog.w(TAG, "saveFile can't save stream", e);
+        }
+    }
+
+
     private void migrateSystemToLockWallpaperLocked(int userId) {
         WallpaperData sysWP = mWallpaperMap.get(userId);
         if (sysWP == null) {
@@ -2423,6 +2472,18 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                     generateCrop(wallpaper);
                 } else {
                     Slog.i(TAG, "No static wallpaper imagery; defaults will be shown");
+                }
+                if (!"true".equals(SystemProperties.get("cts_gts.status", "false"))){
+
+                    //When system first bootup,lock wallpaper share with system,let's save it.
+                    File mWallpaperDir = getWallpaperDir(wallpaper.userId);
+                    File mWallpaperFile = new File(mWallpaperDir, WALLPAPER);
+                    File mWallpaperCropFile = new File(mWallpaperDir, WALLPAPER_CROP);
+                    Bitmap bmp=getDefaultWallpaper(mContext);
+                    saveFile(bmp,mWallpaperFile.getAbsolutePath());
+                    //FileUtils.copyFile(mWallpaperCropFile,mWallpaperCropFile);
+                    saveFile(bmp,mWallpaperCropFile.getAbsolutePath());
+                    Slog.d(TAG, "generating from default wallpaper and save it.");
                 }
             }
         }

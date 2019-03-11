@@ -115,6 +115,8 @@ public class UsbDeviceManager {
             "/sys/class/android_usb/android0/f_audio_source/pcm";
     private static final String MIDI_ALSA_PATH =
             "/sys/class/android_usb/android0/f_midi/alsa";
+    private static final String USB_CAMERA_MATCH =
+            "DEVPATH=/devices/platform";
 
     private static final int MSG_UPDATE_STATE = 0;
     private static final int MSG_ENABLE_ADB = 1;
@@ -134,7 +136,7 @@ public class UsbDeviceManager {
     // Delay for debouncing USB disconnects.
     // We often get rapid connect/disconnect events when enabling USB functions,
     // which need debouncing.
-    private static final int UPDATE_DELAY = 1000;
+    private static final int UPDATE_DELAY = 2500;
 
     // Timeout for entering USB request mode.
     // Request is cancelled if host does not configure device within 10 seconds.
@@ -169,6 +171,10 @@ public class UsbDeviceManager {
     private Intent mBroadcastedIntent;
     private boolean mPendingBootBroadcast;
     private static Set<Integer> sBlackListedInterfaces;
+    private boolean mCharging=false;
+
+    private long mLastUsbEvent = 0;
+    private String mLastUsbAction = "";
 
     static {
         sBlackListedInterfaces = new HashSet<>();
@@ -206,13 +212,48 @@ public class UsbDeviceManager {
         public void onUEvent(UEventObserver.UEvent event) {
             if (DEBUG) Slog.v(TAG, "USB UEVENT: " + event.toString());
 
-            String state = event.get("USB_STATE");
-            String accessory = event.get("ACCESSORY");
-            if (state != null) {
-                mHandler.updateState(state);
-            } else if ("START".equals(accessory)) {
-                if (DEBUG) Slog.d(TAG, "got accessory start");
-                startAccessoryMode();
+            String subSystem = event.get("SUBSYSTEM");
+            String devPath = event.get("DEVPATH");
+
+            if (devPath != null && devPath.contains("/devices/platform")) {
+                if ("video4linux".equals(subSystem)) {
+                    Intent intent = new Intent(Intent.ACTION_USB_CAMERA);
+                    String action = event.get("ACTION");
+                    try {
+                        if (mLastUsbAction != null && mLastUsbAction.equals(action)
+                                && SystemClock.uptimeMillis() - mLastUsbEvent < 1200) {
+                            Slog.i(TAG, "USB UEVENT send double, ignore this!");
+                            return;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mLastUsbAction = action;
+                    mLastUsbEvent = SystemClock.uptimeMillis();
+                    if ("remove".equals(action)){
+                        Slog.d(TAG,"usb camera removed");
+                        intent.setFlags(Intent.FLAG_USB_CAMERA_REMOVE);
+                        SystemProperties.set("persist.sys.usbcamera.status","remove");
+                    } else if ("add".equals(action)) {
+                        Slog.d(TAG,"usb camera added");
+                        intent.setFlags(Intent.FLAG_USB_CAMERA_ADD);
+                        SystemProperties.set("persist.sys.usbcamera.status","add");
+                    }
+
+                    int num = android.hardware.Camera.getNumberOfCameras();
+                    mContext.sendBroadcast(intent);
+                    SystemProperties.set("persist.sys.usbcamera.status","");
+                    Slog.d(TAG,"usb camera num="+num);
+                }
+            } else {
+                String state = event.get("USB_STATE");
+                String accessory = event.get("ACCESSORY");
+                if (state != null) {
+                    mHandler.updateState(state);
+                } else if ("START".equals(accessory)) {
+                    if (DEBUG) Slog.d(TAG, "got accessory start");
+                    startAccessoryMode();
+                }
             }
         }
     };
@@ -228,7 +269,6 @@ public class UsbDeviceManager {
         initRndisAddress();
 
         readOemUsbOverrideConfig();
-
         mHandler = new UsbHandler(FgThread.get().getLooper());
 
         if (nativeIsStartRequested()) {
@@ -404,7 +444,8 @@ public class UsbDeviceManager {
     }
 
     private boolean isTv() {
-        return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+        return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+               || "box".equals(SystemProperties.get("ro.target.product",  "unknown"));
     }
 
     private final class UsbHandler extends Handler {
@@ -459,13 +500,15 @@ public class UsbDeviceManager {
                  * Previous versions can set persist config to mtp/ptp but it does not
                  * get reset on OTA. Reset the property here instead.
                  */
-                String persisted = SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY);
-                if (UsbManager.containsFunction(persisted, UsbManager.USB_FUNCTION_MTP)
+		if(!"true".equals(SystemProperties.get("ro.usb.default_mtp"))){
+                	String persisted = SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY);
+                	if (UsbManager.containsFunction(persisted, UsbManager.USB_FUNCTION_MTP)
                         || UsbManager.containsFunction(persisted, UsbManager.USB_FUNCTION_PTP)) {
-                    SystemProperties.set(USB_PERSISTENT_CONFIG_PROPERTY,
-                            UsbManager.removeFunction(UsbManager.removeFunction(persisted,
-                                    UsbManager.USB_FUNCTION_MTP), UsbManager.USB_FUNCTION_PTP));
-                }
+                   		 SystemProperties.set(USB_PERSISTENT_CONFIG_PROPERTY,
+                            		UsbManager.removeFunction(UsbManager.removeFunction(persisted,
+                                    	UsbManager.USB_FUNCTION_MTP), UsbManager.USB_FUNCTION_PTP));
+                	}
+		}	
 
                 String state = FileUtils.readTextFile(new File(STATE_PATH), 0, null).trim();
                 updateState(state);
@@ -478,6 +521,7 @@ public class UsbDeviceManager {
                 // Watch for USB configuration changes
                 mUEventObserver.startObserving(USB_STATE_MATCH);
                 mUEventObserver.startObserving(ACCESSORY_START_MATCH);
+                mUEventObserver.startObserving(USB_CAMERA_MATCH);
             } catch (Exception e) {
                 Slog.e(TAG, "Error initializing UsbHandler", e);
             }
@@ -514,9 +558,13 @@ public class UsbDeviceManager {
             } else if ("CONNECTED".equals(state)) {
                 connected = 1;
                 configured = 0;
+                mCharging=false;
             } else if ("CONFIGURED".equals(state)) {
                 connected = 1;
                 configured = 1;
+		if ("true".equals(SystemProperties.get("ro.usb.default_mtp")) && 
+		UsbManager.containsFunction(mCurrentFunctions, UsbManager.USB_FUNCTION_MTP))
+                	mUsbDataUnlocked = true;
             } else {
                 Slog.e(TAG, "unknown state " + state);
                 return;
@@ -599,7 +647,11 @@ public class UsbDeviceManager {
                 boolean usbDataUnlocked) {
             if (DEBUG) {
                 Slog.d(TAG, "setEnabledFunctions functions=" + functions + ", "
-                        + "forceRestart=" + forceRestart + ", usbDataUnlocked=" + usbDataUnlocked);
+                        + "forceRestart=" + forceRestart + ", usbDataUnlocked=" + usbDataUnlocked+" mCharging ="+mCharging);
+            }
+
+            if (mCharging&&functions==null){
+                functions=UsbManager.USB_FUNCTION_ADB;
             }
 
             if (usbDataUnlocked != mUsbDataUnlocked) {
@@ -607,6 +659,9 @@ public class UsbDeviceManager {
                 updateUsbNotification(false);
                 forceRestart = true;
             }
+
+            if (functions == null)
+                forceRestart = true;
 
             // Try to set the enabled functions.
             final String oldFunctions = mCurrentFunctions;
@@ -706,7 +761,7 @@ public class UsbDeviceManager {
             if (functions == null) {
                 functions = "";
             }
-            if (mAdbEnabled) {
+            if (mAdbEnabled||mCharging) {
                 functions = UsbManager.addFunction(functions, UsbManager.USB_FUNCTION_ADB);
             } else {
                 functions = UsbManager.removeFunction(functions, UsbManager.USB_FUNCTION_ADB);
@@ -1238,12 +1293,16 @@ public class UsbDeviceManager {
         private String getDefaultFunctions() {
             String func = SystemProperties.get(getPersistProp(true),
                     UsbManager.USB_FUNCTION_NONE);
-            // if ADB is enabled, reset functions to ADB
+            // if not allow default mtp,if ADB is enabled, reset functions to ADB
             // else enable MTP as usual.
-            if (UsbManager.containsFunction(func, UsbManager.USB_FUNCTION_ADB)) {
+            if (!"true".equals(SystemProperties.get("ro.usb.default_mtp")) && UsbManager.containsFunction(func, UsbManager.USB_FUNCTION_ADB)) {
                 return UsbManager.USB_FUNCTION_ADB;
             } else {
-                return UsbManager.USB_FUNCTION_MTP;
+            	if (UsbManager.USB_FUNCTION_NONE.equals(func)) {
+                	func = UsbManager.USB_FUNCTION_NONE;
+                	mCharging = true;
+            	}
+		return func;
             }
         }
 
@@ -1297,6 +1356,9 @@ public class UsbDeviceManager {
     }
 
     public boolean isFunctionEnabled(String function) {
+        if (function==null){
+            mCharging=true;
+        }
         return UsbManager.containsFunction(SystemProperties.get(USB_CONFIG_PROPERTY), function);
     }
 
@@ -1304,6 +1366,9 @@ public class UsbDeviceManager {
         if (DEBUG) {
             Slog.d(TAG, "setCurrentFunctions(" + functions + ", " +
                     usbDataUnlocked + ")");
+        }
+        if (functions==null){
+            mCharging=true;
         }
         mHandler.sendMessage(MSG_SET_CURRENT_FUNCTIONS, functions, usbDataUnlocked);
     }

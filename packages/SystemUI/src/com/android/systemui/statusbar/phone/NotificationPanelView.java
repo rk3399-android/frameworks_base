@@ -34,6 +34,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.PowerManager;
 import android.util.AttributeSet;
+import android.util.EventLog;
 import android.util.FloatProperty;
 import android.util.MathUtils;
 import android.view.LayoutInflater;

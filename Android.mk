@@ -227,6 +227,7 @@ LOCAL_SRC_FILES += \
 	core/java/android/net/IConnectivityManager.aidl \
 	core/java/android/net/IIpConnectivityMetrics.aidl \
 	core/java/android/net/IEthernetManager.aidl \
+	core/java/android/net/IPppoeManager.aidl \
 	core/java/android/net/IEthernetServiceListener.aidl \
 	core/java/android/net/INetdEventCallback.aidl \
 	core/java/android/net/IIpSecService.aidl \
@@ -279,6 +280,7 @@ LOCAL_SRC_FILES += \
 	core/java/android/os/storage/IStorageEventListener.aidl \
 	core/java/android/os/storage/IStorageShutdownObserver.aidl \
 	core/java/android/os/storage/IObbActionListener.aidl \
+	core/java/android/os/IRkDisplayDeviceManagementService.aidl \
 	core/java/android/security/IKeystoreService.aidl \
 	core/java/android/security/keymaster/IKeyAttestationApplicationIdProvider.aidl \
 	core/java/android/service/autofill/IAutoFillService.aidl \

@@ -2334,6 +2334,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
             loadIntegerSetting(stmt, Settings.System.POINTER_SPEED,
                     R.integer.def_pointer_speed);
 
+            loadStringSetting(stmt, Settings.System.SCREENSHOT_LOCATION,R.string.def_screenshot_location);
+
+            loadIntegerSetting(stmt, Settings.System.SCREENSHOT_BUTTON_SHOW,
+                    R.integer.def_screenshot_button_show);
+
             /*
              * IMPORTANT: Do not add any more upgrade steps here as the global,
              * secure, and system settings are no longer stored in a database
@@ -2454,6 +2459,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             loadIntegerSetting(stmt, Settings.Secure.SLEEP_TIMEOUT,
                     R.integer.def_sleep_timeout);
+
+            loadIntegerSetting(stmt, Settings.Secure.SYSTEM_NAVIGATION_KEYS_ENABLED,
+                    R.integer.def_system_navigation_keys_enabled);
 
             /*
              * IMPORTANT: Do not add any more upgrade steps here as the global,

@@ -1316,6 +1316,14 @@ public abstract class PackageManager {
      */
     public static final int INSTALL_FAILED_INSTANT_APP_INVALID = -116;
 
+    /**
+     * Used for prebundles
+     * Installation failed for a prebundled app because the user previously uninstalled it
+     * and we don't want to bring it back
+     * @hide
+     */
+    public static final int INSTALL_FAILED_UNINSTALLED_PREBUNDLE = -403;
+
     /** @hide */
     @IntDef(flag = true, prefix = { "DELETE_" }, value = {
             DELETE_KEEP_DATA,
@@ -2491,6 +2499,13 @@ public abstract class PackageManager {
      */
     @SdkConstant(SdkConstantType.FEATURE)
     public static final String FEATURE_ETHERNET = "android.hardware.ethernet";
+    
+    /**
+     * Feature for {@link #getSystemAvailableFeatures} and
+     * {@link #hasSystemFeature}: This device supports ethernet.
+     */
+    @SdkConstant(SdkConstantType.FEATURE)
+    public static final String FEATURE_PPPOE = "android.software.pppoe";
 
     /**
      * Feature for {@link #getSystemAvailableFeatures} and
@@ -5830,6 +5845,16 @@ public abstract class PackageManager {
     public abstract String getInstantAppAndroidId(String packageName, @NonNull UserHandle user);
 
     /**
+     * @hide
+     */
+    public abstract int getPackagePerformanceMode(String pkgName);
+
+    /**
+     * @hide
+     */
+    public abstract void setPackagePerformanceMode(String pkgName, int mode);
+
+     /**
      * Callback use to notify the callers of module registration that the operation
      * has finished.
      *

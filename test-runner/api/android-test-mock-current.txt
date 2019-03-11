@@ -301,6 +301,7 @@ package android.test.mock {
     method public android.content.pm.PackageInfo getPackageInfo(android.content.pm.VersionedPackage, int) throws android.content.pm.PackageManager.NameNotFoundException;
     method public android.content.pm.PackageInfo getPackageInfoAsUser(java.lang.String, int, int) throws android.content.pm.PackageManager.NameNotFoundException;
     method public android.content.pm.PackageInstaller getPackageInstaller();
+    method public int getPackagePerformanceMode(java.lang.String);
     method public void getPackageSizeInfoAsUser(java.lang.String, int, android.content.pm.IPackageStatsObserver);
     method public int getPackageUid(java.lang.String, int) throws android.content.pm.PackageManager.NameNotFoundException;
     method public int getPackageUidAsUser(java.lang.String, int, int) throws android.content.pm.PackageManager.NameNotFoundException;
@@ -391,6 +392,7 @@ package android.test.mock {
     method public boolean setDefaultBrowserPackageNameAsUser(java.lang.String, int);
     method public void setInstallerPackageName(java.lang.String, java.lang.String);
     method public boolean setInstantAppCookie(byte[]);
+    method public void setPackagePerformanceMode(java.lang.String, int);
     method public java.lang.String[] setPackagesSuspendedAsUser(java.lang.String[], boolean, int);
     method public void setUpdateAvailable(java.lang.String, boolean);
     method public boolean shouldShowRequestPermissionRationale(java.lang.String);

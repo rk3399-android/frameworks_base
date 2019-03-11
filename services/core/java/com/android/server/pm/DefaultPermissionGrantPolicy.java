@@ -592,9 +592,9 @@ final class DefaultPermissionGrantPolicy {
                 if (globalSearchPickerPackage != null
                         && doesPackageSupportRuntimePermissions(globalSearchPickerPackage)) {
                     grantRuntimePermissionsLPw(globalSearchPickerPackage,
-                        MICROPHONE_PERMISSIONS, true, userId);
+                        MICROPHONE_PERMISSIONS, false, userId);
                     grantRuntimePermissionsLPw(globalSearchPickerPackage,
-                        LOCATION_PERMISSIONS, true, userId);
+                        LOCATION_PERMISSIONS, false, userId);
                 }
             }
 
@@ -737,6 +737,14 @@ final class DefaultPermissionGrantPolicy {
                     && doesPackageSupportRuntimePermissions(ringtonePickerPackage)) {
                 grantRuntimePermissionsLPw(ringtonePickerPackage,
                         STORAGE_PERMISSIONS, true, userId);
+            }
+
+            // GMS
+            PackageParser.Package gmsPackage = getSystemPackageLPr("com.google.android.gms");
+            if (gmsPackage != null
+                    && doesPackageSupportRuntimePermissions(gmsPackage)) {
+                grantRuntimePermissionsLPw(gmsPackage,
+                        LOCATION_PERMISSIONS, true, userId);
             }
 
             mService.mSettings.onDefaultRuntimePermissionsGrantedLPr(userId);

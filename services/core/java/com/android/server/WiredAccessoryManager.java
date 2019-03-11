@@ -22,6 +22,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.SystemProperties;
 import android.os.UEventObserver;
 import android.util.Slog;
 import android.media.AudioManager;
@@ -69,6 +70,8 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
     private static final String NAME_HDMI_AUDIO = "hdmi_audio";
     private static final String NAME_HDMI = "hdmi";
 
+    private static final String PROP_FORCE_HPOUT = "persist.audio.force.headset";
+
     private static final int MSG_NEW_DEVICE_STATE = 1;
     private static final int MSG_SYSTEM_READY = 2;
 
@@ -102,7 +105,8 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
     private void onSystemReady() {
         if (mUseDevInputEventForAudioJack) {
             int switchValues = 0;
-            if (mInputManager.getSwitchState(-1, InputDevice.SOURCE_ANY, SW_HEADPHONE_INSERT) == 1) {
+            int sw = mInputManager.getSwitchState(-1, InputDevice.SOURCE_ANY, SW_HEADPHONE_INSERT);
+            if (sw == 1) {
                 switchValues |= SW_HEADPHONE_INSERT_BIT;
             }
             if (mInputManager.getSwitchState(-1, InputDevice.SOURCE_ANY, SW_MICROPHONE_INSERT) == 1) {
@@ -110,6 +114,13 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
             }
             if (mInputManager.getSwitchState(-1, InputDevice.SOURCE_ANY, SW_LINEOUT_INSERT) == 1) {
                 switchValues |= SW_LINEOUT_INSERT_BIT;
+            }
+            if (sw < 0) {
+                // Force Headset AVAILABLE
+                if (SystemProperties.getBoolean(PROP_FORCE_HPOUT, false))
+                    switchValues |= (SW_HEADPHONE_INSERT_BIT | SW_MICROPHONE_INSERT_BIT);
+            } else {
+                SystemProperties.set(PROP_FORCE_HPOUT, "disabled");
             }
             notifyWiredAccessoryChanged(0, switchValues,
                     SW_HEADPHONE_INSERT_BIT | SW_MICROPHONE_INSERT_BIT | SW_LINEOUT_INSERT_BIT);

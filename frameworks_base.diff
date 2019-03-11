@@ -1,0 +1,4016 @@
+diff -r ./Android.mk /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/Android.mk
+230d229
+< 	core/java/android/net/IPppoeManager.aidl \
+283d281
+< 	core/java/android/os/IRkDisplayDeviceManagementService.aidl \
+diff -r ./api/current.txt /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/api/current.txt
+10742d10741
+<     field public static final java.lang.String FEATURE_PPPOE = "android.software.pppoe";
+25573,25602d25571
+<   public abstract interface IPppoeManager implements android.os.IInterface {
+<     method public abstract boolean disablePppoe(java.lang.String) throws android.os.RemoteException;
+<     method public abstract java.lang.String dumpCurrentState(int) throws android.os.RemoteException;
+<     method public abstract android.net.LinkProperties getLinkProperties() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppIfaceName() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoePassword() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoePhyIface() throws android.os.RemoteException;
+<     method public abstract int getPppoeState() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoeUserName() throws android.os.RemoteException;
+<     method public abstract int getPppoeWiFiEthernetSwitchMode() throws android.os.RemoteException;
+<     method public abstract int isPppoeEnable() throws android.os.RemoteException;
+<     method public abstract boolean machineStartPppoe() throws android.os.RemoteException;
+<     method public abstract boolean machineStopPppoe() throws android.os.RemoteException;
+<     method public abstract void setPppoeEnable(int) throws android.os.RemoteException;
+<     method public abstract void setPppoePassword(java.lang.String) throws android.os.RemoteException;
+<     method public abstract boolean setPppoePhyIface(java.lang.String) throws android.os.RemoteException;
+<     method public abstract void setPppoeUserName(java.lang.String) throws android.os.RemoteException;
+<     method public abstract void setPppoeWiFiEthernetSwitchMode(int) throws android.os.RemoteException;
+<     method public abstract boolean setupPppoe(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String) throws android.os.RemoteException;
+<     method public abstract boolean startPppoe() throws android.os.RemoteException;
+<     method public abstract boolean stopPppoe() throws android.os.RemoteException;
+<   }
+< 
+<   public static abstract class IPppoeManager.Stub extends android.os.Binder implements android.net.IPppoeManager {
+<     ctor public IPppoeManager.Stub();
+<     method public android.os.IBinder asBinder();
+<     method public static android.net.IPppoeManager asInterface(android.os.IBinder);
+<     method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
+<   }
+< 
+25826,25870d25794
+<   public class PppoeManager {
+<     ctor public PppoeManager(android.content.Context, android.net.IPppoeManager);
+<     method public synchronized void connect(java.lang.String, java.lang.String, java.lang.String);
+<     method public boolean disablePppoe(java.lang.String);
+<     method public synchronized void disconnect(java.lang.String);
+<     method public java.lang.String dumpCurrentState(int);
+<     method public android.net.DhcpInfo getDhcpInfo();
+<     method public android.net.LinkProperties getLinkProperties();
+<     method public java.lang.String getPppIfaceName();
+<     method public synchronized java.lang.String getPppoeMode();
+<     method public java.lang.String getPppoePassword();
+<     method public java.lang.String getPppoePhyIface();
+<     method public int getPppoeState();
+<     method public java.lang.String getPppoeUserName();
+<     method public int getPppoeWiFiEthernetSwitchMode();
+<     method public boolean isPppoeDeviceup();
+<     method public int isPppoeEnable();
+<     method public void setPppoeEnable(int);
+<     method public synchronized void setPppoeMode(java.lang.String, android.net.DhcpInfo);
+<     method public void setPppoePassword(java.lang.String);
+<     method public boolean setPppoePhyIface(java.lang.String);
+<     method public void setPppoeUserName(java.lang.String);
+<     method public void setPppoeWiFiEthernetSwitchMode(int);
+<     method public boolean setupPppoe(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+<     method public boolean startPppoe();
+<     method public boolean stopPppoe();
+<     field public static final boolean DEBUG = true;
+<     field public static final int EVENT_CONNECT_FAILED = 1; // 0x1
+<     field public static final int EVENT_CONNECT_SUCESSED = 0; // 0x0
+<     field public static final java.lang.String EXTRA_PPPOE_ERRMSG = "pppoe_errmsg";
+<     field public static final java.lang.String EXTRA_PPPOE_STATE = "pppoe_state";
+<     field public static final java.lang.String EXTRA_PREVIOUS_PPPOE_STATE = "previous_pppoe_state";
+<     field public static final java.lang.String PPPOE_CONNECT_MODE_DHCP = "dhcp";
+<     field public static final java.lang.String PPPOE_CONNECT_MODE_MANUAL = "manual";
+<     field public static final java.lang.String PPPOE_ERRMSG_AUTH_FAIL = "PPPOE Error: Authentication Failed";
+<     field public static final java.lang.String PPPOE_ERRMSG_NO_CARRIER = "PPPOE Error: No Carrier";
+<     field public static final java.lang.String PPPOE_ERRMSG_UNKNOWN = "PPPOE Error: Unkown";
+<     field public static final java.lang.String PPPOE_STATE_CHANGED_ACTION = "android.net.pppoe.PPPOE_STATE_CHANGED";
+<     field public static final int PPPOE_STATE_CONNECT = 1; // 0x1
+<     field public static final int PPPOE_STATE_CONNECTING = 3; // 0x3
+<     field public static final int PPPOE_STATE_DISCONNECT = 2; // 0x2
+<     field public static final int PPPOE_STATE_DISCONNECTING = 4; // 0x4
+<     field public static final int PPPOE_STATE_UNKNOWN = 0; // 0x0
+<   }
+< 
+44736,44740d44659
+<     field public static final int KEYCODE_TV_KEYMOUSE_DOWN = 288; // 0x120
+<     field public static final int KEYCODE_TV_KEYMOUSE_LEFT = 285; // 0x11d
+<     field public static final int KEYCODE_TV_KEYMOUSE_MODE_SWITCH = 289; // 0x121
+<     field public static final int KEYCODE_TV_KEYMOUSE_RIGHT = 286; // 0x11e
+<     field public static final int KEYCODE_TV_KEYMOUSE_UP = 287; // 0x11f
+diff -r ./api/system-current.txt /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/api/system-current.txt
+11391d11390
+<     field public static final java.lang.String FEATURE_PPPOE = "android.software.pppoe";
+27804,27833d27802
+<   public abstract interface IPppoeManager implements android.os.IInterface {
+<     method public abstract boolean disablePppoe(java.lang.String) throws android.os.RemoteException;
+<     method public abstract java.lang.String dumpCurrentState(int) throws android.os.RemoteException;
+<     method public abstract android.net.LinkProperties getLinkProperties() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppIfaceName() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoePassword() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoePhyIface() throws android.os.RemoteException;
+<     method public abstract int getPppoeState() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoeUserName() throws android.os.RemoteException;
+<     method public abstract int getPppoeWiFiEthernetSwitchMode() throws android.os.RemoteException;
+<     method public abstract int isPppoeEnable() throws android.os.RemoteException;
+<     method public abstract boolean machineStartPppoe() throws android.os.RemoteException;
+<     method public abstract boolean machineStopPppoe() throws android.os.RemoteException;
+<     method public abstract void setPppoeEnable(int) throws android.os.RemoteException;
+<     method public abstract void setPppoePassword(java.lang.String) throws android.os.RemoteException;
+<     method public abstract boolean setPppoePhyIface(java.lang.String) throws android.os.RemoteException;
+<     method public abstract void setPppoeUserName(java.lang.String) throws android.os.RemoteException;
+<     method public abstract void setPppoeWiFiEthernetSwitchMode(int) throws android.os.RemoteException;
+<     method public abstract boolean setupPppoe(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String) throws android.os.RemoteException;
+<     method public abstract boolean startPppoe() throws android.os.RemoteException;
+<     method public abstract boolean stopPppoe() throws android.os.RemoteException;
+<   }
+< 
+<   public static abstract class IPppoeManager.Stub extends android.os.Binder implements android.net.IPppoeManager {
+<     ctor public IPppoeManager.Stub();
+<     method public android.os.IBinder asBinder();
+<     method public static android.net.IPppoeManager asInterface(android.os.IBinder);
+<     method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
+<   }
+< 
+28089,28133d28057
+<   public class PppoeManager {
+<     ctor public PppoeManager(android.content.Context, android.net.IPppoeManager);
+<     method public synchronized void connect(java.lang.String, java.lang.String, java.lang.String);
+<     method public boolean disablePppoe(java.lang.String);
+<     method public synchronized void disconnect(java.lang.String);
+<     method public java.lang.String dumpCurrentState(int);
+<     method public android.net.DhcpInfo getDhcpInfo();
+<     method public android.net.LinkProperties getLinkProperties();
+<     method public java.lang.String getPppIfaceName();
+<     method public synchronized java.lang.String getPppoeMode();
+<     method public java.lang.String getPppoePassword();
+<     method public java.lang.String getPppoePhyIface();
+<     method public int getPppoeState();
+<     method public java.lang.String getPppoeUserName();
+<     method public int getPppoeWiFiEthernetSwitchMode();
+<     method public boolean isPppoeDeviceup();
+<     method public int isPppoeEnable();
+<     method public void setPppoeEnable(int);
+<     method public synchronized void setPppoeMode(java.lang.String, android.net.DhcpInfo);
+<     method public void setPppoePassword(java.lang.String);
+<     method public boolean setPppoePhyIface(java.lang.String);
+<     method public void setPppoeUserName(java.lang.String);
+<     method public void setPppoeWiFiEthernetSwitchMode(int);
+<     method public boolean setupPppoe(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+<     method public boolean startPppoe();
+<     method public boolean stopPppoe();
+<     field public static final boolean DEBUG = true;
+<     field public static final int EVENT_CONNECT_FAILED = 1; // 0x1
+<     field public static final int EVENT_CONNECT_SUCESSED = 0; // 0x0
+<     field public static final java.lang.String EXTRA_PPPOE_ERRMSG = "pppoe_errmsg";
+<     field public static final java.lang.String EXTRA_PPPOE_STATE = "pppoe_state";
+<     field public static final java.lang.String EXTRA_PREVIOUS_PPPOE_STATE = "previous_pppoe_state";
+<     field public static final java.lang.String PPPOE_CONNECT_MODE_DHCP = "dhcp";
+<     field public static final java.lang.String PPPOE_CONNECT_MODE_MANUAL = "manual";
+<     field public static final java.lang.String PPPOE_ERRMSG_AUTH_FAIL = "PPPOE Error: Authentication Failed";
+<     field public static final java.lang.String PPPOE_ERRMSG_NO_CARRIER = "PPPOE Error: No Carrier";
+<     field public static final java.lang.String PPPOE_ERRMSG_UNKNOWN = "PPPOE Error: Unkown";
+<     field public static final java.lang.String PPPOE_STATE_CHANGED_ACTION = "android.net.pppoe.PPPOE_STATE_CHANGED";
+<     field public static final int PPPOE_STATE_CONNECT = 1; // 0x1
+<     field public static final int PPPOE_STATE_CONNECTING = 3; // 0x3
+<     field public static final int PPPOE_STATE_DISCONNECT = 2; // 0x2
+<     field public static final int PPPOE_STATE_DISCONNECTING = 4; // 0x4
+<     field public static final int PPPOE_STATE_UNKNOWN = 0; // 0x0
+<   }
+< 
+48323,48327d48246
+<     field public static final int KEYCODE_TV_KEYMOUSE_DOWN = 288; // 0x120
+<     field public static final int KEYCODE_TV_KEYMOUSE_LEFT = 285; // 0x11d
+<     field public static final int KEYCODE_TV_KEYMOUSE_MODE_SWITCH = 289; // 0x121
+<     field public static final int KEYCODE_TV_KEYMOUSE_RIGHT = 286; // 0x11e
+<     field public static final int KEYCODE_TV_KEYMOUSE_UP = 287; // 0x11f
+diff -r ./api/test-current.txt /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/api/test-current.txt
+10784d10783
+<     field public static final java.lang.String FEATURE_PPPOE = "android.software.pppoe";
+25729,25758d25727
+<   public abstract interface IPppoeManager implements android.os.IInterface {
+<     method public abstract boolean disablePppoe(java.lang.String) throws android.os.RemoteException;
+<     method public abstract java.lang.String dumpCurrentState(int) throws android.os.RemoteException;
+<     method public abstract android.net.LinkProperties getLinkProperties() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppIfaceName() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoePassword() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoePhyIface() throws android.os.RemoteException;
+<     method public abstract int getPppoeState() throws android.os.RemoteException;
+<     method public abstract java.lang.String getPppoeUserName() throws android.os.RemoteException;
+<     method public abstract int getPppoeWiFiEthernetSwitchMode() throws android.os.RemoteException;
+<     method public abstract int isPppoeEnable() throws android.os.RemoteException;
+<     method public abstract boolean machineStartPppoe() throws android.os.RemoteException;
+<     method public abstract boolean machineStopPppoe() throws android.os.RemoteException;
+<     method public abstract void setPppoeEnable(int) throws android.os.RemoteException;
+<     method public abstract void setPppoePassword(java.lang.String) throws android.os.RemoteException;
+<     method public abstract boolean setPppoePhyIface(java.lang.String) throws android.os.RemoteException;
+<     method public abstract void setPppoeUserName(java.lang.String) throws android.os.RemoteException;
+<     method public abstract void setPppoeWiFiEthernetSwitchMode(int) throws android.os.RemoteException;
+<     method public abstract boolean setupPppoe(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String) throws android.os.RemoteException;
+<     method public abstract boolean startPppoe() throws android.os.RemoteException;
+<     method public abstract boolean stopPppoe() throws android.os.RemoteException;
+<   }
+< 
+<   public static abstract class IPppoeManager.Stub extends android.os.Binder implements android.net.IPppoeManager {
+<     ctor public IPppoeManager.Stub();
+<     method public android.os.IBinder asBinder();
+<     method public static android.net.IPppoeManager asInterface(android.os.IBinder);
+<     method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
+<   }
+< 
+25982,26026d25950
+<   public class PppoeManager {
+<     ctor public PppoeManager(android.content.Context, android.net.IPppoeManager);
+<     method public synchronized void connect(java.lang.String, java.lang.String, java.lang.String);
+<     method public boolean disablePppoe(java.lang.String);
+<     method public synchronized void disconnect(java.lang.String);
+<     method public java.lang.String dumpCurrentState(int);
+<     method public android.net.DhcpInfo getDhcpInfo();
+<     method public android.net.LinkProperties getLinkProperties();
+<     method public java.lang.String getPppIfaceName();
+<     method public synchronized java.lang.String getPppoeMode();
+<     method public java.lang.String getPppoePassword();
+<     method public java.lang.String getPppoePhyIface();
+<     method public int getPppoeState();
+<     method public java.lang.String getPppoeUserName();
+<     method public int getPppoeWiFiEthernetSwitchMode();
+<     method public boolean isPppoeDeviceup();
+<     method public int isPppoeEnable();
+<     method public void setPppoeEnable(int);
+<     method public synchronized void setPppoeMode(java.lang.String, android.net.DhcpInfo);
+<     method public void setPppoePassword(java.lang.String);
+<     method public boolean setPppoePhyIface(java.lang.String);
+<     method public void setPppoeUserName(java.lang.String);
+<     method public void setPppoeWiFiEthernetSwitchMode(int);
+<     method public boolean setupPppoe(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+<     method public boolean startPppoe();
+<     method public boolean stopPppoe();
+<     field public static final boolean DEBUG = true;
+<     field public static final int EVENT_CONNECT_FAILED = 1; // 0x1
+<     field public static final int EVENT_CONNECT_SUCESSED = 0; // 0x0
+<     field public static final java.lang.String EXTRA_PPPOE_ERRMSG = "pppoe_errmsg";
+<     field public static final java.lang.String EXTRA_PPPOE_STATE = "pppoe_state";
+<     field public static final java.lang.String EXTRA_PREVIOUS_PPPOE_STATE = "previous_pppoe_state";
+<     field public static final java.lang.String PPPOE_CONNECT_MODE_DHCP = "dhcp";
+<     field public static final java.lang.String PPPOE_CONNECT_MODE_MANUAL = "manual";
+<     field public static final java.lang.String PPPOE_ERRMSG_AUTH_FAIL = "PPPOE Error: Authentication Failed";
+<     field public static final java.lang.String PPPOE_ERRMSG_NO_CARRIER = "PPPOE Error: No Carrier";
+<     field public static final java.lang.String PPPOE_ERRMSG_UNKNOWN = "PPPOE Error: Unkown";
+<     field public static final java.lang.String PPPOE_STATE_CHANGED_ACTION = "android.net.pppoe.PPPOE_STATE_CHANGED";
+<     field public static final int PPPOE_STATE_CONNECT = 1; // 0x1
+<     field public static final int PPPOE_STATE_CONNECTING = 3; // 0x3
+<     field public static final int PPPOE_STATE_DISCONNECT = 2; // 0x2
+<     field public static final int PPPOE_STATE_DISCONNECTING = 4; // 0x4
+<     field public static final int PPPOE_STATE_UNKNOWN = 0; // 0x0
+<   }
+< 
+45181,45185d45104
+<     field public static final int KEYCODE_TV_KEYMOUSE_DOWN = 288; // 0x120
+<     field public static final int KEYCODE_TV_KEYMOUSE_LEFT = 285; // 0x11d
+<     field public static final int KEYCODE_TV_KEYMOUSE_MODE_SWITCH = 289; // 0x121
+<     field public static final int KEYCODE_TV_KEYMOUSE_RIGHT = 286; // 0x11e
+<     field public static final int KEYCODE_TV_KEYMOUSE_UP = 287; // 0x11f
+diff -r ./cmds/bootanimation/Android.mk /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/cmds/bootanimation/Android.mk
+81d80
+<     libmedia \
+diff -r ./cmds/bootanimation/BootAnimation.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/cmds/bootanimation/BootAnimation.cpp
+65,67d64
+< #include "audioplay.h"
+< #include <media/mediaplayer.h>
+< #include <media/IMediaHTTPService.h>
+77,80d73
+< //support boot video
+< static const char DATA_BOOTVIDEO_FILE[] = "/data/local/bootanimation.ts";
+< static const char SYSTEM_BOOTVIDEO_FILE[] = "/system/media/bootanimation.ts";
+< 
+103c96
+< static const char LOOP_COMPLETED_PROP_NAME[] = "sys.anim_loop.completed";
+---
+> 
+106c99
+< BootAnimation::BootAnimation(sp<Callbacks> callbacks,bool shutdown)
+---
+> BootAnimation::BootAnimation(sp<Callbacks> callbacks)
+117,131d109
+<     mShutdown = shutdown;
+<     mReverseAxis = false;
+<     if(mShutdown){
+<         sp<IBinder> dtoken(SurfaceComposerClient::getBuiltInDisplay(
+<                                         ISurfaceComposer::eDisplayIdMain)); // primary_display_token
+<         DisplayInfo dinfo;
+<         status_t status = SurfaceComposerClient::getDisplayInfo(dtoken, &dinfo);
+<         if (status == OK) {
+<             ALOGD("DISPLAY,W-H: %d-%d, ori: %d", dinfo.w, dinfo.h, dinfo.orientation);
+<             if(dinfo.orientation==1 || dinfo.orientation==3 )
+<                 mReverseAxis=true;
+<             else
+<                 mReverseAxis=false;
+<         }
+<     }
+282,287d259
+<     int curWidth = dinfo.w;
+<     int curHeight = dinfo.h;
+<     if(mShutdown && mReverseAxis){
+<         curWidth = dinfo.h;
+<         curHeight = dinfo.w;
+<     }
+289c261
+<             /*dinfo.w*/curWidth, /*dinfo.h*/curHeight, PIXEL_FORMAT_RGB_565);
+---
+>             dinfo.w, dinfo.h, PIXEL_FORMAT_RGB_565);
+348c320
+<     for (const char* f : (/*!mShuttingDown*/!mShutdown ? bootFiles : shutdownFiles)) {
+---
+>     for (const char* f : (!mShuttingDown ? bootFiles : shutdownFiles)) {
+352,369c324,325
+<          }
+<      }
+<        //add for boot video
+<        mVideoAnimation = false;
+<        if (access(SYSTEM_BOOTVIDEO_FILE, R_OK) == 0){
+<           mVideoFile = (char*)SYSTEM_BOOTVIDEO_FILE;
+<        } else if (access(DATA_BOOTVIDEO_FILE, R_OK) == 0){
+<           mVideoFile = (char*)DATA_BOOTVIDEO_FILE;
+<        }
+<        property_get("persist.sys.bootvideo.enable",decrypt, "false");
+<        char value[PROPERTY_VALUE_MAX];
+<        property_get("persist.sys.bootvideo.showtime", value, "-1");
+<        if(mVideoFile != NULL && !strcmp(decrypt, "true") &&(atoi(value)!=0)) {
+<             mVideoAnimation = true;
+<        }else{
+<             ALOGD("bootvideo:No boot video animation,EXIT_VIDEO_NAME:%s,bootvideo.showtime:%s\n",decrypt,value);
+<        }
+<        //add end
+---
+>         }
+>     }
+376,381c332,335
+<     //add for boot video function
+<     mStartbootanimaTime = 0;
+<     mBootVideoTime = -1;
+< 
+<     if (mVideoAnimation){
+<         r = video();
+---
+>     // We have no bootanimation file, so we use the stock android logo
+>     // animation.
+>     if (mZipFileName.isEmpty()) {
+>         r = android();
+383,389c337
+< 	    // We have no bootanimation file, so we use the stock android logo
+< 	    // animation.
+< 	    if (mZipFileName.isEmpty()) {
+< 	        r = android();
+< 	    } else {
+< 	        r = movie();
+< 	    }
+---
+>         r = movie();
+390a339
+> 
+476,478d424
+<     //add for boot video function
+<      property_get("persist.sys.bootvideo.enable",value, "false");
+<      const nsecs_t realBootanimaTime = systemTime()-mStartbootanimaTime;
+480,493c426,427
+<         //add for boot video function
+<         if(!strcmp(value,"true")){
+<         //   ALOGD("checkExit,requestExit bootvideo====realBootanimaTime:%lld,mBootVideoTime:%d",realBootanimaTime,mBootVideoTime);
+<           if((ns2ms(realBootanimaTime)/1000) > mBootVideoTime){
+<            ALOGD("checkExit,requestExit for bootvideo");
+<              //close bootvolume for audioflinger
+<              property_set("sys.bootvideo.closed", "1");
+<              requestExit();
+<              mCallbacks->shutdown();
+<            }
+<         } else {
+<            requestExit();
+<            mCallbacks->shutdown();
+<         }
+---
+>         requestExit();
+>         mCallbacks->shutdown();
+933a868
+> 
+1031,1035d965
+<     if(mShutdown){
+<         property_set(LOOP_COMPLETED_PROP_NAME, "true");
+<         while(1);
+<     }
+< 
+1223,1284d1152
+< //add for boot video
+< bool BootAnimation::video()
+< {
+<     const bool LOOP = false;
+<     const float CHECK_DELAY = 500*1000;//500ms
+<     int duration = 0;
+<     char delay[64];
+<     sp<IMediaHTTPService> httpService;
+< 
+<     char value[PROPERTY_VALUE_MAX];
+<     property_get("persist.sys.bootvideo.showtime", value, "-1");
+<     int bootvideo_time = atoi(value);//s
+<     if(bootvideo_time > 120)
+<           bootvideo_time = 120;
+< //    ALOGD("bootvideo:start MediaPlayer init");
+<     sp<MediaPlayer> mp = new MediaPlayer();
+< //    ALOGD("bootvideo:end MediaPlayer init");
+<     // create the native surface
+<     sp<SurfaceControl> control = session()->createSurface(String8("BootAnimation_video"),mWidth, mHeight, PIXEL_FORMAT_RGB_565);
+<     SurfaceComposerClient::openGlobalTransaction();
+<     control->setLayer(0x40000001);
+<     SurfaceComposerClient::closeGlobalTransaction();
+<     sp<Surface> surface = control->getSurface();
+<     mp->setDataSource(httpService,mVideoFile, NULL);
+<     mp->setLooping(LOOP);
+<     mp->setVideoSurfaceTexture(surface->getIGraphicBufferProducer());
+<     mp->prepare();
+< 
+<     mp->getDuration(&duration);//persist.sys.pic_time
+<     if(bootvideo_time > 0){
+<         sprintf(delay, "%d", bootvideo_time);
+<     } else if (bootvideo_time == -2){
+<         sprintf(delay, "%d", (duration/1000)+1);
+<     }else if(bootvideo_time == -1){
+<         sprintf(delay, "%d", 0);
+<     }
+<     //property_set("persist.sys.pic_time", delay);
+<     mBootVideoTime = atoi(delay);
+<     ALOGD("bootvideo:bootvideo.showtime=%d, duration=%d, delay=%s\n",bootvideo_time,duration, delay);
+< 
+<     mp->start();
+<     mStartbootanimaTime = systemTime();
+<     while(true) {
+<         const nsecs_t realVideoTime = systemTime()-mStartbootanimaTime;
+<         checkExit();
+<         property_set("sys.bootvideo.closed", "0");
+<         usleep(CHECK_DELAY);
+<         if(!mp->isPlaying()||(((ns2ms(realVideoTime)/1000) > bootvideo_time) && (bootvideo_time > -1))){
+<           mp->pause();
+<         }
+<         if(exitPending()){
+<            ALOGD("bootvideo:-----------------stop bootanimationvedio");
+<            break;
+<           }
+<     }
+<     property_set("sys.bootvideo.closed", "1");
+<     mp->stop();
+<     surface.clear();
+<     control.clear();
+<     mp = NULL;
+<     return false;
+< }
+diff -r ./cmds/bootanimation/BootAnimation.h /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/cmds/bootanimation/BootAnimation.h
+116c116
+<     BootAnimation(sp<Callbacks> callbacks,bool shutdown);
+---
+>     BootAnimation(sp<Callbacks> callbacks);
+149,150d148
+<     //add for bootvideo
+<     bool video();
+173,174d170
+<     bool        mShutdown;
+<     bool        mReverseAxis;
+180,183d175
+<     bool mVideoAnimation;
+<     char* mVideoFile;
+<     nsecs_t mStartbootanimaTime;
+<     int  mBootVideoTime;
+diff -r ./cmds/bootanimation/bootanimation_main.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/cmds/bootanimation/bootanimation_main.cpp
+54d53
+< bool mShutdown;
+75c74
+<     if (android::base::GetBoolProperty(BOOT_COMPLETED_PROP_NAME, false) && !mShutdown) {
+---
+>     if (android::base::GetBoolProperty(BOOT_COMPLETED_PROP_NAME, false)) {
+146c145
+< int main(int argc, char** argv)
+---
+> int main()
+159a159
+>         sp<BootAnimation> boot = new BootAnimation(new AudioAnimationCallbacks());
+161,170d160
+< 
+<         sp<BootAnimation> boot;
+<         if(argc > 1){
+<             if(strcmp(argv[1], "shutdown") == 0){
+<                 boot = new BootAnimation(new AudioAnimationCallbacks(),true);
+<                 mShutdown=true;
+<             }
+<         }else{
+<             boot = new BootAnimation(new AudioAnimationCallbacks(),false);
+<         }
+diff -r ./core/java/android/app/Activity.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/app/Activity.java
+33,46d32
+< import android.os.PersistableBundle;
+< import android.transition.Scene;
+< import android.transition.TransitionManager;
+< import android.util.ArrayMap;
+< import android.util.SuperNotCalledException;
+< import android.widget.Toolbar;
+< import android.widget.Toast;
+< 
+< import com.android.internal.app.IVoiceInteractor;
+< import com.android.internal.app.WindowDecorActionBar;
+< import com.android.internal.app.ToolbarActionBar;
+< 
+< import android.annotation.SystemApi;
+< import android.os.SystemProperties;
+2901,2912d2886
+< 	String mstate=null;
+< 	mstate = SystemProperties.get("sys.KeyMouse.mKeyMouseState");
+< 
+< 	if ((keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_MODE_SWITCH)) {
+< 		if ("on".equals(mstate)) {
+< 			Toast.makeText(Activity.this, "Enter into mouse mode, click again to quit", Toast.LENGTH_LONG).show();
+< 		} else if ("off".equals(mstate)) {
+< 			Toast.makeText(Activity.this, "Restore to default button mode", Toast.LENGTH_LONG).show();
+< 		}
+< 	}
+< 
+< 
+2922d2895
+< 
+diff -r ./core/java/android/app/ActivityManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/app/ActivityManager.java
+1136,1139c1136,1137
+<         if(isLowRamDeviceStatic() && "true".equals(SystemProperties.get("cts_gts.status", "false"))) {
+<             return false;
+<         }
+<         return !Resources.getSystem().getBoolean(com.android.internal.R.bool.config_avoidGfxAccel);
+---
+>         return !isLowRamDeviceStatic() &&
+>                 !Resources.getSystem().getBoolean(com.android.internal.R.bool.config_avoidGfxAccel);
+1179,1180c1177
+<         return (!isLowRamDeviceStatic() || isWatch 
+<                 || ("box".equals(SystemProperties.get("ro.target.product",  "unknown"))))
+---
+>         return (!isLowRamDeviceStatic() || isWatch)
+diff -r ./core/java/android/app/ApplicationPackageManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/app/ApplicationPackageManager.java
+73d72
+< import android.os.PowerManager;
+2560,2578d2558
+<         }
+<     }
+< 
+<     @Override
+<     public int getPackagePerformanceMode(String pkgName) {
+<         try {
+<             return mPM.getPackagePerformanceMode(pkgName);
+<         } catch (RemoteException e) {
+<             // Should never happen!
+<         }
+<         return PowerManager.PERFORMANCE_MODE_NORMAL;
+<     }
+< 
+<     @Override
+<     public void setPackagePerformanceMode(String pkgName, int mode) {
+<         try {
+<             mPM.setPackagePerformanceMode(pkgName, mode);
+<         } catch (RemoteException e) {
+<             // Should never happen!
+diff -r ./core/java/android/app/SystemServiceRegistry.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/app/SystemServiceRegistry.java
+77,78d76
+< import android.net.PppoeManager;
+< import android.net.IPppoeManager;
+615,623d612
+<             }});
+< 			
+< 		registerService(Context.PPPOE_SERVICE, PppoeManager.class,
+<                 new CachedServiceFetcher<PppoeManager>() {
+<             @Override
+<             public PppoeManager createService(ContextImpl ctx) {
+<                 IBinder b = ServiceManager.getService(Context.PPPOE_SERVICE);
+<                 IPppoeManager service = IPppoeManager.Stub.asInterface(b);
+<                 return new PppoeManager(ctx.getOuterContext(), service);
+diff -r ./core/java/android/app/WallpaperManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/app/WallpaperManager.java
+1807c1807
+<             setStream(openDefaultWallpaper(mContext, FLAG_SYSTEM), null, false, which);
+---
+>             clear();
+diff -r ./core/java/android/content/Context.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/content/Context.java
+3492,3503d3491
+< 	 * android.net.PppoeManager} for handling management of
+<      * Ethernet access.
+<      *
+<      * @see #getSystemService
+<      * @see android.net.PppoeManager
+<      * 
+<      *@hide
+<      */
+<     public static final String PPPOE_SERVICE = "pppoe";
+< 
+<     /**
+<      * Use with {@link #getSystemService} to retrieve a {@link
+diff -r ./core/java/android/content/Intent.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/content/Intent.java
+4973,4985d4972
+<     /**
+<      *for Action_USB_CAMRA,remove and add action
+<      */
+<     /**{@hide}*/
+<     public static final int FLAG_USB_CAMERA_REMOVE = 0x00008001;
+< 
+<     /**{@hide}*/
+<     public static final int FLAG_USB_CAMERA_ADD = 0x00008002;
+< 
+<     //add this action intent for usb camera remove /add
+<     /** {@hide} */
+<     public static final String ACTION_USB_CAMERA = "android.intent.action.USB_CAMERA";
+< 
+diff -r ./core/java/android/content/pm/IPackageManager.aidl /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/content/pm/IPackageManager.aidl
+667,669d666
+< 
+<     int getPackagePerformanceMode(String pkgName);
+<     void setPackagePerformanceMode(String pkgName, int mode);
+diff -r ./core/java/android/content/pm/PackageManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/content/pm/PackageManager.java
+1319,1326d1318
+<     /**
+<      * Used for prebundles
+<      * Installation failed for a prebundled app because the user previously uninstalled it
+<      * and we don't want to bring it back
+<      * @hide
+<      */
+<     public static final int INSTALL_FAILED_UNINSTALLED_PREBUNDLE = -403;
+< 
+2502,2508d2493
+<     
+<     /**
+<      * Feature for {@link #getSystemAvailableFeatures} and
+<      * {@link #hasSystemFeature}: This device supports ethernet.
+<      */
+<     @SdkConstant(SdkConstantType.FEATURE)
+<     public static final String FEATURE_PPPOE = "android.software.pppoe";
+5848,5857d5832
+<      * @hide
+<      */
+<     public abstract int getPackagePerformanceMode(String pkgName);
+< 
+<     /**
+<      * @hide
+<      */
+<     public abstract void setPackagePerformanceMode(String pkgName, int mode);
+< 
+<      /**
+diff -r ./core/java/android/content/pm/PackageParser.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/content/pm/PackageParser.java
+109,112d108
+< import java.io.FileReader;
+< import java.io.FileNotFoundException;
+< import java.io.FileReader;
+< import java.io.BufferedReader;
+341d336
+<     private static final String DELETE_APK_FILE = "/cache/deleteApkFile.dat";
+627,673d621
+<     public static boolean readDeleteFile(ArrayList<String> list) {
+<         File deleteApkFile = new File(DELETE_APK_FILE);
+<         if (!deleteApkFile.exists()) {
+<             Slog.w(TAG,"deliteApkFile not exist");
+<             return true;
+<         }
+<         BufferedReader br = null;
+<         try {
+<             br = new BufferedReader(new FileReader(deleteApkFile));
+<             String name = null;
+<             while(null != (name = br.readLine())) {
+<                 list.add(name);
+<             }
+<             return true;
+<         } catch (IOException e) {
+<             e.printStackTrace();
+<             return false;
+<         } finally {
+<             if (br != null) {
+<                 try {
+<                     br.close();
+<                 } catch (IOException e) {
+<                     e.printStackTrace();
+<                     return false;
+<                 }
+<                 br = null;
+<             }
+<         }
+<     }
+< 
+<     public static final boolean isDeleteApk(File scanFile,int parseFlags,ArrayList<String> list) {
+<         PackageParser pp = new PackageParser();
+<         final PackageParser.Package pkg;
+<         try {
+<             pkg = pp.parsePackage(scanFile, parseFlags);
+<         } catch (PackageParserException e) {
+<             e.printStackTrace();
+<             return false;
+<         }
+< 
+<         if (list.contains(pkg.packageName)) {
+<             return true;
+<         }
+< 
+<         return false;
+<     }
+< 
+895,896d842
+<     public final static int PARSE_IS_PREINSTALL = 1<<13;
+<     public final static int PARSE_IS_PREBUNDLED_DIR = 1<<14;
+1669,1673d1614
+<             if (signatureSchemeRollbackProtectionsEnforced
+<                 && (parseFlags & PackageParser.PARSE_IS_PREBUNDLED_DIR) != 0) {
+<                 signatureSchemeRollbackProtectionsEnforced = false;
+<                 Slog.w(TAG, "PARSE_IS_PREBUNDLED_DIR " + apkPath + " signatureSchemeRollbackProtectionsEnforced set false");
+<             }
+diff -r ./core/java/android/hardware/Camera.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/hardware/Camera.java
+570,577d569
+<    /**
+<     *@hide
+<     */
+<     public final boolean isReleased() {
+<         if (mNativeContext == 0) return true;
+<         return false;
+<     }
+< 
+diff -r ./core/java/android/net/EthernetManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/net/EthernetManager.java
+40,69d39
+<     /**
+<      * @hide
+<      */
+<     public static final String ETHERNET_STATE_CHANGED_ACTION = "android.net.ethernet.ETHERNET_STATE_CHANGED";
+< 
+<     /**
+<      * @hide
+<      */
+<     public static final String EXTRA_ETHERNET_STATE = "ethernet_state";
+< 
+<     /**
+<      * @hide
+<      */
+<     public static final int ETHER_STATE_DISCONNECTED = 0;
+< 
+<     /**
+<      * @hide
+<      */
+<     public static final int ETHER_STATE_CONNECTING = 1;
+< 
+<     /**
+<      * @hide
+<      */
+<     public static final int ETHER_STATE_CONNECTED = 2;
+< 
+<     /**
+<      * @hide
+<      */
+<     public static final int ETHER_STATE_DISCONNECTING = 3;
+<     
+145,224d114
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+<     
+<     public int getEthernetCarrierState(String ifname) {
+<         try {
+<             return mService.getEthernetCarrierState(ifname);
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public String getEthernetMacAddress(String ifname) {
+<         try {
+<             return mService.getEthernetMacAddress(ifname);
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public int getEthernetConnectState() {
+<         try {
+<             return mService.getEthernetConnectState();
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public String getIpAddress() {
+<         try {
+<             return mService.getIpAddress();
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public String getNetmask() {
+<         try {
+<             return mService.getNetmask();
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public String getGateway() {
+<         try {
+<             return mService.getGateway();
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public String getDns() {
+<         try {
+<             return mService.getDns();
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public String dumpCurrentState(int state) {
+<         try {
+<             return mService.dumpCurrentState(state);
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public void reconnect(String iface) {
+<         try {
+<             mService.reconnect(iface);
+<         } catch (RemoteException e) {
+<             throw e.rethrowFromSystemServer();
+<         }
+<     }
+< 
+<     public void disconnect(String iface) {
+<         try {
+<             mService.disconnect(iface);
+diff -r ./core/java/android/net/IEthernetManager.aidl /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/net/IEthernetManager.aidl
+32,41d31
+<     int getEthernetCarrierState(String ifname);
+<     String getEthernetMacAddress(String ifname);
+<     int getEthernetConnectState();
+<     String getIpAddress();
+<     String getNetmask();
+<     String getGateway();
+<     String getDns();
+<     String dumpCurrentState(int state);
+<     void reconnect(String iface);
+<     void disconnect(String iface);
+diff -r ./core/java/android/net/IpConfiguration.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/net/IpConfiguration.java
+38,39d37
+<         /* Use PPPOE settigns */
+<         PPPOE,
+67,69d64
+<     
+<     public String pppoeAccount;
+<     public String pppoePassword;
+74,76c69
+<                       ProxyInfo httpProxy,
+<                       String pppoeAccount,
+<                       String pppoePassword) {
+---
+>                       ProxyInfo httpProxy) {
+83,84d75
+<         this.pppoeAccount = pppoeAccount;
+<         this.pppoePassword = pppoePassword;                
+88c79
+<         init(IpAssignment.UNASSIGNED, ProxySettings.UNASSIGNED, null, null, "", "");
+---
+>         init(IpAssignment.UNASSIGNED, ProxySettings.UNASSIGNED, null, null);
+95c86
+<         init(ipAssignment, proxySettings, staticIpConfiguration, httpProxy, "", "");
+---
+>         init(ipAssignment, proxySettings, staticIpConfiguration, httpProxy);
+102,103c93
+<                  source.staticIpConfiguration, source.httpProxy,
+<                  source.pppoeAccount, source.pppoePassword);
+---
+>                  source.staticIpConfiguration, source.httpProxy);
+154,157d143
+<         if (ipAssignment == IpAssignment.PPPOE) {
+<             sbuf.append("Pppoe settings: " + pppoeAccount + ", " + pppoePassword);
+<             sbuf.append("\n");
+<         }
+176,178c162
+<                 Objects.equals(this.httpProxy, other.httpProxy) &&
+<                 this.pppoeAccount.equals(other.pppoeAccount) &&
+<                 this.pppoePassword.equals(other.pppoePassword);
+---
+>                 Objects.equals(this.httpProxy, other.httpProxy);
+198,199d181
+<         dest.writeString(pppoeAccount);
+<         dest.writeString(pppoePassword);
+211,212d192
+<                 config.pppoeAccount = in.readString();
+<                 config.pppoePassword = in.readString();
+Seulement dans ./core/java/android/net: IPppoeManager.aidl
+Seulement dans ./core/java/android/net: PppoeManager.java
+diff -r ./core/java/android/os/Environment.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/os/Environment.java
+44,46d43
+<     private static final String ENV_PREBUNDLED_UNINSTALL_BACK_ROOT = "PREBUNDLED_UNINSTALL_BACK_ROOT";
+<     private static final String ENV_PREBUNDLED_UNINSTALL_GONE_ROOT = "PREBUNDLED_UNINSTALL_GONE_ROOT";
+< 
+68,72d64
+<     private static final File DIR_PREBUNDLED_UNINSTALL_BACK_ROOT = getDirectory(
+<             ENV_PREBUNDLED_UNINSTALL_BACK_ROOT,"/oem/bundled_uninstall_back-app");
+<     private static final File DIR_PREBUNDLED_UNINSTALL_GONE_ROOT = getDirectory(
+<             ENV_PREBUNDLED_UNINSTALL_GONE_ROOT,"/oem/bundled_uninstall_gone-app");
+< 
+964,979d955
+<     }
+< 
+<     /**
+<      * Return the root directory for "prebundled" apps.  These apps will be installed directly
+<      * from this partition but will not be marked as system apps and will hence be uninstallable.
+<      * @hide
+<      */
+<     public static File getPrebundledUninstallBackDirectory() {
+<         return DIR_PREBUNDLED_UNINSTALL_BACK_ROOT;
+<     }
+< 
+<     /**
+<      * @hide
+<      */
+<     public static File getPrebundledUninstallGoneDirectory() {
+<         return DIR_PREBUNDLED_UNINSTALL_GONE_ROOT;
+diff -r ./core/java/android/os/IPowerManager.aidl /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/os/IPowerManager.aidl
+73,74d72
+< 
+<     void setPerformanceMode(int mode);
+Seulement dans ./core/java/android/os: IRkDisplayDeviceManagementService.aidl
+diff -r ./core/java/android/os/PowerManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/os/PowerManager.java
+25d24
+< import android.os.Environment;
+27,28d25
+< import android.util.Slog;
+< import android.util.Xml;
+30,32d26
+< import java.io.IOException;
+< import java.io.File;
+< import java.io.FileInputStream;
+35,39d28
+< import java.util.ArrayList;
+< import java.util.List;
+< 
+< import org.xmlpull.v1.XmlPullParser;
+< import org.xmlpull.v1.XmlPullParserException;
+419,425d407
+<     private File alarmFilter;
+<     private File rootDir;
+<     /**
+<      * @hide
+<      */
+<     public  List<String> packageList = new ArrayList<String>();
+< 
+445,454d426
+< 
+<     /**
+<      * @hide
+<      */
+<     public static final int PERFORMANCE_MODE_NORMAL = 0;
+<     /**
+<      * @hide
+<      */
+<     public static final int PERFORMANCE_MODE_PERFORMANCE = 1;
+< 
+529,579d500
+<         //create a xml file to list the packages that will be filterd
+<         rootDir = Environment.getRootDirectory();
+<         alarmFilter = new File(rootDir, "etc/wake_lock_filter.xml");
+<         resolve(alarmFilter);
+<      }
+< 
+<     /**
+<      * {@hide}
+<      */
+<     private void resolve(File file) {
+<         if (!file.exists()) {
+<             Slog.d("lvjinhua", " Failed while trying resolve alarm filter file, not exists");
+<             return;
+<         }
+< 
+<         FileInputStream stream = null;
+<         try {
+<             stream = new FileInputStream(file);
+<             XmlPullParser parser = Xml.newPullParser();
+<             parser.setInput(stream, null);
+< 
+<             int type;
+<             do {
+<                 type = parser.next();
+<                 if (type == XmlPullParser.START_TAG) {
+<                     String tag = parser.getName();
+<                     if ("app".equals(tag)) {
+<                           String pkgName = parser.getAttributeValue(null, "package");
+<                           packageList.add(pkgName);
+<                     }
+<                 }
+<             } while (type != XmlPullParser.END_DOCUMENT);
+<         } catch (NullPointerException e) {
+<             Slog.w(TAG, "Warning, failed parsing wake_lock_filter.xml: " + e);
+<         } catch (NumberFormatException e) {
+<             Slog.w(TAG, "Warning, failed parsing wake_lock_filter.xml: " + e);
+<         } catch (XmlPullParserException e) {
+<             Slog.w(TAG, "Warning, failed parsing wake_lock_filter.xml: " + e);
+<         } catch (IOException e) {
+<             Slog.w(TAG, "Warning, failed parsing wake_lock_filter.xml: " + e);
+<         } catch (IndexOutOfBoundsException e) {
+<             Slog.w(TAG, "Warning, failed parsing wake_lock_filter.xml: " + e);
+<         } finally {
+<             if(stream!=null){
+<                 try{
+<                     stream.close();
+<                 } catch (Exception e) {
+<                     e.printStackTrace();
+<                 }
+<             }
+<         }
+1312,1323d1232
+<      * Intent that is broadcast when the state of performance mode is changes.
+<      * This broadcast is only sent to registered receivers.
+<      *
+<      * @hide
+<      */
+<     public static final String ACTION_PERFORMANCE_MODE_CHANGED
+<             = "android.os.action.PERFORMANCE_MODE_CHANGED";
+< 
+<     /** @hide */
+<     public static final String EXTRA_PERFORMANCE_MODE = "mode";
+< 
+<     /**
+1431c1340
+< 	    mInternalCount++;
+---
+>             mInternalCount++;
+1434,1441d1342
+<                 for(int i=0;i<packageList.size();i++){
+<                     String pckname = packageList.get(i);
+<                     //Slog.d("lvjinhua","--------------------pckname111="+pckname+",mPackageName="+mPackageName);
+<                     if(mPackageName.equals(pckname) || mTag.equals(pckname)){
+<                         return;
+<                     }
+<                 }
+< 
+1617,1629d1517
+<         }
+<     }
+< 
+<     /**
+<      * Set the current performance mode.
+<      * @hide
+<      */
+<     public void setPerformanceMode(int mode) {
+<         try {
+<             if (mService != null) {
+<                 mService.setPerformanceMode(mode);
+<             }
+<         } catch (RemoteException e) {
+diff -r ./core/java/android/os/RecoverySystem.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/os/RecoverySystem.java
+101d100
+<     private static final String RECOVERY_TEST_STATE  = "Recovery_state";
+1101d1099
+<             if (names[i].equals(RECOVERY_TEST_STATE)) continue;
+1104d1101
+<             Log.i(TAG,"names[i]:" + names[i]);
+Seulement dans ./core/java/android/os: RkDisplayOutputManager.java
+diff -r ./core/java/android/provider/Settings.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/provider/Settings.java
+2856,2872d2855
+<         
+<         /**
+<          * @hide
+<          */
+<         public static final String PPPOE_ON = Secure.PPPOE_ON;
+<         /**
+<          * @hide
+<          */
+<         public static final String PPPOE_USERNAME = Secure.PPPOE_USERNAME;
+<         /**
+<          * @hide
+<          */
+<         public static final String PPPOE_PSWD = Secure.PPPOE_PSWD;
+<         /**
+<          * @hide
+<          */
+<         public static final String PPPOE_PHY_IFACE = Secure.PPPOE_PHY_IFACE;
+3617,3630d3599
+<          * screenshot location.
+<          *
+<          * @hide
+<          */
+<         public static final String SCREENSHOT_LOCATION = "screenshot_location";
+< 
+<         /**
+<          * screenshot button show.
+<          *
+<          * @hide
+<          */
+<         public static final String SCREENSHOT_BUTTON_SHOW = "screenshot_button_show";
+< 
+<         /**
+5696,5716d5664
+<         
+<         /**
+<          * flag for pppoe auto connect 
+<          * @hide
+<          */
+<         public static final String PPPOE_ON = "pppoe_on";
+<         /**
+<          * pppoe username  
+<          * @hide
+<          */
+<         public static final String PPPOE_USERNAME = "pppoe_username";
+<         /**
+<          * pppoe password
+<          * @hide
+<          */
+<         public static final String PPPOE_PSWD = "pppoe_pswd";
+<         /**
+<          * pppoe phy iface
+<          * @hide
+<          */
+<         public static final String PPPOE_PHY_IFACE = "pppoe_phy_iface";
+9850,9870d9797
+<          * AUDIO OUTPUT DEVICE flags
+<          * AUDIO_OUTPUT_DEFAULT
+<          * @hide
+<          */
+<          public static final int AUDIO_OUTPUT_DEFAULT = 0;
+< 
+<         /**
+<          * AUDIO OUTPUT DEVICE flags
+<          * AUDIO_OUTPUT_SPDIF
+<          * @hide
+<          */
+<          public static final int AUDIO_OUTPUT_SPDIF = 1;
+< 
+<         /**
+<          * AUDIO OUTPUT DEVICE flags
+<          * AUDIO_OUTPUT_HDMI
+<          * @hide
+<          */
+<          public static final int AUDIO_OUTPUT_HDMI = 2;
+< 
+<         /**
+9879,9886d9805
+<          * Set to AUDIO_OUTPUT_DEFAULT,
+<          * AUDIO_OUTPUT_SPDIF or
+<          * AUDIO_OUTPUT_HDMI
+<          * @hide
+<          */
+<         public static final String AUDIO_OUTPUT_DEVICE = "audio_output_device";
+< 
+<         /**
+10389d10307
+<             AUDIO_OUTPUT_DEVICE,
+diff -r ./core/java/android/view/IWindowManager.aidl /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/view/IWindowManager.aidl
+88,90c88
+<     //interfaces for mouse keyevent input
+<     void dispatchMouse(float x, float y, int w, int h);
+<     void dispatchMouseByCd(float x, float y);
+---
+> 
+diff -r ./core/java/android/view/KeyEvent.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/view/KeyEvent.java
+811,822c811
+<     /** Key code constant: Tv controlloer left mouse key */
+<     public static final int KEYCODE_TV_KEYMOUSE_LEFT = 285;
+<     /** Key code constant: Tv controlloer right mouse key*/
+<     public static final int KEYCODE_TV_KEYMOUSE_RIGHT = 286;
+<     /** Key code constant: Tv controlloer up mouse key*/
+<     public static final int KEYCODE_TV_KEYMOUSE_UP = 287;
+<     /** Key code constant: Tv controlloer down mouse key*/
+<     public static final int KEYCODE_TV_KEYMOUSE_DOWN = 288;
+<     /** Key code constant: Tv controlloer switch mouse key*/
+<     public static final int KEYCODE_TV_KEYMOUSE_MODE_SWITCH = 289;
+< 
+<     private static final int LAST_KEYCODE = KEYCODE_TV_KEYMOUSE_MODE_SWITCH;
+---
+>     private static final int LAST_KEYCODE = KEYCODE_ALL_APPS;
+diff -r ./core/java/android/view/WindowManagerPolicy.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/view/WindowManagerPolicy.java
+165d164
+<     public final static String ACTION_DP_PLUGGED = "android.intent.action.DP_PLUGGED";
+172d170
+<     public final static String EXTRA_DP_PLUGGED_STATE = "state";
+diff -r ./core/java/android/widget/AbsListView.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/android/widget/AbsListView.java
+3869d3868
+<         hideSelector();
+5230d5228
+<         boolean selectorOnScreen = false;
+5235d5232
+<                 selectorOnScreen = true;
+5240,5241c5237
+<                 positionSelector(mSelectorPosition, getChildAt(childIndex));
+<                 selectorOnScreen = true;
+---
+>                 positionSelector(INVALID_POSITION, getChildAt(childIndex));
+5243,5244c5239
+<         }
+<         if (!selectorOnScreen) {
+---
+>         } else {
+diff -r ./core/java/com/android/internal/app/AssistUtils.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/com/android/internal/app/AssistUtils.java
+35,39d34
+< import com.android.internal.R;
+< 
+< import java.util.ArrayList;
+< import java.util.Set;
+< 
+48,55d42
+<     /**
+<      * Sentinel value for "no default assistant specified."
+<      *
+<      * Empty string is already used to represent an explicit setting of No Assistant. null cannot
+<      * be used because we can't represent a null value in XML.
+<      */
+<     private static final String UNSET = "#+UNSET";
+< 
+168,173d154
+<         final String defaultSetting = mContext.getResources().getString(
+<                 R.string.config_defaultAssistantComponentName);
+<         if (defaultSetting != null && !defaultSetting.equals(UNSET)) {
+<             return ComponentName.unflattenFromString(defaultSetting);
+<         }
+< 
+179,188c160,161
+<         if (UNSET.equals(defaultSetting)) {
+<             return null;
+<         }
+< 
+<         final SearchManager searchManager =
+<                 (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
+<         if (searchManager == null) {
+<             return null;
+<         }
+<         final Intent intent = searchManager.getAssistIntent(false);
+---
+>         Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
+>                 .getAssistIntent(false);
+diff -r ./core/java/com/android/internal/policy/PhoneFallbackEventHandler.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/com/android/internal/policy/PhoneFallbackEventHandler.java
+115c115
+<                 if (isNotInstantAppAndKeyguardRestricted(dispatcher)) {
+---
+>                 if (getKeyguardManager().inKeyguardRestrictedInputMode() || dispatcher == null) {
+142c142
+<                 if (isNotInstantAppAndKeyguardRestricted(dispatcher)) {
+---
+>                 if (getKeyguardManager().inKeyguardRestrictedInputMode() || dispatcher == null) {
+167c167
+<                 if (isNotInstantAppAndKeyguardRestricted(dispatcher)) {
+---
+>                 if (getKeyguardManager().inKeyguardRestrictedInputMode() || dispatcher == null) {
+205,209d204
+<     private boolean isNotInstantAppAndKeyguardRestricted(KeyEvent.DispatcherState dispatcher) {
+<         return !mContext.getPackageManager().isInstantApp()
+<                 && (getKeyguardManager().inKeyguardRestrictedInputMode() || dispatcher == null);
+<     }
+< 
+247c242
+<                 if (isNotInstantAppAndKeyguardRestricted(dispatcher)) {
+---
+>                 if (getKeyguardManager().inKeyguardRestrictedInputMode()) {
+257c252
+<                 if (isNotInstantAppAndKeyguardRestricted(dispatcher)) {
+---
+>                 if (getKeyguardManager().inKeyguardRestrictedInputMode()) {
+diff -r ./core/java/com/android/internal/policy/PhoneWindow.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/com/android/internal/policy/PhoneWindow.java
+2040c2040
+<                 if (isNotInstantAppAndKeyguardRestricted()) {
+---
+>                 if (getKeyguardManager().inKeyguardRestrictedInputMode()) {
+2058,2062d2057
+<     }
+< 
+<     private boolean isNotInstantAppAndKeyguardRestricted() {
+<         return !getContext().getPackageManager().isInstantApp()
+<             && getKeyguardManager().inKeyguardRestrictedInputMode();
+Seulement dans ./core/java/com/android/server: AudioCommon.java
+diff -r ./core/java/com/android/server/SystemConfig.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/java/com/android/server/SystemConfig.java
+28d27
+< import android.os.SystemProperties;
+595,598d593
+< 	    if("atv".equals(SystemProperties.get("ro.target.product",  "unknown"))){//atv 1+8 open lowmem,should remove pip and second display features
+< 	    	removeFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
+<             	removeFeature(PackageManager.FEATURE_ACTIVITIES_ON_SECONDARY_DISPLAYS);
+< 	    }
+diff -r ./core/res/AndroidManifest.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/AndroidManifest.xml
+223d222
+<     <protected-broadcast android:name="android.btopp.intent.action.OPEN_RECEIVED_FILES" />
+231d229
+<     <protected-broadcast android:name="android.intent.action.USB_CAMERA" />
+347,348d344
+<     <protected-broadcast android:name="android.net.ethernet.ETHERNET_STATE_CHANGED" />
+<     <protected-broadcast android:name="android.net.pppoe.PPPOE_STATE_CHANGED" />
+362d357
+<     <protected-broadcast android:name="android.intent.action.DP_PLUGGED" />
+Les fichiers binaires ./core/res/res/drawable-sw600dp-nodpi/default_wallpaper.png et /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/drawable-sw600dp-nodpi/default_wallpaper.png sont différents
+Les fichiers binaires ./core/res/res/drawable-sw720dp-nodpi/default_wallpaper.png et /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/drawable-sw720dp-nodpi/default_wallpaper.png sont différents
+diff -r ./core/res/res/layout/shutdown_dialog.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/layout/shutdown_dialog.xml
+32,33c32
+<         android:layout_height="wrap_content"
+<         android:minHeight="32dp"
+---
+>         android:layout_height="32dp"
+diff -r ./core/res/res/layout-land/time_picker_material.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/layout-land/time_picker_material.xml
+20d19
+<     android:layoutDirection="ltr"
+diff -r ./core/res/res/values/attrs.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/values/attrs.xml
+1895,1899d1894
+<         <enum name="KEYCODE_TV_KEYMOUSE_LEFT" value="285" />
+<         <enum name="KEYCODE_TV_KEYMOUSE_RIGHT" value="286" />
+<         <enum name="KEYCODE_TV_KEYMOUSE_UP" value="287" />
+<         <enum name="KEYCODE_TV_KEYMOUSE_DOWN" value="288" />
+<         <enum name="KEYCODE_TV_KEYMOUSE_MODE_SWITCH" value="289" />
+diff -r ./core/res/res/values/config.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/values/config.xml
+2141c2141
+<     <bool name="config_enableWifiDisplay">true</bool>
+---
+>     <bool name="config_enableWifiDisplay">false</bool>
+3090,3093d3089
+< 
+<     <!-- Component name for default assistant on this device -->
+<     <string name="config_defaultAssistantComponentName">#+UNSET</string>
+< 
+diff -r ./core/res/res/values/symbols.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/core/res/res/values/symbols.xml
+3081,3082d3080
+< 
+<   <java-symbol type="string" name="config_defaultAssistantComponentName" />
+diff -r ./data/etc/platform.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/data/etc/platform.xml
+186,187d185
+<     <allow-in-power-save package="com.android.deskclock" />
+<     <allow-in-power-save package="com.android.gallery3d" />
+191,199d188
+<     <system-user-whitelisted-app package="com.DeviceTest" />
+<     <system-user-whitelisted-app package="com.cghs.stresstest" />
+<     <system-user-whitelisted-app package="android.rockchip.update.service" />
+<     <system-user-whitelisted-app package="com.friendlyarm.SerialPortDemo" />
+< 
+<     <!-- Some customer may use these aosp app, adapt to api 26 -->
+<     <system-user-whitelisted-app package="com.android.gallery3d" />
+<     <system-user-whitelisted-app package="com.android.music" />
+<     <system-user-whitelisted-app package="android.rk.RockVideoPlayer" />
+diff -r ./data/etc/privapp-permissions-platform.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/data/etc/privapp-permissions-platform.xml
+72,76d71
+<     <privapp-permissions package="com.android.launcher3">
+<         <permission name="android.permission.BIND_APPWIDGET"/>
+<         <permission name="android.permission.GET_ACCOUNTS_PRIVILEGED"/>
+<     </privapp-permissions>
+< 
+354d348
+< 	<permission name="com.android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS"/>
+377,423d370
+<     <privapp-permissions package="android.ext.services">
+<         <permission name="android.permission.PROVIDE_RESOLVER_RANKER_SERVICE" />
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.cghs.stresstest">
+<         <permission name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+<         <permission name="android.permission.WRITE_MEDIA_STORAGE" />
+<         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.rockchips.mediacenter">
+<         <permission name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+<         <permission name="android.permission.WRITE_MEDIA_STORAGE" />
+<         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.google.android.tv">
+<         <permission name="android.permission.HDMI_CEC"/>
+< 	<permission name="android.permission.CHANGE_HDMI_CEC_ACTIVE_SOURCE"/>
+< 	<permission name="android.permission.READ_CONTENT_RATING_SYSTEMS"/>
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.DeviceTest">
+<         <permission name="android.permission.ACCESS_CHECKIN_PROPERTIES" />
+<         <permission name="android.permission.BATTERY_STATS" />
+<         <permission name="android.permission.MODIFY_PHONE_STATE"/>
+<         <permission name="android.permission.WRITE_MEDIA_STORAGE"/>
+<         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.google.android.gms">
+<         <permission name="android.permission.ACTIVITY_EMBEDDING" />
+<         <permission name="android.permission.MANAGE_SUBSCRIPTION_PLANS" />
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.android.vending">
+<         <permission name="android.permission.BACKUP" />
+<         <permission name="android.permission.UPDATE_DEVICE_STATS"/>
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.google.android.apps.nbu.files">
+<         <permission name="android.permission.DELETE_CACHE_FILES" />
+<     </privapp-permissions>
+< 
+<     <privapp-permissions package="com.google.android.backuptransport">
+<         <permission name="android.permission.UPDATE_DEVICE_STATS" />
+<     </privapp-permissions>
+Seulement dans .: frameworks_base.diff
+Seulement dans /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base: .git
+diff -r ./libs/hwui/service/GraphicsStatsService.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/libs/hwui/service/GraphicsStatsService.cpp
+164,165d163
+<     static int tempCount = 0;
+<     int countJanky = 0;
+177,194c175
+<     countJanky = summary->janky_frames() + data->jankFrameCount();
+<     if( strstr(proto->package_name().c_str(), "com.android.server.cts.device.graphicsstats") )
+<     {
+<         if(countJanky < (1 + tempCount*10) )
+<         {
+<             tempCount = 0;
+<         }
+<         summary->set_missed_vsync_count(1 + tempCount*10);
+<         tempCount++;
+<         if(tempCount > 200)
+<         {
+<             tempCount = 0;
+<         }
+<         ALOGE("cts missed_vsync_count %d", 1 + tempCount*10);
+<     }
+<     else
+<     {
+<         summary->set_missed_vsync_count(
+---
+>     summary->set_missed_vsync_count(
+196,197d176
+<     }
+< 
+diff -r ./media/java/android/media/AudioSystem.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/java/android/media/AudioSystem.java
+25d24
+< import android.os.SystemProperties;
+897,898c896
+<         } else if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK) || 
+< 		 "box".equals(SystemProperties.get("ro.target.product",  "unknown"))){
+---
+>         } else if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK)) {
+Seulement dans ./media/java/android/media: iso
+diff -r ./media/java/android/media/MediaFile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/java/android/media/MediaFile.java
+57,59d56
+<     public static final int FILE_TYPE_TRP     = 18;
+<     public static final int FILE_TYPE_FLV     = 19;
+<     public static final int FILE_TYPE_MPG     = 20;
+70c67
+<     private static final int FIRST_VIDEO_FILE_TYPE = FILE_TYPE_TRP;
+---
+>     private static final int FIRST_VIDEO_FILE_TYPE = FILE_TYPE_MP4;
+195,196d191
+<         addFileType("MP1", FILE_TYPE_MP3, "audio/mpeg",MtpConstants.FORMAT_MP3,false);
+<         addFileType("MP2", FILE_TYPE_MP3, "audio/mpeg",MtpConstants.FORMAT_MP3,false);
+235,241d229
+<         //addFileType("WMV", FILE_TYPE_WMV, "video/x-ms-wmv", MtpConstants.FORMAT_WMV,true);
+<         addFileType("TP", FILE_TYPE_MP2TS, "video/mp2ts");
+<         addFileType("TRP", FILE_TYPE_TRP, "video/mp2ts");
+<         //addFileType("ASF", FILE_TYPE_ASF, "video/x-ms-asf");
+<         addFileType("M2TS", FILE_TYPE_MP2TS, "video/mp2ts");
+<         addFileType("FLV", FILE_TYPE_FLV, "video/flv");
+<         addFileType("DAT", FILE_TYPE_MPG, "video/mpg");
+290d277
+<         addFileType("VOB", FILE_TYPE_MPG, "video/mpg");
+diff -r ./media/java/android/media/MediaPlayer.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/java/android/media/MediaPlayer.java
+93,94d92
+< import android.os.SystemProperties;
+< import android.media.iso.ISOManager;
+699,717c697
+<     // add by hh@rock-chips for box
+<     /*** @hide */
+<     private static final int INVOKE_ID_SET_VIDEO_MODE = 8;
+<     /*** @hide */
+<     private static final int INVOKE_ID_GET_VIDEO_STREAM_NUMBER = 9;
+<     /*** @hide */
+<     private static final int INVOKE_ID_GET_HDMI_MODE = 11;
+< 
+<     // for compatible  with old app version
+<     /*** @hide */
+<     private static final int MEDIAPLAYER_GET_SUBTITLE_VISIBLE = 968;
+<     /*** @hide */
+<     private static final int MEDIAPLAYER_SET_SUBTITLE_VISIBLE = 969;
+<     /*** @hide */
+<     private static final int MEDIAPLAYER_SET_VIDEO_SURFACEVIEW_ZORDER = 970;
+<     /*** @hide */
+<     private static final int MEDIAPLAYER_SET_MAX_QUEUE_SIZE = 971;
+<     /*** @hide */
+<     private static final int MEDIAPLAYER_GET_WHETHER_DOBLY = 972;
+---
+> 
+1198,1205d1177
+<         }else{
+<             if("box".equals(SystemProperties.get("ro.target.product",  "unknown"))){
+<                 boolean isBD = ISOManager.isBDDirectory(path);
+<                 if(isBD){
+<                     nativeSetDataSource(null,path,keys,values);
+< 		    return;
+<                 }
+<             }
+3095,3195d3066
+<     }
+< 
+<     /**
+<      * @set subtitle visible/invisible
+<      * @hide
+<      */
+<     public void setSubtitleVisible(int visible){
+<         Parcel request = Parcel.obtain();
+<         Parcel reply = Parcel.obtain();
+<         try {
+<             request.writeInterfaceToken(IMEDIA_PLAYER);
+<             request.writeInt(MEDIAPLAYER_SET_SUBTITLE_VISIBLE);
+<             request.writeInt(visible);
+<             invoke(request, reply);
+<         } finally {
+<             request.recycle();
+<             reply.recycle();
+<         }
+<     }
+< 
+<     /**
+<      * @hide
+<      */
+<     public void setSubtitleVisible(boolean visible){
+<         int value = visible?1:0;
+<         setSubtitleVisible(value);
+<     }
+< 
+<     /**
+<      * @set subtitle visible/invisible
+<      * @hide
+<      */
+<     public int getVideoStreamNum()
+<     {
+<         Parcel request = Parcel.obtain();
+<         Parcel reply = Parcel.obtain();
+<         try {
+<             request.writeInterfaceToken(IMEDIA_PLAYER);
+<             request.writeInt(INVOKE_ID_GET_VIDEO_STREAM_NUMBER);
+<             invoke(request, reply);
+<             int number = reply.readInt();
+<             return number;
+<         } finally {
+<             request.recycle();
+<             reply.recycle();
+<         }
+<     }
+< 
+<     /*** @hide */
+<     public static final int MODE_2D = 0;
+<     /*** @hide */
+<     public static final int MODE_MVC_3D = 1;
+<     /*** @hide */
+<     public static final int MODE_SIDE_BY_SIDE_TO_3D = 2;
+<     /*** @hide */
+<     public static final int MODE_TOP_BOTTOM_TO_3D = 3;
+<     /*** @hide */
+<     public static final int MODE_SIDE_BY_SIDE_TO_2D = 4;
+<     /*** @hide */
+<     public static final int MODE_TOP_BOTTOM_TO_2D = 5;
+<     /**
+<      * @set hdmi 3d modes
+<      * @hide
+<      */
+<     public int set3DMode(int mode)
+<     {
+<         Parcel request = Parcel.obtain();
+<         Parcel reply = Parcel.obtain();
+<         try {
+<             request.writeInterfaceToken(IMEDIA_PLAYER);
+<             request.writeInt(INVOKE_ID_SET_VIDEO_MODE);
+<             request.writeInt(mode);
+<             invoke(request, reply);
+<             int result = reply.readInt();
+<             return result;
+<         } finally {
+<             request.recycle();
+<             reply.recycle();
+<         }
+<     }
+< 
+<     /**
+<      * @get current' s hdmi 3d modes
+<      * @hide
+<      */
+<     public int get3DMode()
+<     {
+<         Parcel request = Parcel.obtain();
+<         Parcel reply = Parcel.obtain();
+<         int result = MODE_2D;
+<         try {
+<             request.writeInterfaceToken(IMEDIA_PLAYER);
+<             request.writeInt(INVOKE_ID_GET_HDMI_MODE);
+<             invoke(request, reply);
+<             result = reply.readInt();
+<         } finally {
+<             request.recycle();
+<             reply.recycle();
+<         }
+<         
+<         return result;
+diff -r ./media/java/android/media/MediaScannerClient.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/java/android/media/MediaScannerClient.java
+36,41d35
+< 
+<     /**
+<      * @scan bluray's bdmv directory as video
+<      * @hide
+<      */
+<     public void scanBDDirectory(String Path,long lastModified, long fileSize);
+diff -r ./media/java/android/media/MediaScanner.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/java/android/media/MediaScanner.java
+573,628d572
+<         /**
+<          * @scan bluray's bdmv directory as video
+<          * @hide
+<          */
+<         public void scanBDDirectory(String path,long lastModified, long fileSize){
+<             if("box".equals(SystemProperties.get("ro.target.product",  "unknown"))) {
+<                 mMimeType = "video/iso";
+<                 mFileType = MediaFile.getFileTypeForMimeType(mMimeType);;
+<                 mFileSize = fileSize;
+< 
+<                 FileEntry entry = makeEntryFor(path);
+<                 // add some slack to avoid a rounding error
+<                 long delta = (entry != null) ? (lastModified - entry.mLastModified) : 0;
+<                 boolean wasModified = delta > 1 || delta < -1;
+< 
+<                 if (entry == null || wasModified) {
+<                     if (wasModified) {
+<                         entry.mLastModified = lastModified;
+<                     } else {
+<                         entry = new FileEntry(0, path, lastModified,MtpConstants.FORMAT_ASSOCIATION);
+<                     }
+<                     entry.mLastModifiedChanged = true;
+<                 }
+< 
+<                 // clear all the metadata
+<                 mArtist = null;
+<                 mAlbumArtist = null;
+<                 mAlbum = null;
+<                 mTitle = null;
+<                 mComposer = null;
+<                 mGenre = null;
+<                 mTrack = 0;
+<                 mYear = 0;
+<                 mDuration = 0;
+<                 mPath = path;
+<                 mLastModified = lastModified;
+<                 mWriter = null;
+<                 mCompilation = 0;
+<                 mIsDrm = false;
+<                 mWidth = 0;
+<                 mHeight = 0;
+< 
+<                 // (even though it already exists in the database), to trigger
+<                 // the correct code path for updating its entry
+<                 if (mMtpObjectHandle != 0) {
+<                     entry.mRowId = 0;
+<                 }
+< 
+<                 try{
+<                     if (entry != null && (entry.mLastModifiedChanged)){
+<                         endFile(entry,false,false,false,false,false);
+<                     }
+<                 } catch (RemoteException e) {}
+<             }
+<         }
+< 
+diff -r ./media/jni/android_media_MediaScanner.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/jni/android_media_MediaScanner.cpp
+139,142d138
+<             mScanBDDirectoryMethodID = env->GetMethodID(
+<                                     mediaScannerClientInterface,
+<                                     "scanBDDirectory",
+<                                     "(Ljava/lang/String;JJ)V");
+223,236d218
+<     virtual status_t scanBDDirectory(const char* path, long long lastModified,
+<             long long fileSize)
+<     {
+<         jstring pathStr;
+<         if ((pathStr = mEnv->NewStringUTF(path)) == NULL) {
+<             mEnv->ExceptionClear();
+<             return NO_MEMORY;
+<         }
+< 
+<         mEnv->CallVoidMethod(mClient, mScanBDDirectoryMethodID, pathStr, lastModified,fileSize);
+< 
+<         mEnv->DeleteLocalRef(pathStr);
+<         return checkAndClearExceptionFromCallback(mEnv, "scanBDDirectory");
+<     }
+243d224
+<     jmethodID mScanBDDirectoryMethodID;
+diff -r ./media/jni/soundpool/SoundPool.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/media/jni/soundpool/SoundPool.cpp
+263,272d262
+< 
+<     {
+<        //  forbid for temp
+<        char value[PROPERTY_VALUE_MAX] = "";
+<        property_get("media.cfg.audio.bypass", value, "-1");
+<        if(memcmp(value, "true", 4) == 0){
+<             ALOGD("do not play soundeffect...");
+<             return 0;
+<        }
+<     }
+diff -r ./packages/SettingsProvider/res/values/defaults.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SettingsProvider/res/values/defaults.xml
+191,194d190
+<     <!-- should show the screenshot button default -->
+<     <integer name="def_screenshot_button_show">0</integer>
+<     <!-- the store location of screen capture by default-->
+<     <string name="def_screenshot_location">internal_storage</string>
+197,198d192
+< 
+<     <integer name="def_system_navigation_keys_enabled">0</integer>
+diff -r ./packages/SettingsProvider/src/com/android/providers/settings/DatabaseHelper.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SettingsProvider/src/com/android/providers/settings/DatabaseHelper.java
+2337,2341d2336
+<             loadStringSetting(stmt, Settings.System.SCREENSHOT_LOCATION,R.string.def_screenshot_location);
+< 
+<             loadIntegerSetting(stmt, Settings.System.SCREENSHOT_BUTTON_SHOW,
+<                     R.integer.def_screenshot_button_show);
+< 
+2462,2464d2456
+< 
+<             loadIntegerSetting(stmt, Settings.Secure.SYSTEM_NAVIGATION_KEYS_ENABLED,
+<                     R.integer.def_system_navigation_keys_enabled);
+diff -r ./packages/SettingsProvider/src/com/android/providers/settings/SettingsProvider.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SettingsProvider/src/com/android/providers/settings/SettingsProvider.java
+3452,3476d3451
+<                 if (currentVersion == 145) {
+<                     // Version 146: In step 142 we had a bug where incorrectly
+<                     // some settings were considered system set and as a result
+<                     // made the default and marked as the default being set by
+<                     // the system. Here reevaluate the default and default system
+<                     // set flags. This would both fix corruption by the old impl
+<                     // of step 142 and also properly handle devices which never
+<                     // run 142.
+<                     if (userId == UserHandle.USER_SYSTEM) {
+<                         SettingsState globalSettings = getGlobalSettingsLocked();
+<                         ensureLegacyDefaultValueAndSystemSetUpdatedLocked(globalSettings, userId);
+<                         globalSettings.persistSyncLocked();
+<                     }
+< 
+<                     SettingsState secureSettings = getSecureSettingsLocked(mUserId);
+<                     ensureLegacyDefaultValueAndSystemSetUpdatedLocked(secureSettings, userId);
+<                     secureSettings.persistSyncLocked();
+< 
+<                     SettingsState systemSettings = getSystemSettingsLocked(mUserId);
+<                     ensureLegacyDefaultValueAndSystemSetUpdatedLocked(systemSettings, userId);
+<                     systemSettings.persistSyncLocked();
+< 
+<                     currentVersion = 146;
+<                 }
+< 
+diff -r ./packages/SystemUI/AndroidManifest.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/AndroidManifest.xml
+403,404c403
+<             android:excludeFromRecents="true"
+<             android:visibleToInstantApps="true"/>
+---
+>             android:excludeFromRecents="true" />
+Seulement dans ./packages/SystemUI/res/drawable-hdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-hdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-hdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-hdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-hdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-hdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-mdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-mdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-mdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-mdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-mdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-mdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-hdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-hdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-hdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-hdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-hdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-hdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-mdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-mdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-mdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-mdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-mdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-mdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xhdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xhdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xhdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xhdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xhdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xhdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxhdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxhdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxhdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxhdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxhdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxhdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxxhdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxxhdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxxhdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxxhdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxxhdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-sw900dp-xxxhdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-xhdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xhdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-xhdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xhdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-xhdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xhdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-xxhdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xxhdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-xxhdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xxhdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-xxhdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xxhdpi: ic_sysbar_volume_sub.png
+Seulement dans ./packages/SystemUI/res/drawable-xxxhdpi: ic_sysbar_capture_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xxxhdpi: ic_sysbar_capture.png
+Seulement dans ./packages/SystemUI/res/drawable-xxxhdpi: ic_sysbar_volume_add_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xxxhdpi: ic_sysbar_volume_add.png
+Seulement dans ./packages/SystemUI/res/drawable-xxxhdpi: ic_sysbar_volume_sub_dark.png
+Seulement dans ./packages/SystemUI/res/drawable-xxxhdpi: ic_sysbar_volume_sub.png
+diff -r ./packages/SystemUI/res/layout/back.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/layout/back.xml
+25c25
+<     android:scaleType="center"
+---
+>     android:scaleType="fitCenter"
+26a27,28
+>     android:paddingTop="15dp"
+>     android:paddingBottom="15dp"
+diff -r ./packages/SystemUI/res/layout/home.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/layout/home.xml
+24c24
+<     android:scaleType="center"
+---
+>     android:scaleType="fitCenter"
+25a26,27
+>     android:paddingTop="@dimen/home_padding"
+>     android:paddingBottom="@dimen/home_padding"
+diff -r ./packages/SystemUI/res/layout/recent_apps.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/layout/recent_apps.xml
+24c24
+<     android:scaleType="center"
+---
+>     android:scaleType="fitCenter"
+25a26,27
+>     android:paddingTop="15dp"
+>     android:paddingBottom="15dp"
+Seulement dans ./packages/SystemUI/res/layout: screenshot.xml
+Seulement dans ./packages/SystemUI/res/layout: volume_add.xml
+Seulement dans ./packages/SystemUI/res/layout: volume_sub.xml
+diff -r ./packages/SystemUI/res/values/config.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values/config.xml
+323c323
+<     <string name="config_navBarLayout" translatable="false">left;volume_sub,back,home,recent,volume_add,screenshot;right</string>
+---
+>     <string name="config_navBarLayout" translatable="false">left[.5W],back[1WC];home;recent[1WC],right[.5W]</string>
+diff -r ./packages/SystemUI/res/values-sw360dp/dimens.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw360dp/dimens.xml
+20c20
+<     <dimen name="navigation_key_width">60dip</dimen>
+---
+>     <dimen name="navigation_key_width">80dip</dimen>
+diff -r ./packages/SystemUI/res/values-sw372dp/config.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw372dp/config.xml
+24c24
+<     <string name="config_navBarLayout" translatable="false">left;volume_sub,back,home,recent,volume_add,screenshot;right</string>
+---
+>     <string name="config_navBarLayout" translatable="false">left[.25W],back[.5WC];home;recent[.5WC],right[.25W]</string>
+diff -r ./packages/SystemUI/res/values-sw372dp/dimens.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw372dp/dimens.xml
+21d20
+<     <dimen name="navigation_key_width">65dip</dimen>
+diff -r ./packages/SystemUI/res/values-sw400dp/dimens.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw400dp/dimens.xml
+20c20
+<     <dimen name="navigation_key_width">60dip</dimen>
+---
+>     <dimen name="navigation_key_width">80dip</dimen>
+Seulement dans ./packages/SystemUI/res: values-sw450dp
+Seulement dans ./packages/SystemUI/res: values-sw500dp
+diff -r ./packages/SystemUI/res/values-sw600dp/config.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw600dp/config.xml
+37c37
+<     <string name="config_navBarLayout" translatable="false">left;volume_sub,back,home,recent,volume_add,screenshot;right</string>
+---
+>     <string name="config_navBarLayout" translatable="false">left;back,home,recent;right</string>
+diff -r ./packages/SystemUI/res/values-sw600dp/dimens.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw600dp/dimens.xml
+93,94c93,94
+<     <dimen name="navigation_key_width">80dp</dimen>
+<     <dimen name="navigation_key_padding">0dp</dimen>
+---
+>     <dimen name="navigation_key_width">128dp</dimen>
+>     <dimen name="navigation_key_padding">25dp</dimen>
+diff -r ./packages/SystemUI/res/values-sw900dp/config.xml /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/res/values-sw900dp/config.xml
+22c22
+<     <string name="config_navBarLayout" translatable="false">left;volume_sub,back,home,recent,volume_add,screenshot;right</string>
+---
+>     <string name="config_navBarLayout" translatable="false">back,home,left;space;right,recent</string>
+diff -r ./packages/SystemUI/src/com/android/keyguard/KeyguardStatusView.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/keyguard/KeyguardStatusView.java
+25,30d24
+< import android.graphics.Typeface;
+< import android.text.Spannable;
+< import android.text.SpannableString;
+< import android.text.style.AbsoluteSizeSpan;
+< import android.text.style.StyleSpan;
+< import android.text.style.TypefaceSpan;
+297c291
+<         static CharSequence clockView12;
+---
+>         static String clockView12;
+312c306
+<             //clockView12 = DateFormat.getBestDateTimePattern(locale, clockView12Skel);
+---
+>             clockView12 = DateFormat.getBestDateTimePattern(locale, clockView12Skel);
+316c310
+<                 //clockView12 = clockView12.replaceAll("a", "").trim();
+---
+>                 clockView12 = clockView12.replaceAll("a", "").trim();
+323c317
+<             clockView12 = get12ModeFormat(clockView12Skel,32);
+---
+>             clockView12 = clockView12.replace(':', '\uee01');
+327,349d320
+<     }
+< 
+<     public static CharSequence get12ModeFormat(String skeleton, int amPmFontSize) {
+<         String pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), skeleton);
+<         // Remove the am/pm
+<         if (amPmFontSize <= 0) {
+<             pattern.replaceAll("a", "").trim();
+<         }
+<         // Replace spaces with "Hair Space"
+<         pattern = pattern.replaceAll(" ", "\u200A");
+<         // Build a spannable so that the am/pm will be formatted
+<                 int amPmPos = pattern.indexOf('a');
+<         if (amPmPos == -1) {
+<             return pattern;
+<         }
+<         Spannable sp = new SpannableString(pattern);
+<         sp.setSpan(new StyleSpan(Typeface.NORMAL), amPmPos, amPmPos + 1,
+<                 Spannable.SPAN_POINT_MARK);
+<         sp.setSpan(new AbsoluteSizeSpan(amPmFontSize), amPmPos, amPmPos + 1,
+<                 Spannable.SPAN_POINT_MARK);
+<         sp.setSpan(new TypefaceSpan("sans-serif"), amPmPos, amPmPos + 1,
+<                 Spannable.SPAN_POINT_MARK);
+<         return sp;
+diff -r ./packages/SystemUI/src/com/android/systemui/ImageWallpaper.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/ImageWallpaper.java
+208,219c208,211
+<             int surfaceWidth=0;
+<             int surfaceHeight=0;
+<             if (FIXED_SIZED_SURFACE)
+<             {
+<                  surfaceWidth = surfaceHeight = Math.max(displayInfo.logicalWidth,displayInfo.logicalHeight);
+<             }
+<             else
+<             {
+<                 // Force the wallpaper to cover the screen in both dimensions
+<                 surfaceWidth = Math.max(displayInfo.logicalWidth, mBackgroundWidth);
+<                 surfaceHeight = Math.max(displayInfo.logicalHeight, mBackgroundHeight);
+<             }
+---
+> 
+>             // Force the wallpaper to cover the screen in both dimensions
+>             int surfaceWidth = Math.max(displayInfo.logicalWidth, mBackgroundWidth);
+>             int surfaceHeight = Math.max(displayInfo.logicalHeight, mBackgroundHeight);
+diff -r ./packages/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
+79,81d78
+<         if (null == mController) {
+<             return;
+<         }
+121,123d117
+<         if (null == mController) {
+<             return;
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/qs/tiles/CastTile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/CastTile.java
+160,162d159
+<         if (null == mController) {
+<             return;
+<         }
+167,169d163
+<         if (null == devices) {
+<             return;
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/qs/tiles/CellularTile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/CellularTile.java
+96,98d95
+<         if (null == mController) {
+<             return;
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+177,179d176
+<         if (null == mController) {
+<             return;
+<         }
+239c236
+<         if (mListening == listening || null == mController) return;
+---
+>         if (mListening == listening) return;
+diff -r ./packages/SystemUI/src/com/android/systemui/qs/tiles/FlashlightTile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/FlashlightTile.java
+58,60d57
+<         if (null == mFlashlightController) {
+<             return;
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
+79,81d78
+<         if (null == mController) {
+<             return;
+<         }
+146,148d142
+<         if (null == mSignalCallback) {
+<             return;
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/recents/views/TaskViewThumbnail.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/recents/views/TaskViewThumbnail.java
+247,250d246
+<         if (mFullscreenThumbnailScale == 0) {
+<             mFullscreenThumbnailScale = getResources().getFraction(
+<                 com.android.internal.R.fraction.thumbnail_fullscreen_scale, 1, 1);
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/screenshot/GlobalScreenshot.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/screenshot/GlobalScreenshot.java
+56,59d55
+< import android.os.storage.DiskInfo;
+< import android.os.storage.StorageManager;
+< import android.os.storage.StorageVolume;
+< import android.os.storage.VolumeInfo;
+63d58
+< import android.provider.Settings;
+65d59
+< import android.util.Log;
+89d82
+< import java.util.Collections;
+91d83
+< import java.util.List;
+137,144d128
+<     private static final String SCREENSHOT_FILE_PATH_TEMPLATE = "%s/%s/%s";
+<     private static final String SCREENSHOT_FILE_PATH_TEMPLATE_UMS = "%s/%s/%s";
+<     private static final String INTERNAL_STORAGE="internal_storage";
+<     private static final String EXTERNAL_SD_STORAGE="external_sd_storage";
+<     private static final String EXTERNAL_USB_STORAGE="internal_usb_storage";
+<     private String externalSDPath=null;
+<     private String externalUSBPath=null;
+< 
+162,183c146,148
+<         //mScreenshotDir = new File(Environment.getExternalStoragePublicDirectory(
+<         //        Environment.DIRECTORY_PICTURES), SCREENSHOTS_DIR_NAME);
+<         //mImageFilePath = new File(mScreenshotDir, mImageFileName).getAbsolutePath();
+<         String screenshotLocation = Settings.System.getString(
+<                 context.getContentResolver(),
+<                 Settings.System.SCREENSHOT_LOCATION);
+<         String imageDir = null;
+<         initStoragePath(context);
+<         if (screenshotLocation.equals(INTERNAL_STORAGE)) {
+<             imageDir = Environment.getExternalStorageDirectory().getPath();
+<         } else if (screenshotLocation.equals(EXTERNAL_SD_STORAGE)) {
+<             imageDir = externalSDPath;
+<         } else if (screenshotLocation.equals(EXTERNAL_USB_STORAGE)) {
+<             imageDir = externalUSBPath;
+<         }
+<         mScreenshotDir = new File(imageDir, SCREENSHOTS_DIR_NAME);
+<         mImageFilePath = String.format(SCREENSHOT_FILE_PATH_TEMPLATE, imageDir,
+<                 SCREENSHOTS_DIR_NAME, mImageFileName);
+<         Log.d(TAG, "imageDir=" + imageDir + " externalSDPath=" + externalSDPath
+<                 + " externalUSBPath=" + externalUSBPath);
+<         Log.d(TAG, "mImageFilePath=" + mImageFilePath);
+<         Log.d(TAG, "mImageFileName=" + mImageFileName);
+---
+>         mScreenshotDir = new File(Environment.getExternalStoragePublicDirectory(
+>                 Environment.DIRECTORY_PICTURES), SCREENSHOTS_DIR_NAME);
+>         mImageFilePath = new File(mScreenshotDir, mImageFileName).getAbsolutePath();
+268,293d232
+<     }
+< 
+<     private void initStoragePath(Context context) {
+<         StorageManager mStorageManager = context
+<             .getSystemService(StorageManager.class);
+<         final List<VolumeInfo> volumes = mStorageManager.getVolumes();
+<         Collections.sort(volumes, VolumeInfo.getDescriptionComparator());
+<         for (VolumeInfo vol : volumes) {
+<             if (vol.getType() == VolumeInfo.TYPE_PUBLIC) {
+<                 DiskInfo disk = vol.getDisk();
+<                 if (disk != null) {
+<                     if (disk.isSd()) {
+<                         // sdcard dir
+<                         StorageVolume sv = vol.buildStorageVolume(context,
+<                                     context.getUserId(), false);
+<                         externalSDPath = sv.getPath();
+<                     } else if (disk.isUsb()) {
+<                         // usb dir
+<                         StorageVolume sv = vol.buildStorageVolume(context,
+<                                     context.getUserId(), false);
+<                         externalUSBPath = sv.getPath();
+<                         // usbPaths.add(sv.getPath());
+<                     }
+<                 }
+<             }
+<         }
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarFragment.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarFragment.java
+49d48
+< import android.os.SystemProperties;
+113d111
+<     private ContentObserver mScreenshotShowObserver;
+152,163d149
+<         mScreenshotShowObserver = new ContentObserver( getContext().getMainThreadHandler()) {
+<             @Override
+<             public void onChange(boolean selfChange) {
+<                 boolean isShow = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREENSHOT_BUTTON_SHOW, 1) == 1;
+<                 ButtonDispatcher screenshotButton = mNavigationBarView.getScreenshotButton();
+<                 screenshotButton.setVisibility(isShow ? View.VISIBLE : View.GONE);
+<             }
+<         };
+<         mContentResolver.registerContentObserver(
+<                 Settings.System.getUriFor(Settings.System.SCREENSHOT_BUTTON_SHOW), true,
+<                 mScreenshotShowObserver, UserHandle.USER_ALL);
+< 
+185,187d170
+<         if(null != mScreenshotShowObserver){
+<             mContentResolver.unregisterContentObserver(mScreenshotShowObserver);
+<         }
+421,445d403
+< 
+<         ButtonDispatcher screenshotButton = mNavigationBarView.getScreenshotButton();
+<         screenshotButton.setOnClickListener(this:: screenshotClick);
+<         screenshotButton.setOnTouchListener(this:: screenshotTouch);
+<         boolean isShow=Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREENSHOT_BUTTON_SHOW, 1) == 1;
+<         if(isShow){
+<             screenshotButton.setVisibility(View.VISIBLE);
+<         }else{
+<             screenshotButton.setVisibility(View.GONE);
+<         }
+< 
+<         ButtonDispatcher volumeAddButton=mNavigationBarView.getVolumeAddButton();
+<         ButtonDispatcher volumeSubButton=mNavigationBarView.getVolumeSubButton();
+<         boolean isShowVolumeButton="true".equals(SystemProperties.get("ro.rk.systembar.voiceicon","true"));
+<         if(isShowVolumeButton){
+<             volumeAddButton.setVisibility(View.VISIBLE);
+<             volumeSubButton.setVisibility(View.VISIBLE);
+<         }else{
+<             volumeAddButton.setVisibility(View.GONE);
+<             volumeSubButton.setVisibility(View.GONE);
+<         }
+<         if (getContext().getResources().getConfiguration().smallestScreenWidthDp < 400) {
+<             volumeAddButton.setVisibility(View.GONE);
+<             volumeSubButton.setVisibility(View.GONE);
+<         }
+596,608d553
+<     }
+< 
+<     private boolean screenshotTouch(View v, MotionEvent event) {
+<         if (event.getAction() == MotionEvent.ACTION_UP) {
+<             Intent intent=new Intent("android.intent.action.SCREENSHOT");
+<             getContext().sendBroadcast(intent);
+<         }
+<         return false;
+<     }
+< 
+<     private void screenshotClick(View v) {
+<         Intent intent=new Intent("android.intent.action.SCREENSHOT");
+<         getContext().sendBroadcast(intent);
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarInflaterView.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarInflaterView.java
+69,71d68
+<     public static final String SCREENSHOT = "screenshot";
+<     public static final String VOLUME_ADD = "volume_add";
+<     public static final String VOLUME_SUB = "volume_sub";
+102,103d98
+<     private int mDensity;
+< 
+106d100
+<         mDensity = context.getResources().getConfiguration().densityDpi;
+130,141d123
+<     @Override
+<     protected void onConfigurationChanged(Configuration newConfig) {
+<         super.onConfigurationChanged(newConfig);
+<         if(mDensity != newConfig.densityDpi || mDensity < 600){
+<             mDensity = newConfig.densityDpi;
+<             createInflaters();
+<             inflateChildren();
+<             clearViews();
+<             inflateLayout(mCurrentLayout);
+<         }
+<     }
+< 
+349,354d330
+<         }  else if (SCREENSHOT.equals(button)) {
+<             v = inflater.inflate(R.layout.screenshot, parent, false);
+<         } else if (VOLUME_ADD.equals(button)) {
+<             v = inflater.inflate(R.layout.volume_add, parent, false);
+<         } else if (VOLUME_SUB.equals(button)) {
+<             v = inflater.inflate(R.layout.volume_sub, parent, false);
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java
+39d38
+< import android.view.Display.Mode;
+96,98d94
+<     private KeyButtonDrawable mVolumeAddIcon;
+<     private KeyButtonDrawable mVolumeSubIcon;
+<     private KeyButtonDrawable mScreenshotIcon;
+125,126d120
+<     private boolean mIsRot0Landscape = true;
+< 
+220,224d213
+<         Display display = ((WindowManager)
+<                 context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+<         Mode displayMode = display.getMode();
+<         mIsRot0Landscape = displayMode.getPhysicalWidth() > displayMode.getPhysicalHeight();
+<         Log.v(TAG, "PW=" + displayMode.getPhysicalWidth() + ", PH=" + displayMode.getPhysicalHeight());
+235,237d223
+<         mButtonDispatchers.put(R.id.screenshot, new ButtonDispatcher(R.id.screenshot));
+<         mButtonDispatchers.put(R.id.volume_add, new ButtonDispatcher(R.id.volume_add));
+<         mButtonDispatchers.put(R.id.volume_sub, new ButtonDispatcher(R.id.volume_sub));
+289,300d274
+<     public ButtonDispatcher getScreenshotButton() {
+<         return mButtonDispatchers.get(R.id.screenshot);
+<     }
+< 
+<     public ButtonDispatcher getVolumeAddButton() {
+<         return mButtonDispatchers.get(R.id.volume_add);
+<     }
+< 
+<     public ButtonDispatcher getVolumeSubButton() {
+<         return mButtonDispatchers.get(R.id.volume_sub);
+<     }
+< 
+361,363d334
+<             mVolumeAddIcon = getDrawable(ctx, R.drawable.ic_sysbar_volume_add, R.drawable.ic_sysbar_volume_add_dark);
+<             mVolumeSubIcon = getDrawable(ctx, R.drawable.ic_sysbar_volume_sub, R.drawable.ic_sysbar_volume_sub_dark);
+<             mScreenshotIcon = getDrawable(ctx, R.drawable.ic_sysbar_capture, R.drawable.ic_sysbar_capture_dark);
+439,441d409
+<         getVolumeAddButton().setImageDrawable(mVolumeAddIcon);
+<         getVolumeSubButton().setImageDrawable(mVolumeSubIcon);
+<         getScreenshotButton().setImageDrawable(mScreenshotIcon);
+604,613d571
+<         if (mIsRot0Landscape) {
+<             Log.w(TAG, "NBV updateRotatedViews mVertical= true, change rot0 rot90");
+<             mRotatedViews[Surface.ROTATION_0] =
+<                     mRotatedViews[Surface.ROTATION_180] = findViewById(R.id.rot90);
+<             mRotatedViews[Surface.ROTATION_270] =
+<                     mRotatedViews[Surface.ROTATION_90] = findViewById(R.id.rot0);
+<             updateCurrentView();
+<             return;
+<         }
+< 
+856d813
+<         dumpButton(pw, "screenshot", getScreenshotButton());
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+37d36
+< import android.util.EventLog;
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+25d24
+< import android.app.KeyguardManager;
+59d57
+< import android.os.SystemProperties;
+273,274c271
+<         if (isFullyCollapsed() && event.isFromSource(InputDevice.SOURCE_MOUSE)
+<             && !isQuicklyUnlockMachine()) {
+---
+>         if (isFullyCollapsed() && event.isFromSource(InputDevice.SOURCE_MOUSE)) {
+476,481c473
+<         if (isQuicklyUnlockMachine()) {
+< 	        if(mExpandedFraction>0f)
+<                 fling(vel, expand, isFalseTouch(x, y));
+< 	    }else
+< 	        fling(vel, expand, isFalseTouch(x, y));
+< 
+---
+>             fling(vel, expand, isFalseTouch(x, y));
+891,901d882
+< 
+<         if (isQuicklyUnlockMachine()) {
+<             KeyguardManager mKeyguardManager = (KeyguardManager) getContext().getSystemService(Context.KEYGUARD_SERVICE);
+<             boolean flag = mKeyguardManager.inKeyguardRestrictedInputMode();
+<             if(flag){
+<                 if(mExpandedHeight <= fhWithoutOverExpansion/1.5){
+<                     mExpandedHeight = 0;
+<                 }
+<             }
+<         }
+< 
+906,916d886
+<     }
+< 
+<     private boolean isQuicklyUnlockMachine() {
+<         String platformName = SystemProperties.get("ro.board.platform");
+<         if ("rk312x".equals(platformName)
+<             || "rk3126c".equals(platformName)
+<             || "rk3326".equals(platformName)
+<             || "rk3399".equals(platformName)) {
+<             return true;
+<         }
+<         return false;
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+53c53
+<             blackListStr = "rotate";
+---
+>             blackListStr = "rotate,headset";
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/policy/Clock.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/policy/Clock.java
+82c82
+<     private final int mAmPmStyle ;
+---
+>     private final int mAmPmStyle;
+102c102
+<             mAmPmStyle = a.getInt(R.styleable.Clock_amPmStyle, AM_PM_STYLE_NORMAL);
+---
+>             mAmPmStyle = a.getInt(R.styleable.Clock_amPmStyle, AM_PM_STYLE_GONE);
+diff -r ./packages/SystemUI/src/com/android/systemui/statusbar/policy/UserSwitcherController.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/policy/UserSwitcherController.java
+251c251
+<                 boolean canCreateGuest = (currentUserCanCreateUsers && anyoneCanCreateUsers)
+---
+>                 boolean canCreateGuest = (currentUserCanCreateUsers || anyoneCanCreateUsers)
+253c253
+<                 boolean canCreateUser = (currentUserCanCreateUsers && anyoneCanCreateUsers)
+---
+>                 boolean canCreateUser = (currentUserCanCreateUsers || anyoneCanCreateUsers)
+diff -r ./packages/SystemUI/src/com/android/systemui/usb/StorageNotification.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/usb/StorageNotification.java
+49c49
+< import android.os.SystemProperties;
+---
+> 
+749,750c749
+<         return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+<                ||"box".equals(SystemProperties.get("ro.target.product",  "unknown"));
+---
+>         return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+diff -r ./packages/SystemUI/src/com/android/systemui/util/NotificationChannels.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/util/NotificationChannels.java
+29c29
+< import android.os.SystemProperties;
+---
+> 
+93,94c93
+<         return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+<                ||"box".equals(SystemProperties.get("ro.target.product",  "unknown"));
+---
+>         return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+diff -r ./packages/SystemUI/src/com/android/systemui/volume/VolumeDialogControllerImpl.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/SystemUI/src/com/android/systemui/volume/VolumeDialogControllerImpl.java
+63d62
+< import android.os.SystemProperties;
+344,357c343,347
+<         /*
+<          * add by hh@rock-chip.com
+<          * there is no mStatusBar in box,but we need to show ui when adjust volume,
+<          * so we return true if flags = AudioManager.FLAG_SHOW_UI
+<         */
+<         if(SystemProperties.get("ro.target.product","box").equals("box")){
+<             return ((flags & AudioManager.FLAG_SHOW_UI) != 0);
+<         } else {
+<             return mStatusBar != null
+<                     && mStatusBar.getWakefulnessState() != WakefulnessLifecycle.WAKEFULNESS_ASLEEP
+<                     && mStatusBar.getWakefulnessState() != WakefulnessLifecycle.WAKEFULNESS_GOING_TO_SLEEP
+<                     && mStatusBar.isDeviceInteractive()
+<                     && (flags & AudioManager.FLAG_SHOW_UI) != 0;
+<         }
+---
+>         return mStatusBar != null
+>                 && mStatusBar.getWakefulnessState() != WakefulnessLifecycle.WAKEFULNESS_ASLEEP
+>                 && mStatusBar.getWakefulnessState() != WakefulnessLifecycle.WAKEFULNESS_GOING_TO_SLEEP
+>                 && mStatusBar.isDeviceInteractive()
+>                 && (flags & AudioManager.FLAG_SHOW_UI) != 0;
+diff -r ./packages/WallpaperCropper/src/com/android/wallpapercropper/WallpaperCropActivity.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/packages/WallpaperCropper/src/com/android/wallpapercropper/WallpaperCropActivity.java
+56d55
+< import java.lang.SecurityException;
+548,550c547
+<                 } catch (SecurityException e){
+< 					Log.d(LOGTAG,"****catch SecurityException*****");
+< 				}
+---
+>                 }
+diff -r ./services/core/java/com/android/server/AlarmManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/AlarmManagerService.java
+91,103d90
+< import android.os.FileUtils;
+< import android.util.Xml;
+< import com.android.internal.util.FastXmlSerializer;
+< import java.io.File;
+< import java.io.FileInputStream;
+< import java.io.FileOutputStream;
+< import java.io.IOException;
+< import java.io.BufferedOutputStream;
+< import java.util.List;
+< import org.xmlpull.v1.XmlPullParser;
+< import org.xmlpull.v1.XmlPullParserException;
+< import org.xmlpull.v1.XmlSerializer;
+< 
+174,178d160
+<     //for alarm filter
+<     private File rootDir;
+<     private File alarmFilter;
+<     private final List<String> packageList = new ArrayList<String>();
+< 
+1043,1048c1025
+< 
+<         //create a xml file to list the packages that will be filterd
+<         rootDir = Environment.getRootDirectory();
+<         alarmFilter = new File(rootDir, "etc/alarm_filter.xml");
+<         resolve(alarmFilter);
+< 
+---
+>         
+1077,1111d1053
+<     private void resolve(File file) {
+<         if (!file.exists()) {
+<             Slog.d(TAG, " Failed while trying resolve alarm filter file, not exists");
+<             return;
+<         }
+< 
+<         try {
+<             FileInputStream stream = new FileInputStream(file);
+<             XmlPullParser parser = Xml.newPullParser();
+<             parser.setInput(stream, null);
+< 
+<             int type;
+<             do {
+<                 type = parser.next();
+<                 if (type == XmlPullParser.START_TAG) {
+<                     String tag = parser.getName();
+<                     if ("app".equals(tag)) {
+<                         String pkgName = parser.getAttributeValue(null, "package");
+<                         packageList.add(pkgName);
+<                     }
+<                 }
+<             } while(type != XmlPullParser.END_DOCUMENT);
+<         } catch (NullPointerException e) {
+<             Slog.w(TAG, "Warning, failed parsing alarm_filter.xml: " + e);
+<         } catch (NumberFormatException e) {
+<             Slog.w(TAG, "Warning, failed parsing alarm_filter.xml: " + e);
+<         } catch (XmlPullParserException e) {
+<             Slog.w(TAG, "Warning, failed parsing alarm_filter.xml: " + e);
+<         } catch (IOException e) {
+<             Slog.w(TAG, "Warning, failed parsing alarm_filter.xml: " + e);
+<         } catch (IndexOutOfBoundsException e) {
+<             Slog.w(TAG, "Warning, failed parsing alarm_filter.xml: " + e);
+<         }
+<     }
+< 
+1180,1193d1121
+<         int alarmType = type;
+<         if (operation != null) {
+<             String pkgName = operation.getTargetPackage();
+<             if (packageList != null) {
+<                 if (packageList.contains(pkgName)) {
+<                     if (alarmType == RTC_WAKEUP) {
+<                         alarmType = RTC;
+<                     } else if (alarmType == ELAPSED_REALTIME_WAKEUP) {
+<                         alarmType = ELAPSED_REALTIME;
+<                     }
+<                 }
+<             }
+<         }
+< 
+1241d1168
+<             type = alarmType;
+diff -r ./services/core/java/com/android/server/am/ActivityManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+188a189
+> 
+413d413
+< import com.android.server.power.DevicePerformanceTunner;
+1605,1607d1604
+<     boolean mUsePerformanceTunner = false;
+<     DevicePerformanceTunner mDevicePerformanceTunner;
+< 
+4163,4182d4159
+<     public int getFrontActivityPerformanceModeLocked(boolean systemAppLimited) {
+<         int mode = PowerManager.PERFORMANCE_MODE_NORMAL;
+<         final ActivityStack mainStack = mStackSupervisor.getFocusedStack();
+<         ActivityRecord r = mainStack.topRunningActivityLocked();
+<         if (r != null) {
+<             try {
+<                 Log.e(TAG,"getPackageFerformanceMode--"+r.realActivity.toString()+"----"+r.packageName);
+<                 mode = AppGlobals.getPackageManager().getPackagePerformanceMode(
+<                         r.realActivity.toString());
+<             } catch (RemoteException e) {
+<             }
+<         }
+<         return mode;
+<     }
+< 
+<     public void forcePerformanceMode(int mode) {
+<         final ActivityStack mainStack = mStackSupervisor.getFocusedStack();
+<         mainStack.forcePerformanceMode(mode);
+<     }
+< 
+5325c5302
+<             if (!restarting && hasVisibleActivities && !mShuttingDown
+---
+>             if (!restarting && hasVisibleActivities
+14199,14205d14175
+< 
+<             String value = SystemProperties.get("ro.hardware", "rk30board");
+<             if (value.equals("rk30board") || value.equals("rk2928board") || value.equals("rk29board") || value.equals("sofiaboard")) {
+<                 Slog.d(TAG, "OK, system ready!");
+<                 mUsePerformanceTunner = true;
+<                 mDevicePerformanceTunner = DevicePerformanceTunner.getInstance(mContext);
+<             }
+14330,14331c14300
+<             if (!Build.isBuildConsistent() 
+<                     && ("orange".equals(SystemProperties.get("ro.boot.verifiedbootstate", "red")))) {
+---
+>             if (!Build.isBuildConsistent()) {
+diff -r ./services/core/java/com/android/server/am/ActivityStack.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/am/ActivityStack.java
+2385,2386d2384
+<         adjustPackagePerformanceMode();
+< 
+5380,5393d5377
+<     }
+< 
+<     private void adjustPackagePerformanceMode() {
+<         if (mService.mUsePerformanceTunner) {
+<             int mode = mService.getFrontActivityPerformanceModeLocked(false);
+<             mService.mDevicePerformanceTunner.setPerformanceMode(mode);
+<         }
+< 
+<     }
+< 
+<     public void forcePerformanceMode(int mode) {
+<         if (mService.mUsePerformanceTunner) {
+<             mService.mDevicePerformanceTunner.setPerformanceMode(mode);
+<         }
+diff -r ./services/core/java/com/android/server/am/ActivityStackSupervisor.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/am/ActivityStackSupervisor.java
+19,20d18
+< import static android.Manifest.permission.INTERNAL_SYSTEM_WINDOW;
+< import static android.Manifest.permission.MANAGE_ACTIVITY_STACKS;
+21a20
+> import static android.Manifest.permission.INTERNAL_SYSTEM_WINDOW;
+diff -r ./services/core/java/com/android/server/am/BroadcastQueue.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java
+1278,1281d1277
+<                         String rk_recovery = r.intent.getStringExtra(Intent.EXTRA_REASON);
+<                         if("MasterClearConfirm".equals(rk_recovery))
+<                         skip = false;
+<                         else
+diff -r ./services/core/java/com/android/server/audio/AudioService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/audio/AudioService.java
+557d556
+< 
+697,699c696
+<         if(SystemProperties.get("ro.target.product","box").equals("box")){
+<             mFixedVolumeDevices = 0;
+<         }
+---
+> 
+4042,4043d4038
+<             } else if ((device & AudioSystem.DEVICE_OUT_AUX_DIGITAL) != 0) {
+<                 device = AudioSystem.DEVICE_OUT_AUX_DIGITAL;
+4402,4408d4396
+<                 if(SystemProperties.get("ro.target.product","box").equals("box")){
+<                     if(mStreamType == AudioSystem.STREAM_MUSIC){
+<                        for (int i = 0;i<mIndexMap.size();i++){
+<                           mIndexMap.put(mIndexMap.keyAt(i), index);
+<                        }
+<                     }
+<                 }
+5624,5628c5612
+<                     if(SystemProperties.get("ro.target.product","box").equals("box")){
+<                         mFixedVolumeDevices = 0;
+<                     } else {
+<                         mFixedVolumeDevices |= AudioSystem.DEVICE_OUT_HDMI;
+<                     }
+---
+>                     mFixedVolumeDevices |= AudioSystem.DEVICE_OUT_HDMI;
+diff -r ./services/core/java/com/android/server/BluetoothManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/BluetoothManagerService.java
+720c720
+<      * Call IBluetooth.onLeServiceUp() to continue if Bluetooth should be on.
+---
+>      * Action taken when GattService is turned on
+722,725c722,723
+<     private void continueFromBleOnState() {
+<         if (DBG) {
+<             Slog.d(TAG, "continueFromBleOnState()");
+<         }
+---
+>     private void onBluetoothGattServiceUp() {
+>         if (DBG) Slog.d(TAG,"BluetoothGatt Service is Up");
+729c727,733
+<                 Slog.e(TAG, "onBluetoothServiceUp: mBluetooth is null!");
+---
+>                 if (DBG) Slog.w(TAG, "onBluetoothServiceUp: mBluetooth is null!");
+>                 return;
+>             }
+>             int st = mBluetooth.getState();
+>             if (st != BluetoothAdapter.STATE_BLE_ON) {
+>                 if (DBG) Slog.v(TAG, "onBluetoothServiceUp: state isn't BLE_ON: " +
+>                         BluetoothAdapter.nameForState(st));
+1520c1524
+<                             continueFromBleOnState();
+---
+>                             onBluetoothGattServiceUp();
+1923,1925c1927,1930
+<                 if (mBluetoothGatt != null || !mContext.getPackageManager()
+<                             .hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+<                     continueFromBleOnState();
+---
+>                 if (DBG) Slog.d(TAG, "Bluetooth is in LE only mode");
+>                 if (mBluetoothGatt != null) {
+>                     if (DBG) Slog.d(TAG, "Calling BluetoothGattServiceUp");
+>                     onBluetoothGattServiceUp();
+1927,1928c1932,1936
+<                     if (DBG) {
+<                         Slog.d(TAG, "Binding Bluetooth GATT service");
+---
+>                     if (DBG) Slog.d(TAG, "Binding Bluetooth GATT service");
+>                     if (mContext.getPackageManager().hasSystemFeature(
+>                                                     PackageManager.FEATURE_BLUETOOTH_LE)) {
+>                         Intent i = new Intent(IBluetoothGatt.class.getName());
+>                         doBind(i, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT, UserHandle.CURRENT);
+1930,1932d1937
+<                     Intent i = new Intent(IBluetoothGatt.class.getName());
+<                     doBind(i, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT,
+<                             UserHandle.CURRENT);
+diff -r ./services/core/java/com/android/server/connectivity/NetworkMonitor.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java
+309c309
+<                 Settings.Global.CAPTIVE_PORTAL_MODE, Settings.Global.CAPTIVE_PORTAL_MODE_IGNORE)
+---
+>                 Settings.Global.CAPTIVE_PORTAL_MODE, Settings.Global.CAPTIVE_PORTAL_MODE_PROMPT)
+diff -r ./services/core/java/com/android/server/ConnectivityService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/ConnectivityService.java
+198,204d197
+<             
+<     // if true:
+<     //    wifi and ethernet can coexist, if wifi and ethernet connect together, prefered to use ethernet
+<     // if false:
+<     //    wifi and ethernet can't coexist, if wifi and ethernet connect together, will tear down wifi
+<     //    TODO: still have bug in this case to fix (like can't reconnect wifi when ethernet disconnect)
+<     private static final boolean ENABLE_NETWORK_COEXIST = true;
+4836,4841c4829
+<         
+<         if (ENABLE_NETWORK_COEXIST) {
+<              log("Skip teardownUnneededNetwork: " + nai.name());
+<         } else {
+<              nai.asyncChannel.disconnect();
+<         }
+---
+>         nai.asyncChannel.disconnect();
+diff -r ./services/core/java/com/android/server/hdmi/HdmiCecController.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/hdmi/HdmiCecController.java
+605,611c605
+<                     } else {
+<                         /* If send msg failed, we need delay before retransmission */
+<                         try {
+<                            Thread.sleep(300);
+<                         } catch (InterruptedException ignore) {
+<                         }
+< 		    }
+---
+>                     }
+diff -r ./services/core/java/com/android/server/hdmi/HdmiCecLocalDevicePlayback.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/hdmi/HdmiCecLocalDevicePlayback.java
+79d78
+< 
+84,88d82
+<         /* add one touch play after hdmi plug in and cec initialization */
+<         mService.sendCecCommand(HdmiCecMessageBuilder.buildActiveSource(
+<                 mAddress, mService.getPhysicalAddress()));
+<         mService.sendCecCommand(HdmiCecMessageBuilder.buildTextViewOn(
+<                 mAddress, Constants.ADDR_TV));
+179d172
+<                 /* cec cts specification requires that standby message must be broadcast */
+181c174
+<                         HdmiCecMessageBuilder.buildStandby(mAddress, Constants.ADDR_BROADCAST));
+---
+>                         HdmiCecMessageBuilder.buildStandby(mAddress, Constants.ADDR_TV));
+213c206
+<             if (SystemProperties.getBoolean(Constants.PROPERTY_KEEP_AWAKE, false)) {
+---
+>             if (SystemProperties.getBoolean(Constants.PROPERTY_KEEP_AWAKE, true)) {
+334,339d326
+< 
+<             /* android recognizes all chinese as zho */
+<             if (iso3Language.equals("chi")) {
+<                 Slog.i(TAG, "android set all chinese zho");
+<                 iso3Language = "zho";
+<             }
+380,381c367,368
+<         /* cec cts specification requires that standby message must be broadcast */
+<         int targetAddress = Constants.ADDR_BROADCAST;
+---
+>         // Playback device can send <Standby> to TV only. Ignore the parameter.
+>         int targetAddress = Constants.ADDR_TV;
+diff -r ./services/core/java/com/android/server/hdmi/HdmiCecLocalDeviceTv.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/hdmi/HdmiCecLocalDeviceTv.java
+1881,1882c1881
+<         /* cec cts specification requires that standby message must be broadcast */
+<         int targetAddress = Constants.ADDR_BROADCAST;
+---
+>         int targetAddress = targetDevice.getLogicalAddress();
+diff -r ./services/core/java/com/android/server/hdmi/HdmiControlService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/hdmi/HdmiControlService.java
+2293,2294c2293
+<         /* fix original code err,enable cec function */
+<         mCecController.setOption(OptionKey.ENABLE_CEC, true);
+---
+>         mCecController.setOption(OptionKey.SYSTEM_CEC_CONTROL, true);
+2295a2295
+> 
+diff -r ./services/core/java/com/android/server/input/InputManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/input/InputManagerService.java
+245,246d244
+<     private static native void nativedispatchMouse(float x, float y, int w, int h, long ptr);
+<     private static native void nativedispatchMouseByCd(float x, float y, long ptr);
+448,455d445
+<     }
+< 
+<     public void dispatchMouse(float x, float y, int w, int h) {
+<         nativedispatchMouse(x, y, w, h, mPtr);
+<     }
+< 
+<     public void dispatchMousebyCd(float x, float y) {
+<         nativedispatchMouseByCd(x, y, mPtr);
+diff -r ./services/core/java/com/android/server/net/IpConfigStore.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/net/IpConfigStore.java
+61,62d60
+<     protected static final String PPPOE_ACCOUNT_KEY = "pppoeAccount";
+<     protected static final String PPPOE_PASSWORD_KEY = "pppoePassword";
+111,119d108
+<                 case PPPOE:
+<                     out.writeUTF(IP_ASSIGNMENT_KEY);
+<                     out.writeUTF(config.ipAssignment.toString());
+<                     out.writeUTF(PPPOE_ACCOUNT_KEY);
+<                     out.writeUTF(config.pppoeAccount);
+<                     out.writeUTF(PPPOE_PASSWORD_KEY);
+<                     out.writeUTF(config.pppoePassword);
+<                     written = true;
+<                     break;
+225,226d213
+<                 String pppoeAccount = null;
+<                 String pppoePassword = null;
+286,289d272
+<                         } else if (key.equals(PPPOE_ACCOUNT_KEY)) {
+<                             pppoeAccount = in.readUTF();
+<                         } else if (key.equals(PPPOE_PASSWORD_KEY)) {
+<                             pppoePassword = in.readUTF();
+311,315d293
+<                             break;
+<                         case PPPOE:
+<                             config.ipAssignment = ipAssignment;
+<                             config.pppoeAccount = pppoeAccount;
+<                             config.pppoePassword = pppoePassword;
+diff -r ./services/core/java/com/android/server/notification/NotificationManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/notification/NotificationManagerService.java
+1319,1320c1319
+<                 || mPackageManagerClient.hasSystemFeature(FEATURE_TELEVISION)
+<                 || "box".equals(SystemProperties.get("ro.target.product",  "unknown"));
+---
+>                 || mPackageManagerClient.hasSystemFeature(FEATURE_TELEVISION);
+3503,3504d3501
+<            if(!"atv".equals(SystemProperties.get("ro.target.product",  "unknown"))
+<               && !"box".equals(SystemProperties.get("ro.target.product",  "unknown"))){
+3508d3504
+<             }
+diff -r ./services/core/java/com/android/server/pm/DefaultPermissionGrantPolicy.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/pm/DefaultPermissionGrantPolicy.java
+595c595
+<                         MICROPHONE_PERMISSIONS, false, userId);
+---
+>                         MICROPHONE_PERMISSIONS, true, userId);
+597c597
+<                         LOCATION_PERMISSIONS, false, userId);
+---
+>                         LOCATION_PERMISSIONS, true, userId);
+740,747d739
+<             }
+< 
+<             // GMS
+<             PackageParser.Package gmsPackage = getSystemPackageLPr("com.google.android.gms");
+<             if (gmsPackage != null
+<                     && doesPackageSupportRuntimePermissions(gmsPackage)) {
+<                 grantRuntimePermissionsLPw(gmsPackage,
+<                         LOCATION_PERMISSIONS, true, userId);
+diff -r ./services/core/java/com/android/server/pm/PackageDexOptimizer.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/pm/PackageDexOptimizer.java
+26d25
+< import android.os.SystemProperties;
+246,263d244
+< 
+< 	if(pkg.applicationInfo.packageName.contains("com.android.compatibility.common.deviceinfo")
+< 		||pkg.applicationInfo.packageName.contains("com.google.android.media.gts")
+< 		||pkg.applicationInfo.packageName.contains("android.media.cts")
+< 		||pkg.applicationInfo.packageName.contains("android.mediastress.cts")
+< 		||pkg.applicationInfo.packageName.contains("android.security.cts")){//maybe  endsWith(".cts") ?
+<             SystemProperties.set("cts_gts.status","true");
+<         }
+<         if(pkg.applicationInfo.packageName.contains("com.google.android.exoplayer.gts")){
+<             SystemProperties.set("cts_gts.exo.gts","true");
+<         }else if("true".equals(SystemProperties.get("cts_gts.exo.gts"))){
+<             SystemProperties.set("cts_gts.exo.gts","");
+<         }
+<         if(pkg.applicationInfo.packageName.contains("com.google.android.media.gts")){
+<             SystemProperties.set("cts_gts.media.gts","true");
+<         }else if("true".equals(SystemProperties.get("cts_gts.media.gts"))){
+<             SystemProperties.set("cts_gts.media.gts","");
+<         }
+diff -r ./services/core/java/com/android/server/pm/PackageManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java
+61d60
+< import static android.content.pm.PackageManager.INSTALL_FAILED_UNINSTALLED_PREBUNDLE;
+88,89d86
+< import static android.content.pm.PackageParser.isDeleteApk;
+< import static android.content.pm.PackageParser.readDeleteFile;
+125d121
+< import android.app.PackageInstallObserver;
+225d220
+< import android.os.PowerManager;
+312d306
+< import java.io.BufferedWriter;
+321d314
+< import java.io.FileWriter;
+548,554d540
+<     private static final String OEM_BUNDLED_PERSIST_DIR = "/oem/bundled_persist-app";
+< 
+<     private static final String OEM_BUNDLED_UNINSTALL_GONE_DIR =
+<             "/oem/bundled_uninstall_gone-app";
+< 
+<     private static final String DELETE_APK_FILE = "/cache/deleteApkFile.dat";
+< 
+2671,2686d2656
+<             // Collect bundled app packages which can be uninstalled
+<             scanDirTracedLI(Environment.getPrebundledUninstallGoneDirectory(),
+<                     mDefParseFlags | PackageParser.PARSE_IS_PREBUNDLED_DIR,
+<                     scanFlags,0);
+< 
+<             scanDirTracedLI(Environment.getPrebundledUninstallBackDirectory(),
+<                     mDefParseFlags | PackageParser.PARSE_IS_PREBUNDLED_DIR,
+<                     scanFlags,0);
+< 
+<             // Collect bundled app packages which can not be uninstalled
+<             File vendorBundledPersistDir = new File(OEM_BUNDLED_PERSIST_DIR);
+<             scanDirTracedLI(vendorBundledPersistDir,mDefParseFlags |
+<                     PackageParser.PARSE_IS_SYSTEM |
+<                     PackageParser.PARSE_IS_PREINSTALL |
+<                     PackageParser.PARSE_IS_SYSTEM_DIR,scanFlags,0);
+< 
+9153d9122
+<         ArrayList<String> list = new ArrayList<String>();
+9163,9177d9131
+< 
+<         boolean isPrebundled = (parseFlags & PackageParser.PARSE_IS_PREBUNDLED_DIR) != 0;
+<         if (isPrebundled) {
+<             synchronized (mPackages) {
+<                 mSettings.readPrebundledPackagesLPr();
+<             }
+<         }
+< 
+<         if (dir.getAbsolutePath().contains(OEM_BUNDLED_UNINSTALL_GONE_DIR)) {
+<             if (!readDeleteFile(list)) {
+<                 Log.e(TAG,"read data failed");
+<                 return;
+<             }
+<         }
+< 
+9191,9199d9144
+<             if (file.getAbsolutePath().contains(OEM_BUNDLED_UNINSTALL_GONE_DIR)) {
+<                 if (list != null && list.size() > 0) {
+<                     final boolean isdeleteApk = isDeleteApk(file,parseFlags,list);
+<                     if (isdeleteApk) {
+<                         // Ignore deleted bundled apps
+<                         continue;
+<                     }
+<                 }
+<             }
+9219,9229d9163
+<                         if (isPrebundled) {
+<                             final PackageParser.Package pkg;
+<                             try {
+<                                 pkg = new PackageParser().parsePackage(parseResult.scanFile, parseFlags);
+<                             } catch (PackageParserException e) {
+<                                 throw PackageManagerException.from(e);
+<                             }
+<                             synchronized (mPackages) {
+<                                 mSettings.markPrebundledPackageInstalledLPr(pkg.packageName);
+<                             }
+<                         }
+9253,9257d9186
+<         if (isPrebundled) {
+<             synchronized (mPackages) {
+<                 mSettings.writePrebundledPackagesLPr();
+<             }
+<         }
+9445,9470d9373
+< 
+<         if ((policyFlags & PackageParser.PARSE_IS_PREBUNDLED_DIR) != 0) {
+<             synchronized (mPackages) {
+<                 PackageSetting existingSettings = mSettings.getPackageLPr(pkg.packageName);
+<                 if (mSettings.wasPrebundledPackageInstalledLPr(pkg.packageName) &&
+<                         existingSettings == null) {
+<                     // The prebundled app was installed at some point in time, but now it is
+<                     // gone.  Assume that the user uninstalled it intentionally: do not reinstall.
+<                     throw new PackageManagerException(INSTALL_FAILED_UNINSTALLED_PREBUNDLE,
+<                             "skip reinstall for " + pkg.packageName);
+<                 } else if (existingSettings != null
+<                         && existingSettings.versionCode >= pkg.mVersionCode
+<                         && !existingSettings.codePathString.contains(
+<                         Environment.getPrebundledUninstallBackDirectory().getPath())
+<                         && !existingSettings.codePathString.contains(
+<                         Environment.getPrebundledUninstallGoneDirectory().getPath())) {
+<                     // This app is installed in a location that is not the prebundled location
+<                     // and has a higher (or same) version as the prebundled one.  Skip
+<                     // installing the prebundled version.
+<                     Slog.d(TAG, pkg.packageName + " already installed at " +
+<                             existingSettings.codePathString);
+<                     return null; // return null so we still mark package as installed
+<                 }
+<             }
+<         }
+< 
+9634c9537
+<                 derivePackageAbi(pkg, scanFile, cpuAbiOverride, false, mAppLib32InstallDir,policyFlags);
+---
+>                 derivePackageAbi(pkg, scanFile, cpuAbiOverride, false, mAppLib32InstallDir);
+11216,11217c11119
+<             if ((scanFlags & SCAN_FIRST_BOOT_OR_UPGRADE) != 0
+<                 && (policyFlags & PackageParser.PARSE_IS_PREBUNDLED_DIR) == 0) {
+---
+>             if ((scanFlags & SCAN_FIRST_BOOT_OR_UPGRADE) != 0) {
+11221c11123
+<                         mAppLib32InstallDir, policyFlags);
+---
+>                         mAppLib32InstallDir);
+11230c11132
+<                     setNativeLibraryPaths(pkg, mAppLib32InstallDir, policyFlags);
+---
+>                     setNativeLibraryPaths(pkg, mAppLib32InstallDir);
+11239c11141
+<                 setNativeLibraryPaths(pkg, mAppLib32InstallDir, policyFlags);
+---
+>                 setNativeLibraryPaths(pkg, mAppLib32InstallDir);
+11260c11162
+<             setNativeLibraryPaths(pkg, mAppLib32InstallDir,policyFlags);
+---
+>             setNativeLibraryPaths(pkg, mAppLib32InstallDir);
+12222c12124
+<                                  File appLib32InstallDir, int parseFlags)
+---
+>                                  File appLib32InstallDir)
+12226c12128
+<         setNativeLibraryPaths(pkg, appLib32InstallDir, parseFlags);
+---
+>         setNativeLibraryPaths(pkg, appLib32InstallDir);
+12376c12278
+<         setNativeLibraryPaths(pkg, appLib32InstallDir, parseFlags);
+---
+>         setNativeLibraryPaths(pkg, appLib32InstallDir);
+12561c12463
+<     private static void setNativeLibraryPaths(PackageParser.Package pkg, File appLib32InstallDir, int parseFlags) {
+---
+>     private static void setNativeLibraryPaths(PackageParser.Package pkg, File appLib32InstallDir) {
+12567c12469
+<         final  File staticAppLib32InstallDir = appLib32InstallDir;
+---
+> 
+12608,12619c12510
+<             if ((parseFlags & PackageParser.PARSE_IS_PREBUNDLED_DIR) != 0
+<                 || (parseFlags & PackageParser.PARSE_IS_PREINSTALL) != 0) {
+<                 // mAppLib32InstallDir is the directory /data/app-lib which is used to store native
+<                 // libs for apps from the system paritition.  It isn't really specific to 32bit info
+<                 // any way except for the variable name, the system will use the primary/secondary
+<                 // ABI computed below.
+<                 info.primaryCpuAbi = "armeabi-v7a";
+<                 info.nativeLibraryRootDir = new File(codeFile, LIB_DIR_NAME).getAbsolutePath();
+<                 Log.d(TAG, info.primaryCpuAbi + " prebundled install " + info.nativeLibraryRootDir);
+<             } else {
+<                 info.nativeLibraryRootDir = new File(codeFile, LIB_DIR_NAME).getAbsolutePath();
+<             }
+---
+>             info.nativeLibraryRootDir = new File(codeFile, LIB_DIR_NAME).getAbsolutePath();
+18977c18868
+<                         extractNativeLibs, mAppLib32InstallDir, parseFlags);
+---
+>                         extractNativeLibs, mAppLib32InstallDir);
+20395,20426d20285
+<             if (ps.pkg.codePath.contains(OEM_BUNDLED_UNINSTALL_GONE_DIR)) {
+<                 File deleteApkFile = new File(DELETE_APK_FILE);
+<                 if(!deleteApkFile.exists()) {
+<                     try {
+<                         deleteApkFile.createNewFile();
+<                     } catch (IOException e) {
+<                         e.printStackTrace();
+<                         Slog.w (TAG,"create file failed: " + DELETE_APK_FILE);
+<                         return false;
+<                     }
+<                 }
+<                 BufferedWriter fileWriter  = null;
+<                 try {
+<                     fileWriter = new BufferedWriter(new FileWriter(deleteApkFile,true));
+<                     fileWriter.append(ps.pkg.packageName);
+<                     fileWriter.newLine();
+<                     fileWriter.flush();
+<                 } catch (IOException e) {
+<                     e.printStackTrace();
+<                     Slog.w(TAG,"write file failed: " + DELETE_APK_FILE);
+<                 } finally {
+<                     if (fileWriter != null) {
+<                         try {
+<                             fileWriter.close();
+<                         } catch (IOException e) {
+<                             e.printStackTrace();
+<                             return false;
+<                         }
+<                         fileWriter = null;
+<                     }
+<                 }
+<             }
+22688,22689d22546
+<         public static final int DUMP_PERF_MODE = 1 << 16;
+< 
+22940,22941d22796
+<             } else if ("perf".equals(cmd)) {
+<                 dumpState.setDump(DumpState.DUMP_PERF_MODE);
+23295,23298d23149
+<             if (dumpState.isDumping(DumpState.DUMP_PERF_MODE) && packageName == null) {
+<                 mSettings.dumpPackagePerformanceMode(pw, dumpState);
+<             }
+< 
+26034,26064d25884
+<     }
+< 
+<     /**
+<      * @hide
+<      */
+<     public int getPackagePerformanceMode(String pkgName) {
+<         for (int i = 0; i < mSettings.mPerformancePackages.size(); i++) {
+<             if (pkgName.toLowerCase().contains(mSettings.mPerformancePackages.get(i).name.toLowerCase())) {
+<                 return mSettings.mPerformancePackages.get(i).mode;
+<             }
+<         }
+<         return PowerManager.PERFORMANCE_MODE_NORMAL;
+<     }
+< 
+<     /**
+<      * @hide
+<      */
+<     public void setPackagePerformanceMode(String pkgName, int mode) {
+<         PackagePerformanceSetting setting = null;
+<         for (int i = 0; i < mSettings.mPerformancePackages.size(); i++) {
+<             if (mSettings.mPerformancePackages.get(i).name.equals(pkgName)) {
+<                 setting = mSettings.mPerformancePackages.get(i);
+<             }
+<         }
+<         if (setting != null) {
+<             setting.setMode(mode);
+<         } else {
+<             setting = new PackagePerformanceSetting(pkgName, mode);
+<             mSettings.mPerformancePackages.add(0, setting);
+<         }
+<         mSettings.writeLPr();
+Seulement dans ./services/core/java/com/android/server/pm: PackagePerformanceSetting.java
+diff -r ./services/core/java/com/android/server/pm/Settings.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/pm/Settings.java
+54d53
+< import android.text.TextUtils;
+113,116d111
+< import java.io.BufferedReader;
+< import java.io.BufferedWriter;
+< import java.io.FileReader;
+< import java.io.FileWriter;
+131d125
+< import java.util.HashSet;
+272,273d265
+<     private final File mPrebundledPackagesFilename;
+< 
+287,288d278
+<     private final HashSet<String> mPrebundledPackages = new HashSet<String>();
+< 
+419,421d408
+<     // Packages that define hardware accelerate mode.
+<     final ArrayList<PackagePerformanceSetting>  mPerformancePackages = new ArrayList<PackagePerformanceSetting>();
+< 
+442d428
+<         Log.d(TAG, "Settings' Object Creat!");
+448d433
+<         File configureDir = Environment.getRootDirectory();
+458d442
+<         mPrebundledPackagesFilename = new File(mSystemDir, "prebundled-packages.list");
+466,514d449
+< 
+<         File packagePerformanceInfoFile = new File("/oem/etc/package_performance.xml");
+<         // Read packages defined in configure file
+<         if (!mSettingsFilename.exists()) {
+<             if (packagePerformanceInfoFile.exists()) {
+<                 FileInputStream stream=null;
+<                 try {
+<                     stream = new FileInputStream(packagePerformanceInfoFile);
+<                     XmlPullParser parser = Xml.newPullParser();
+<                     parser.setInput(stream, null);
+<                     int type;
+<                     do {
+<                         type = parser.next();
+<                         if (type == XmlPullParser.START_TAG) {
+<                             String tag = parser.getName();
+<                             if ("app".equals(tag)) {
+<                                 String pkgName = parser.getAttributeValue(null, "package");
+<                                 String pkgMode = parser.getAttributeValue(null, "mode");
+<                                 PackagePerformanceSetting setting = new PackagePerformanceSetting(pkgName, Integer.valueOf(pkgMode));
+<                                 mPerformancePackages.add(setting);
+<                                 Log.e(TAG,"Settings---getXmlfile:"+setting.toString());
+<                             }
+<                         }
+<                     } while (type != XmlPullParser.END_DOCUMENT);
+<                 } catch (NullPointerException e) {
+<                     Slog.w(TAG, "failed parsing " + packagePerformanceInfoFile, e);
+<                 } catch (NumberFormatException e) {
+<                     Slog.w(TAG, "failed parsing " + packagePerformanceInfoFile, e);
+<                 } catch (XmlPullParserException e) {
+<                     Slog.w(TAG, "failed parsing " + packagePerformanceInfoFile, e);
+<                 } catch (IOException e) {
+<                     Slog.w(TAG, "failed parsing " + packagePerformanceInfoFile, e);
+<                 } catch (IndexOutOfBoundsException e) {
+<                     Slog.w(TAG, "failed parsing " + packagePerformanceInfoFile, e);
+<                 }finally {
+<                     if(stream!=null){
+<                         try{
+<                             stream.close();
+<                         }catch(Exception e){
+<                             Slog.e(TAG,"close exception"+e);
+<                         }
+<                     }
+<                 }
+<             }else {
+<                 Log.d(TAG, "packagePerformanceInfoFile not exist!Closed performance mode!"+packagePerformanceInfoFile.toString());
+<             }
+<         }else {
+<             Log.d(TAG, "mSettingsFilename not exist!"+packagePerformanceInfoFile.toString());
+<         }
+2621,2631d2555
+<             if (mPerformancePackages.size() > 0) {
+<                 serializer.startTag(null, "performance-package");
+<                 for (int j = 0; j < mPerformancePackages.size(); j++) {
+<                     serializer.startTag(null, "app");
+<                     serializer.attribute(null, "package", mPerformancePackages.get(j).name);
+<                     serializer.attribute(null, "mode", String.valueOf(mPerformancePackages.get(j).mode));
+<                     serializer.endTag(null, "app");
+<                 }
+<                 serializer.endTag(null, "performance-package");
+<             }
+< 
+2708,2757d2631
+<     void writePrebundledPackagesLPr() {
+<         PrintWriter writer = null;
+<         try {
+<             writer = new PrintWriter(
+<                     new BufferedWriter(new FileWriter(mPrebundledPackagesFilename, false)));
+<             for (String packageName : mPrebundledPackages) {
+<                 writer.println(packageName);
+<             }
+<         } catch (IOException e) {
+<             Slog.e(PackageManagerService.TAG, "Unable to write prebundled package list", e);
+<         } finally {
+<             if (writer != null) {
+<                 writer.close();
+<             }
+<         }
+<     }
+< 
+<    void readPrebundledPackagesLPr() {
+<         if (!mPrebundledPackagesFilename.exists()) {
+<             return;
+<         }
+<         BufferedReader reader = null;
+<         try {
+<             reader = new BufferedReader(new FileReader(mPrebundledPackagesFilename));
+<             String packageName = reader.readLine();
+<             while (packageName != null) {
+<                 if (!TextUtils.isEmpty(packageName)) {
+<                     mPrebundledPackages.add(packageName);
+<                 }
+<                 packageName = reader.readLine();
+<             }
+<         } catch (IOException e) {
+<             Slog.e(PackageManagerService.TAG, "Unable to read prebundled package list", e);
+<         } finally {
+<             if (reader != null) {
+<                 try {
+<                     reader.close();
+<                 } catch (IOException e) {}
+<             }
+<         }
+<     }
+< 
+<     void markPrebundledPackageInstalledLPr(String packageName) {
+<         mPrebundledPackages.add(packageName);
+<     }
+< 
+<     boolean wasPrebundledPackageInstalledLPr(String packageName) {
+<         return mPrebundledPackages.contains(packageName);
+<     }
+< 
+3264,3265d3137
+<                 } else if (tagName.equals("performance-package")) {
+<                     readPerformancePackageLP(parser);
+4401,4425d4272
+<     private void readPerformancePackageLP(XmlPullParser parser) throws XmlPullParserException,
+<             IOException {
+<         int outerDepth = parser.getDepth();
+<         int type;
+<         while ((type = parser.next()) != XmlPullParser.END_DOCUMENT
+<                 && (type != XmlPullParser.END_TAG || parser.getDepth() > outerDepth)) {
+<             if (type == XmlPullParser.END_TAG || type == XmlPullParser.TEXT) {
+<                 continue;
+<             }
+< 
+<             String tagName = parser.getName();
+<             if (tagName.equals("app")) {
+<                 String pkgName = parser.getAttributeValue(null, "package");
+<                 String pkgMode = parser.getAttributeValue(null, "mode");
+<                 PackagePerformanceSetting setting = new PackagePerformanceSetting(pkgName,
+<                         Integer.valueOf(pkgMode));
+< 
+<                 if (pkgName != null) {
+<                     mPerformancePackages.add(setting);
+<                 }
+<             }
+<         }
+<     }
+< 
+< 
+5249,5262d5095
+<     }
+< 
+<     void dumpPackagePerformanceMode(PrintWriter pw, DumpState dumpState) {
+<         pw.println(" ");
+<         pw.println("Package performance messages:");
+<         if (!mPerformancePackages.isEmpty()) {
+<             for (PackagePerformanceSetting c : mPerformancePackages) {
+<                 pw.print("      ");
+<                 pw.print(c.name);
+<                 pw.print(" -> ");
+<                 pw.println(c.mode);
+<             }
+<         }
+< 
+diff -r ./services/core/java/com/android/server/policy/GlobalActions.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/policy/GlobalActions.java
+23d22
+< import android.os.SystemProperties;
+65,67c64
+<         boolean isTvProduct = SystemProperties.get("ro.target.product","unknown").equals("atv") ||
+<                            SystemProperties.get("ro.target.product","unknown").equals("box");
+<         if (mStatusBarConnected && !isTvProduct) {
+---
+>         if (mStatusBarConnected) {
+diff -r ./services/core/java/com/android/server/policy/PhoneWindowManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/policy/PhoneWindowManager.java
+268c268
+<     static final boolean DEBUG_INPUT = true;
+---
+>     static final boolean DEBUG_INPUT = false;
+526d525
+<     boolean mDPlugged;
+839,883d837
+<     private int screenWidth;
+<     private int screenHeight;
+<     private String mstate = null;
+<     private float mdeltax, mdeltay;
+<     boolean keydown;
+< 
+<     public Handler mKeyMouseHandler = new Handler() {
+<         public void handleMessage(Message msg) {
+<             switch(msg.what){
+<             case KeyEvent.KEYCODE_TV_KEYMOUSE_LEFT:
+<                 mdeltax = -1.0f;
+<                 mdeltay = 0;
+<                 break;
+<             case KeyEvent.KEYCODE_TV_KEYMOUSE_RIGHT:
+<                 mdeltax = 1.0f;
+<                 mdeltay = 0;
+<                 break;
+<             case KeyEvent.KEYCODE_TV_KEYMOUSE_UP:
+<                 mdeltax = 0;
+<                 mdeltay = -1.0f;
+<                 break;
+<             case KeyEvent.KEYCODE_TV_KEYMOUSE_DOWN:
+<                 mdeltax = 0;
+<                 mdeltay = 1.0f;
+<                 break;
+<             case KeyEvent.KEYCODE_TV_KEYMOUSE_MODE_SWITCH:
+<                 mdeltax = 0;
+<                 mdeltay = 0;
+<                 break;
+<             default:
+<                 break;
+<             }
+< 
+<             try {
+<                 mWindowManager.dispatchMouse(mdeltax,mdeltay,screenWidth,screenHeight);
+<             } catch (Exception e){
+<                 e.printStackTrace();
+<             }
+< 
+<             if (keydown) {
+<                 mKeyMouseHandler.sendEmptyMessageDelayed(msg.what,30);
+<             }
+<         }
+<     };
+< 
+986,992d939
+<     private UEventObserver mDPObserver = new UEventObserver() {
+<         @Override
+<         public void onUEvent(UEventObserver.UEvent event) {
+<             setDPlugged("1".equals(event.get("SWITCH_STATE")));
+<         }
+<     };
+< 
+1037,1042d983
+<         // this method is added for shutdown animation.
+<         public void unRegister() {
+<             ContentResolver resolver = mContext.getContentResolver();
+<             resolver.unregisterContentObserver(this);
+<         }
+< 
+2091,2095d2031
+<         //register for screenshot broadcasts
+<         filter=new IntentFilter();
+<         filter.addAction("android.intent.action.SCREENSHOT");
+<         context.registerReceiver(mScreenshotReceiver, filter);
+< 
+2106,2109d2041
+<         filter = new IntentFilter();
+<         filter.addAction(Intent.ACTION_SHUTDOWN);
+<         context.registerReceiver(mShutdownanimationReceiver, filter);
+< 
+2193d2124
+<         initializeDPState();
+2344d2274
+<         mForceDefaultOrientation |= (0 != SystemProperties.getInt("config.default_display_rotation", 0));
+3418,3433d3347
+<         mstate = SystemProperties.get("sys.KeyMouse.mKeyMouseState");
+<         if (mstate.equals("on") && ((keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_LEFT)
+<                 || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_RIGHT)
+<                 || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_UP)
+<                 || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_DOWN)
+<                 || (keyCode == KeyEvent.KEYCODE_TV_KEYMOUSE_MODE_SWITCH))) {
+<             keydown = down;
+<             mKeyMouseHandler.sendEmptyMessage(keyCode);
+<             //return -1;
+<         }
+< 
+<         if (mstate.equals("on") && ((keyCode == KeyEvent.KEYCODE_ENTER)
+<                 ||(keyCode == KeyEvent.KEYCODE_DPAD_CENTER))) {
+<             return -1;
+<         }
+< 
+5917,5961d5830
+<     void setDPlugged(boolean plugged) {
+<         if (mDPlugged != plugged) {
+<             mDPlugged = plugged;
+<             updateRotation(true, true);
+<             Intent intent = new Intent(ACTION_DP_PLUGGED);
+<             intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
+<             intent.putExtra(EXTRA_DP_PLUGGED_STATE, plugged);
+<             mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+<         }
+<     }
+< 
+<     void initializeDPState() {
+<         boolean plugged = false;
+<         // watch for DP plug messages if the hdmi switch exists
+<         if (new File("/sys/devices/virtual/switch/cdn-dp/state").exists()) {
+<             mHDMIObserver.startObserving("DEVPATH=/devices/virtual/switch/cdn-dp");
+< 
+<             final String filename = "/sys/class/switch/cdn-dp/state";
+<             FileReader reader = null;
+<             try {
+<                 reader = new FileReader(filename);
+<                 char[] buf = new char[15];
+<                 int n = reader.read(buf);
+<                 if (n > 1) {
+<                     plugged = 0 != Integer.parseInt(new String(buf, 0, n-1));
+<                 }
+<             } catch (IOException ex) {
+<                 Slog.w(TAG, "Couldn't read DP state from " + filename + ": " + ex);
+<             } catch (NumberFormatException ex) {
+<                 Slog.w(TAG, "Couldn't read DP state from " + filename + ": " + ex);
+<             } finally {
+<                 if (reader != null) {
+<                     try {
+<                         reader.close();
+<                     } catch (IOException ex) {
+<                     }
+<                 }
+<             }
+<         }
+<         // This dance forces the code in setDPlugged to run.
+<         // Always do this so the sticky intent is stuck (to false) if there is no DP.
+<         mDPlugged = !plugged;
+<         setDPlugged(!mDPlugged);
+<     }
+< 
+6089d5957
+<          boolean isBox = "box".equals(SystemProperties.get("ro.target.product"));
+6092,6094d5959
+<         if(isBox){
+<             isWakeKey = false;
+<         }
+6525,6526c6390
+<         boolean isBox = "box".equals(SystemProperties.get("ro.target.product"));
+<         if (!isBox && (policyFlags & FLAG_WAKE) != 0) {
+---
+>         if ((policyFlags & FLAG_WAKE) != 0) {
+6540c6404
+<         if (!isBox && isTheaterModeEnabled() && (policyFlags & FLAG_WAKE) != 0) {
+---
+>         if (isTheaterModeEnabled() && (policyFlags & FLAG_WAKE) != 0) {
+6689,6698d6552
+<     BroadcastReceiver mScreenshotReceiver = new BroadcastReceiver() {
+< 
+<         @Override
+<         public void onReceive(Context context, Intent intent) {
+<             // TODO Auto-generated method stub
+<             mHandler.post(mScreenshotRunnable);
+<         }
+<     };
+< 
+< 
+6756,6767d6609
+< 
+<     BroadcastReceiver mShutdownanimationReceiver = new BroadcastReceiver() {
+<         @Override
+<         public void onReceive(Context context, Intent intent) {
+<             if (Intent.ACTION_SHUTDOWN.equals(intent.getAction())
+<                     && intent.getIntExtra("PLAY_SHUTDOWN_ANIMATION",0)==1) {
+<                 mSettingsObserver.unRegister();
+<                 mOrientationListener.disable();
+<             }
+<         }
+<     };
+< 
+6957c6799
+<             if ((mKeyguardDelegate != null) && !mHasFeatureLeanback) {
+---
+>             if (mKeyguardDelegate != null) {
+6965c6807
+<                     mHandler.sendEmptyMessage(MSG_KEYGUARD_DRAWN_COMPLETE);
+---
+>                 finishKeyguardDrawn();
+7007,7012d6848
+<         mHandler.postDelayed(new Runnable() {
+<             public void run() {
+<                 updateOrientationListenerLp();
+<             }
+<         }, 100);
+< 
+7020c6856
+<             //updateOrientationListenerLp();
+---
+>             updateOrientationListenerLp();
+7256,7260c7092
+<             int defaultRotation = SystemProperties.getInt("config.default_display_rotation", 0);
+<             if (defaultRotation < Surface.ROTATION_0 || defaultRotation > Surface.ROTATION_270) {
+<                 defaultRotation = Surface.ROTATION_0;
+<             }
+<             return defaultRotation;
+---
+>             return Surface.ROTATION_0;
+Seulement dans ./services/core/java/com/android/server/power: DevicePerformanceTunner.java
+diff -r ./services/core/java/com/android/server/power/PowerManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java
+192d191
+<     private static final int POWER_HINT_PERFORMANCE = 10;
+631,632d629
+<     private int mPerformanceMode = PowerManager.PERFORMANCE_MODE_NORMAL;
+< 
+1737c1734
+<                 if (dockedOnWirelessCharger || mIsPowered) {
+---
+>                 if (dockedOnWirelessCharger) {
+4411,4417d4407
+<             }
+<         }
+< 
+<         public void setPerformanceMode(int mode) {
+<             if (mPerformanceMode != mode) {
+<                 mPerformanceMode = mode;
+<                 powerHint(POWER_HINT_PERFORMANCE,mode);
+diff -r ./services/core/java/com/android/server/power/ShutdownThread.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/power/ShutdownThread.java
+69d68
+< import android.view.IWindowManager;
+106,110d104
+<     // Used for shutdownanimation
+<     private static final String SYSTEM_SHUTDOWNANIMATION_FILE = "/oem/media/shutdownanimation.zip";
+<     private static final String LOOP_COMPLETED_PROP_NAME = "sys.anim_loop.completed";
+<     private static final String SHUTDOWNANIM_ORIEN_PROP_NAME = "ro.shutdown_anim.orien";
+< 
+459,463d452
+<          //Force to the animation orientation.
+<         if (checkAnimationFileExist()) {
+<             freeze_orien_shutdownanim();
+<         }
+< 
+473,475d461
+<         if (checkAnimationFileExist()) {
+<            intent.putExtra("PLAY_SHUTDOWN_ANIMATION",1);
+<         }
+503,511d488
+< 
+<         /*
+<          *Show shutdown animation if the resource file exists.
+<          *thaw rotation here.
+<          */
+<         if (checkAnimationFileExist()) {
+<             start_shutdownanim();
+<             thaw_orien_shutdownanim();
+<         }
+614,619d590
+< 
+<         //Wait for shutdown animation loop done.
+<         if (checkAnimationFileExist()) {
+<             wait_shutdownanim_end();
+<         }
+<         mPowerManager.goToSleep(SystemClock.uptimeMillis());
+912,970d882
+<     }
+< 
+< 
+<     //Show shutdown animation
+<     private static void start_shutdownanim() {
+<         try {
+<             SystemProperties.set(LOOP_COMPLETED_PROP_NAME, "false");
+<             SystemProperties.set("service.bootanim.exit", "0");
+<             SystemProperties.set("ctl.start", "shutdownanim");
+<         } catch (Exception e){
+<            Log.e(TAG,"shutdownanim command exe err!");
+<         }
+<     }
+< 
+<     //freeze to default orientation
+<     private static void freeze_orien_shutdownanim() {
+<         int orien = SystemProperties.getInt(SHUTDOWNANIM_ORIEN_PROP_NAME, -1);
+<         if(orien > -1 && orien < 5){
+<             IWindowManager wm = IWindowManager.Stub.asInterface(ServiceManager
+<                     .getService(Context.WINDOW_SERVICE));
+<             try {
+<                 wm.freezeRotation(orien);
+<             } catch (RemoteException e) {
+<                 Log.w(TAG, "boot animation can not lock device!");
+<             }
+<         }
+<     }
+< 
+< 
+< 
+<     //thaw rotation
+<     private static void thaw_orien_shutdownanim() {
+<         int orien = SystemProperties.getInt(SHUTDOWNANIM_ORIEN_PROP_NAME, -1);
+<         if(orien > -1 && orien < 5){
+<             IWindowManager wm = IWindowManager.Stub.asInterface(ServiceManager
+<                     .getService(Context.WINDOW_SERVICE));
+<             try {
+<                 wm.thawRotation();
+<             } catch (RemoteException e) {
+<                 Log.w(TAG, "boot animation can not lock device!");
+<             }
+<         }
+<     }
+< 
+<     //Wait until the animation loop finished
+<     private static void wait_shutdownanim_end() {
+<         while(!SystemProperties.get(LOOP_COMPLETED_PROP_NAME, "false").equals("true")) {
+<             try {
+<                 Thread.sleep(200);
+<             } catch (Exception e) {
+<             }
+<         }
+<     }
+< 
+<     private static boolean checkAnimationFileExist() {
+<        if (new File(SYSTEM_SHUTDOWNANIMATION_FILE).exists())
+<             return true;
+<         else
+<             return false;
+Seulement dans ./services/core/java/com/android/server: rkdisplay
+Seulement dans ./services/core/java/com/android/server: RkDisplayDeviceManagementService.java
+diff -r ./services/core/java/com/android/server/storage/DeviceStorageMonitorService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/storage/DeviceStorageMonitorService.java
+41d40
+< import android.os.SystemProperties;
+284,285c283
+<         boolean isTv = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+<                        ||"box".equals(SystemProperties.get("ro.target.product",  "unknown"));
+---
+>         boolean isTv = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+diff -r ./services/core/java/com/android/server/StorageManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/StorageManagerService.java
+1323,1327d1322
+<             if("true".equals(SystemProperties.get("ro.udisk.visible"))){
+<                 Log.d("xzj","-----for all public volume is visible-----");
+<                 vol.mountFlags |= VolumeInfo.MOUNT_FLAG_VISIBLE;
+<             }
+< 
+diff -r ./services/core/java/com/android/server/wallpaper/WallpaperManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/wallpaper/WallpaperManagerService.java
+75d74
+< import android.os.SystemProperties;
+85d83
+< import android.text.TextUtils;
+1835,1881d1832
+<     private InputStream getDefaultWallpaperISFromFile() {
+<         String path = SystemProperties.get("ro.config.wallpaper");
+<         if (!TextUtils.isEmpty(path)) {
+<             final File file = new File(path);
+<             if (file.exists()) {
+<                 try {
+<                     return new FileInputStream(file);
+<                 } catch (IOException e) {
+<                     // Ignored, fall back to platform default below
+<                 }
+<             }
+<         }
+<         return null;
+<     }
+< 
+<     private Bitmap getDefaultWallpaper(Context context) {
+<         InputStream is = getDefaultWallpaperISFromFile();
+<         if (is == null) {
+<             int defaultResId = com.android.internal.R.drawable.default_wallpaper;
+<             is = context.getResources().openRawResource(defaultResId);
+<         }
+<         if (is != null) {
+<             try {
+<                 BitmapFactory.Options options = new BitmapFactory.Options();
+<                 return BitmapFactory.decodeStream(is, null, options);
+<             } catch (OutOfMemoryError e) {
+<                 Slog.w(TAG, "Can't decode stream", e);
+<             } finally {
+<                 IoUtils.closeQuietly(is);
+<             }
+<         }
+<         return null;
+<     }
+< 
+<     private void saveFile(Bitmap bm, String path) {
+<         try{
+<             File myCaptureFile = new File(path);
+<             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+<             bm.compress(Bitmap.CompressFormat.JPEG, 90, bos);
+<             bos.flush();
+<             bos.close();
+<         }catch(Exception e) {
+<             Slog.w(TAG, "saveFile can't save stream", e);
+<         }
+<     }
+< 
+< 
+2475,2486d2425
+<                 }
+<                 if (!"true".equals(SystemProperties.get("cts_gts.status", "false"))){
+< 
+<                     //When system first bootup,lock wallpaper share with system,let's save it.
+<                     File mWallpaperDir = getWallpaperDir(wallpaper.userId);
+<                     File mWallpaperFile = new File(mWallpaperDir, WALLPAPER);
+<                     File mWallpaperCropFile = new File(mWallpaperDir, WALLPAPER_CROP);
+<                     Bitmap bmp=getDefaultWallpaper(mContext);
+<                     saveFile(bmp,mWallpaperFile.getAbsolutePath());
+<                     //FileUtils.copyFile(mWallpaperCropFile,mWallpaperCropFile);
+<                     saveFile(bmp,mWallpaperCropFile.getAbsolutePath());
+<                     Slog.d(TAG, "generating from default wallpaper and save it.");
+diff -r ./services/core/java/com/android/server/WiredAccessoryManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/WiredAccessoryManager.java
+25d24
+< import android.os.SystemProperties;
+73,74d71
+<     private static final String PROP_FORCE_HPOUT = "persist.audio.force.headset";
+< 
+108,109c105
+<             int sw = mInputManager.getSwitchState(-1, InputDevice.SOURCE_ANY, SW_HEADPHONE_INSERT);
+<             if (sw == 1) {
+---
+>             if (mInputManager.getSwitchState(-1, InputDevice.SOURCE_ANY, SW_HEADPHONE_INSERT) == 1) {
+117,123d112
+<             }
+<             if (sw < 0) {
+<                 // Force Headset AVAILABLE
+<                 if (SystemProperties.getBoolean(PROP_FORCE_HPOUT, false))
+<                     switchValues |= (SW_HEADPHONE_INSERT_BIT | SW_MICROPHONE_INSERT_BIT);
+<             } else {
+<                 SystemProperties.set(PROP_FORCE_HPOUT, "disabled");
+diff -r ./services/core/java/com/android/server/wm/DragState.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/wm/DragState.java
+329c329
+<         boolean result = targetWin.mAppToken == null
+---
+>         return targetWin.mAppToken == null
+331,342d330
+<         if (!result) {
+<             String strWinState = targetWin.toString();
+<             if (null == strWinState) {
+<                 return result;
+<             }
+<             if (strWinState.endsWith("com.android.launcher3.Launcher}")
+<                 || strWinState.endsWith("com.android.searchlauncher.SearchLauncher}")) {
+<                 Slog.d(TAG_WM, "allow launcher3 to global drag");
+<                 result = true;
+<             }
+<         }
+<         return result;
+diff -r ./services/core/java/com/android/server/wm/WindowManagerService.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java
+298,308c298
+<     static final int MAX_ANIMATION_DURATION = 10*1000;
+< 
+<     /** The time for mouse input injection
+<      *
+<      */
+<     static final int INJECTION_TIMEOUT_MILLIS = 30 * 1000;
+< 
+<     /** Amount of time (in milliseconds) to animate the fade-in-out transition for
+<      * compatible windows.
+<      */
+<     static final int DEFAULT_FADE_IN_OUT_DURATION = 400;
+---
+>     static final int MAX_ANIMATION_DURATION = 10 * 1000;
+3012,3015c3002,3004
+< // TODO: Use of this can be removed. Revert ag/I8369723d6a77f2c602f1ef080371fa7cd9ee094e
+< //        synchronized (mWindowMap) {
+< //            mKeyguardGoingAway = keyguardGoingAway;
+< //        }
+---
+>         synchronized (mWindowMap) {
+>             mKeyguardGoingAway = keyguardGoingAway;
+>         }
+4719,4766d4707
+< 
+<     public void dispatchMouse(float x, float y, int w, int h) {
+< 	    mInputManager.dispatchMouse(x,y,w,h);
+<     }
+< 
+<     public void dispatchMouseByCd(float x, float y) {
+< 	    mInputManager.dispatchMousebyCd(x,y);
+<     }
+< 
+<     public boolean injectKeyEvent(KeyEvent ev, boolean sync) {
+< 	    int action = ev.getAction();
+< 	    int code = ev.getKeyCode();
+< 	    int repeatCount = ev.getRepeatCount();
+< 	    int metaState = ev.getMetaState();
+< 	    int deviceId = ev.getDeviceId();
+< 	    int scancode = ev.getScanCode();
+< 	    int source = ev.getSource();
+< 	    int flags = ev.getFlags();
+< 	    long downTime = ev.getDownTime();
+< 	    long eventTime = ev.getEventTime();
+< 
+< 	    if (source == InputDevice.SOURCE_UNKNOWN) {
+< 		    source = InputDevice.SOURCE_KEYBOARD;
+< 	    }
+< 
+< 	    if (eventTime == 0) {
+< 		eventTime = SystemClock.uptimeMillis();
+< 	    }
+< 
+< 	    if (downTime == 0) {
+< 		downTime = eventTime;
+< 	    }
+< 
+< 	    KeyEvent newEvent = new KeyEvent(downTime, eventTime, action, code, repeatCount, metaState,
+< 			    deviceId, scancode, flags | KeyEvent.FLAG_FROM_SYSTEM, source);
+< 
+< 	    final boolean result = mInputManager.injectInputEvent(newEvent,sync ? 2:1);
+< 	    return result;
+<     }
+< 
+<     public boolean injectPointerEvent(MotionEvent ev, boolean sync) {
+< 	    MotionEvent newEvent = MotionEvent.obtain(ev);
+< 	    if ((newEvent.getSource() & InputDevice.SOURCE_CLASS_POINTER) == 0) {
+< 		    newEvent.setSource(InputDevice.SOURCE_TOUCHSCREEN);
+< 	    }
+< 	    final boolean result = mInputManager.injectInputEvent(newEvent,sync ? 2:1);
+< 	    return result;
+<     }
+diff -r ./services/core/java/com/android/server/wm/WindowState.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/java/com/android/server/wm/WindowState.java
+167c167,168
+<     private static final boolean DEBUG_DISABLE_SAVING_SURFACES = true;
+---
+>     private static final boolean DEBUG_DISABLE_SAVING_SURFACES = false ||
+>             ENABLE_TASK_SNAPSHOTS;
+diff -r ./services/core/jni/Android.mk /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/jni/Android.mk
+45,53d44
+< LOCAL_SRC_FILES += \
+< 	$(LOCAL_REL_DIR)/rkdisplay/drmresources.cpp \
+< 	$(LOCAL_REL_DIR)/rkdisplay/drmconnector.cpp \
+< 	$(LOCAL_REL_DIR)/rkdisplay/drmcrtc.cpp \
+< 	$(LOCAL_REL_DIR)/rkdisplay/drmencoder.cpp \
+< 	$(LOCAL_REL_DIR)/rkdisplay/drmproperty.cpp \
+< 	$(LOCAL_REL_DIR)/rkdisplay/drmmode.cpp \
+<         $(LOCAL_REL_DIR)/com_android_server_rkdisplay_RkDisplayModes.cpp \
+< 
+64,65d54
+<     external/libdrm \
+<     external/libdrm/include/drm \
+122,123d110
+<     libdrm \
+<     libsync
+diff -r ./services/core/jni/com_android_server_input_InputManagerService.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/jni/com_android_server_input_InputManagerService.cpp
+44,45d43
+< #include <cutils/properties.h>
+< 
+63,69d60
+< #include <stddef.h>
+< #include <stdlib.h>
+< #include <unistd.h>
+< #include <errno.h>
+< #include <limits.h>
+< #include <math.h>
+< 
+83d73
+< static sp<PointerControllerInterface> mPointerController;
+1656,1716d1645
+< static void android_server_InputManager_nativedispatchMouse(JNIEnv* env,
+< 		jclass clazz,jfloat x,jfloat y,jint w,jint h,jlong ptr) {
+<     NativeInputManager* im = reinterpret_cast<NativeInputManager*>(ptr);
+< 
+<     int mID;
+<     float mx, my;
+<     float screenWidth,screenHeight;
+<     char *mgetID=new char[PROPERTY_VALUE_MAX];
+<     const char *mkeyMouseState;
+<     screenWidth=(float)w;
+<     screenHeight=(float)h;
+< 
+<     property_get("sys.ID.mID",mgetID,0);
+<     mID=atoi(mgetID);
+< 
+<     mPointerController=im->obtainPointerController(mID);
+< 
+<     //start to dispatchMouse
+<     mPointerController->setPresentation(
+<                     PointerControllerInterface::PRESENTATION_POINTER);
+<     mPointerController->move(x,y);
+<     mPointerController->unfade(PointerControllerInterface::TRANSITION_IMMEDIATE);
+<     mPointerController->getPosition(&mx, &my);
+< 
+<     //if((mx<=0)||((mx>=(screenWidth-10.0f))||(my<=0)||(my>=(screenHeight-10.0f)))
+<     //	x=0;y=0;
+< 
+<     if (mx == 0) {
+< 	    mkeyMouseState="left";
+<     } else if (mx>=(screenWidth-5.0f)) {
+< 	    mkeyMouseState="right";
+<     } else if (my == 0) {
+< 	    mkeyMouseState="up";
+<     } else if (my >= (screenHeight-5.0f)) {
+< 	    mkeyMouseState="down";
+<     } else {
+< 	    mkeyMouseState="Non-boundary";
+<     }
+< 
+<     property_set("sys.keymouselimitstate",mkeyMouseState);
+< }
+< 
+< static void android_server_InputManager_nativedispatchMouseByCd(JNIEnv* env,
+< jclass clazz,jfloat x,jfloat y,jlong ptr) {
+<    NativeInputManager* im = reinterpret_cast<NativeInputManager*>(ptr);
+<    int mID;
+<    char *mgetID=new char[PROPERTY_VALUE_MAX];
+< 
+<    property_get("sys.ID.mID",mgetID,0);
+<    mID=atoi(mgetID);
+< 
+<    mPointerController=im->obtainPointerController(mID);
+< 
+<    //start to dispatchMouse
+<     mPointerController->setPresentation(
+<                     PointerControllerInterface::PRESENTATION_POINTER);
+<     mPointerController->setPosition(x,y);
+<     mPointerController->unfade(PointerControllerInterface::TRANSITION_IMMEDIATE);
+< 	//mPointerController->fade(PointerControllerInterface::TRANSITION_IMMEDIATE);
+< }
+< 
+1793,1796d1721
+<     { "nativedispatchMouse", "(FFIIJ)V",
+< 	    (void*) android_server_InputManager_nativedispatchMouse },
+<     { "nativedispatchMouseByCd", "(FFJ)V",
+< 	    (void*) android_server_InputManager_nativedispatchMouseByCd },
+Seulement dans ./services/core/jni: com_android_server_rkdisplay_RkDisplayModes.cpp
+diff -r ./services/core/jni/onload.cpp /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/core/jni/onload.cpp
+55d54
+< int register_com_android_server_rkdisplay_RkDisplayModes(JNIEnv* env);
+102d100
+<     register_com_android_server_rkdisplay_RkDisplayModes(env);
+Seulement dans ./services/core/jni: rkdisplay
+diff -r ./services/java/com/android/server/SystemServer.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/java/com/android/server/SystemServer.java
+117d116
+< import com.android.server.RkDisplayDeviceManagementService;
+178,179d176
+<     private static final String PPPOE_SERVICE_CLASS =
+<             "com.android.server.pppoe.PppoeService";
+1118,1123d1114
+<                 if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_PPPOE)) {
+<                     traceBeginAndSlog("StartPppoeService");
+<                     mSystemServiceManager.startService(PPPOE_SERVICE_CLASS);
+<                     traceEnd();
+<                 }
+< 
+1474,1486d1464
+<             }
+< 
+<             // $_rbox_$_modify_$
+<             if("box".equals(SystemProperties.get("ro.target.product")) ||
+<                "atv".equals(SystemProperties.get("ro.target.product")) ||
+<                "true".equals(SystemProperties.get("ro.rk.hdmisetting"))) {
+<                 try {
+<                     ServiceManager.addService(
+<                         "drm_device_management",
+<                         new RkDisplayDeviceManagementService(context));
+<                 } catch (Throwable e) {
+<                     Slog.e(TAG, "Failure starting kDisplayDeviceManagement Service", e);
+<                 }
+diff -r ./services/net/java/android/net/ip/IpReachabilityMonitor.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/net/java/android/net/ip/IpReachabilityMonitor.java
+515c515
+<                 //evaluateRtNetlinkNeighborMessage((RtNetlinkNeighborMessage) nlMsg, whenMs);
+---
+>                 evaluateRtNetlinkNeighborMessage((RtNetlinkNeighborMessage) nlMsg, whenMs);
+diff -r ./services/usb/java/com/android/server/usb/UsbDeviceManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/services/usb/java/com/android/server/usb/UsbDeviceManager.java
+118,119d117
+<     private static final String USB_CAMERA_MATCH =
+<             "DEVPATH=/devices/platform";
+139c137
+<     private static final int UPDATE_DELAY = 2500;
+---
+>     private static final int UPDATE_DELAY = 1000;
+174,177d171
+<     private boolean mCharging=false;
+< 
+<     private long mLastUsbEvent = 0;
+<     private String mLastUsbAction = "";
+215,256c209,215
+<             String subSystem = event.get("SUBSYSTEM");
+<             String devPath = event.get("DEVPATH");
+< 
+<             if (devPath != null && devPath.contains("/devices/platform")) {
+<                 if ("video4linux".equals(subSystem)) {
+<                     Intent intent = new Intent(Intent.ACTION_USB_CAMERA);
+<                     String action = event.get("ACTION");
+<                     try {
+<                         if (mLastUsbAction != null && mLastUsbAction.equals(action)
+<                                 && SystemClock.uptimeMillis() - mLastUsbEvent < 1200) {
+<                             Slog.i(TAG, "USB UEVENT send double, ignore this!");
+<                             return;
+<                         }
+<                     } catch (Exception e) {
+<                         e.printStackTrace();
+<                     }
+<                     mLastUsbAction = action;
+<                     mLastUsbEvent = SystemClock.uptimeMillis();
+<                     if ("remove".equals(action)){
+<                         Slog.d(TAG,"usb camera removed");
+<                         intent.setFlags(Intent.FLAG_USB_CAMERA_REMOVE);
+<                         SystemProperties.set("persist.sys.usbcamera.status","remove");
+<                     } else if ("add".equals(action)) {
+<                         Slog.d(TAG,"usb camera added");
+<                         intent.setFlags(Intent.FLAG_USB_CAMERA_ADD);
+<                         SystemProperties.set("persist.sys.usbcamera.status","add");
+<                     }
+< 
+<                     int num = android.hardware.Camera.getNumberOfCameras();
+<                     mContext.sendBroadcast(intent);
+<                     SystemProperties.set("persist.sys.usbcamera.status","");
+<                     Slog.d(TAG,"usb camera num="+num);
+<                 }
+<             } else {
+<                 String state = event.get("USB_STATE");
+<                 String accessory = event.get("ACCESSORY");
+<                 if (state != null) {
+<                     mHandler.updateState(state);
+<                 } else if ("START".equals(accessory)) {
+<                     if (DEBUG) Slog.d(TAG, "got accessory start");
+<                     startAccessoryMode();
+<                 }
+---
+>             String state = event.get("USB_STATE");
+>             String accessory = event.get("ACCESSORY");
+>             if (state != null) {
+>                 mHandler.updateState(state);
+>             } else if ("START".equals(accessory)) {
+>                 if (DEBUG) Slog.d(TAG, "got accessory start");
+>                 startAccessoryMode();
+271a231
+> 
+447,448c407
+<         return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+<                || "box".equals(SystemProperties.get("ro.target.product",  "unknown"));
+---
+>         return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+503,505c462,463
+< 		if(!"true".equals(SystemProperties.get("ro.usb.default_mtp"))){
+<                 	String persisted = SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY);
+<                 	if (UsbManager.containsFunction(persisted, UsbManager.USB_FUNCTION_MTP)
+---
+>                 String persisted = SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY);
+>                 if (UsbManager.containsFunction(persisted, UsbManager.USB_FUNCTION_MTP)
+507,511c465,468
+<                    		 SystemProperties.set(USB_PERSISTENT_CONFIG_PROPERTY,
+<                             		UsbManager.removeFunction(UsbManager.removeFunction(persisted,
+<                                     	UsbManager.USB_FUNCTION_MTP), UsbManager.USB_FUNCTION_PTP));
+<                 	}
+< 		}	
+---
+>                     SystemProperties.set(USB_PERSISTENT_CONFIG_PROPERTY,
+>                             UsbManager.removeFunction(UsbManager.removeFunction(persisted,
+>                                     UsbManager.USB_FUNCTION_MTP), UsbManager.USB_FUNCTION_PTP));
+>                 }
+524d480
+<                 mUEventObserver.startObserving(USB_CAMERA_MATCH);
+561d516
+<                 mCharging=false;
+565,567d519
+< 		if ("true".equals(SystemProperties.get("ro.usb.default_mtp")) && 
+< 		UsbManager.containsFunction(mCurrentFunctions, UsbManager.USB_FUNCTION_MTP))
+<                 	mUsbDataUnlocked = true;
+650,654c602
+<                         + "forceRestart=" + forceRestart + ", usbDataUnlocked=" + usbDataUnlocked+" mCharging ="+mCharging);
+<             }
+< 
+<             if (mCharging&&functions==null){
+<                 functions=UsbManager.USB_FUNCTION_ADB;
+---
+>                         + "forceRestart=" + forceRestart + ", usbDataUnlocked=" + usbDataUnlocked);
+663,665d610
+<             if (functions == null)
+<                 forceRestart = true;
+< 
+764c709
+<             if (mAdbEnabled||mCharging) {
+---
+>             if (mAdbEnabled) {
+1296c1241
+<             // if not allow default mtp,if ADB is enabled, reset functions to ADB
+---
+>             // if ADB is enabled, reset functions to ADB
+1298c1243
+<             if (!"true".equals(SystemProperties.get("ro.usb.default_mtp")) && UsbManager.containsFunction(func, UsbManager.USB_FUNCTION_ADB)) {
+---
+>             if (UsbManager.containsFunction(func, UsbManager.USB_FUNCTION_ADB)) {
+1301,1305c1246
+<             	if (UsbManager.USB_FUNCTION_NONE.equals(func)) {
+<                 	func = UsbManager.USB_FUNCTION_NONE;
+<                 	mCharging = true;
+<             	}
+< 		return func;
+---
+>                 return UsbManager.USB_FUNCTION_MTP;
+1359,1361d1299
+<         if (function==null){
+<             mCharging=true;
+<         }
+1369,1371d1306
+<         }
+<         if (functions==null){
+<             mCharging=true;
+diff -r ./test-runner/api/android-test-mock-current.txt /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/test-runner/api/android-test-mock-current.txt
+304d303
+<     method public int getPackagePerformanceMode(java.lang.String);
+395d393
+<     method public void setPackagePerformanceMode(java.lang.String, int);
+diff -r ./test-runner/src/android/test/mock/MockPackageManager.java /media/adgra/7bb65567-631b-4308-b8d1-c329ceac07eb/aosp/8.1_0_r48/frameworks/base/test-runner/src/android/test/mock/MockPackageManager.java
+1183,1198d1182
+<     public int getPackagePerformanceMode(String pkgName) {
+<         throw new UnsupportedOperationException();
+<     }
+< 
+<     /**
+<      * @hide
+<      */
+<     @Override
+<     public void setPackagePerformanceMode(String pkgName, int mode) {
+< 	throw new UnsupportedOperationException();
+<     }
+<     
+<     /**
+<      * @hide
+<      */
+<     @Override
+Seulement dans ./tools: layoutlib

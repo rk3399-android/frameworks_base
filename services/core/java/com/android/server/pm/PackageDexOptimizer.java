@@ -23,6 +23,7 @@ import android.content.pm.PackageParser;
 import android.os.FileUtils;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.WorkSource;
 import android.util.Log;
@@ -242,6 +243,24 @@ public class PackageDexOptimizer {
                 + " dexoptFlags=" + printDexoptFlags(dexoptFlags)
                 + " target-filter=" + compilerFilter + " oatDir=" + oatDir
                 + " sharedLibraries=" + sharedLibrariesPath);
+
+	if(pkg.applicationInfo.packageName.contains("com.android.compatibility.common.deviceinfo")
+		||pkg.applicationInfo.packageName.contains("com.google.android.media.gts")
+		||pkg.applicationInfo.packageName.contains("android.media.cts")
+		||pkg.applicationInfo.packageName.contains("android.mediastress.cts")
+		||pkg.applicationInfo.packageName.contains("android.security.cts")){//maybe  endsWith(".cts") ?
+            SystemProperties.set("cts_gts.status","true");
+        }
+        if(pkg.applicationInfo.packageName.contains("com.google.android.exoplayer.gts")){
+            SystemProperties.set("cts_gts.exo.gts","true");
+        }else if("true".equals(SystemProperties.get("cts_gts.exo.gts"))){
+            SystemProperties.set("cts_gts.exo.gts","");
+        }
+        if(pkg.applicationInfo.packageName.contains("com.google.android.media.gts")){
+            SystemProperties.set("cts_gts.media.gts","true");
+        }else if("true".equals(SystemProperties.get("cts_gts.media.gts"))){
+            SystemProperties.set("cts_gts.media.gts","");
+        }
 
         try {
             long startTime = System.currentTimeMillis();

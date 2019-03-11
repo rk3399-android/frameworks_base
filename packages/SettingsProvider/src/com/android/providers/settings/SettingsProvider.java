@@ -3449,6 +3449,31 @@ public class SettingsProvider extends ContentProvider {
                     currentVersion = 148;
                 }
 
+                if (currentVersion == 145) {
+                    // Version 146: In step 142 we had a bug where incorrectly
+                    // some settings were considered system set and as a result
+                    // made the default and marked as the default being set by
+                    // the system. Here reevaluate the default and default system
+                    // set flags. This would both fix corruption by the old impl
+                    // of step 142 and also properly handle devices which never
+                    // run 142.
+                    if (userId == UserHandle.USER_SYSTEM) {
+                        SettingsState globalSettings = getGlobalSettingsLocked();
+                        ensureLegacyDefaultValueAndSystemSetUpdatedLocked(globalSettings, userId);
+                        globalSettings.persistSyncLocked();
+                    }
+
+                    SettingsState secureSettings = getSecureSettingsLocked(mUserId);
+                    ensureLegacyDefaultValueAndSystemSetUpdatedLocked(secureSettings, userId);
+                    secureSettings.persistSyncLocked();
+
+                    SettingsState systemSettings = getSystemSettingsLocked(mUserId);
+                    ensureLegacyDefaultValueAndSystemSetUpdatedLocked(systemSettings, userId);
+                    systemSettings.persistSyncLocked();
+
+                    currentVersion = 146;
+                }
+
                 // vXXX: Add new settings above this point.
 
                 if (currentVersion != newVersion) {

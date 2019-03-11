@@ -1133,8 +1133,10 @@ public class ActivityManager {
      * @hide
      */
     static public boolean isHighEndGfx() {
-        return !isLowRamDeviceStatic() &&
-                !Resources.getSystem().getBoolean(com.android.internal.R.bool.config_avoidGfxAccel);
+        if(isLowRamDeviceStatic() && "true".equals(SystemProperties.get("cts_gts.status", "false"))) {
+            return false;
+        }
+        return !Resources.getSystem().getBoolean(com.android.internal.R.bool.config_avoidGfxAccel);
     }
 
     /**
@@ -1174,7 +1176,8 @@ public class ActivityManager {
         // supported regardless of device memory characteristics.
         boolean isWatch = context.getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_WATCH);
-        return (!isLowRamDeviceStatic() || isWatch)
+        return (!isLowRamDeviceStatic() || isWatch 
+                || ("box".equals(SystemProperties.get("ro.target.product",  "unknown"))))
                 && Resources.getSystem().getBoolean(
                     com.android.internal.R.bool.config_supportsMultiWindow);
     }

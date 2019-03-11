@@ -1180,6 +1180,22 @@ public class MockPackageManager extends PackageManager {
      * @hide
      */
     @Override
+    public int getPackagePerformanceMode(String pkgName) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * @hide
+     */
+    @Override
+    public void setPackagePerformanceMode(String pkgName, int mode) {
+	throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * @hide
+     */
+    @Override
     public void registerDexModule(String dexModulePath,
             @Nullable DexModuleRegisterCallback callback) {
         throw new UnsupportedOperationException();

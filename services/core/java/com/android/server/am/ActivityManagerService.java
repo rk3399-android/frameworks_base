@@ -186,7 +186,6 @@ import static com.android.server.wm.AppTransition.TRANSIT_TASK_OPEN;
 import static com.android.server.wm.AppTransition.TRANSIT_TASK_TO_FRONT;
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
-
 import android.Manifest;
 import android.Manifest.permission;
 import android.annotation.NonNull;
@@ -411,6 +410,7 @@ import com.android.server.statusbar.StatusBarManagerInternal;
 import com.android.server.vr.VrManagerInternal;
 import com.android.server.wm.PinnedStackWindowController;
 import com.android.server.wm.WindowManagerService;
+import com.android.server.power.DevicePerformanceTunner;
 
 import java.text.SimpleDateFormat;
 import org.xmlpull.v1.XmlPullParser;
@@ -1601,6 +1601,9 @@ public class ActivityManagerService extends IActivityManager.Stub
 
     WindowManagerService mWindowManager;
     final ActivityThread mSystemThread;
+
+    boolean mUsePerformanceTunner = false;
+    DevicePerformanceTunner mDevicePerformanceTunner;
 
     private final class AppDeathRecipient implements IBinder.DeathRecipient {
         final ProcessRecord mApp;
@@ -4157,6 +4160,26 @@ public class ActivityManagerService extends IActivityManager.Stub
         }
     }
 
+    public int getFrontActivityPerformanceModeLocked(boolean systemAppLimited) {
+        int mode = PowerManager.PERFORMANCE_MODE_NORMAL;
+        final ActivityStack mainStack = mStackSupervisor.getFocusedStack();
+        ActivityRecord r = mainStack.topRunningActivityLocked();
+        if (r != null) {
+            try {
+                Log.e(TAG,"getPackageFerformanceMode--"+r.realActivity.toString()+"----"+r.packageName);
+                mode = AppGlobals.getPackageManager().getPackagePerformanceMode(
+                        r.realActivity.toString());
+            } catch (RemoteException e) {
+            }
+        }
+        return mode;
+    }
+
+    public void forcePerformanceMode(int mode) {
+        final ActivityStack mainStack = mStackSupervisor.getFocusedStack();
+        mainStack.forcePerformanceMode(mode);
+    }
+
     CompatibilityInfo compatibilityInfoForPackageLocked(ApplicationInfo ai) {
         return mCompatModePackages.compatibilityInfoForPackageLocked(ai);
     }
@@ -5299,7 +5322,7 @@ public class ActivityManagerService extends IActivityManager.Stub
 
         mWindowManager.deferSurfaceLayout();
         try {
-            if (!restarting && hasVisibleActivities
+            if (!restarting && hasVisibleActivities && !mShuttingDown
                     && !mStackSupervisor.resumeFocusedStackTopActivityLocked()) {
                 // If there was nothing to resume, and we are not already restarting this process, but
                 // there is a visible activity that is hosted by the process...  then make sure all
@@ -14173,6 +14196,13 @@ public class ActivityManagerService extends IActivityManager.Stub
             mRecentTasks.onSystemReadyLocked();
             mAppOpsService.systemReady();
             mSystemReady = true;
+
+            String value = SystemProperties.get("ro.hardware", "rk30board");
+            if (value.equals("rk30board") || value.equals("rk2928board") || value.equals("rk29board") || value.equals("sofiaboard")) {
+                Slog.d(TAG, "OK, system ready!");
+                mUsePerformanceTunner = true;
+                mDevicePerformanceTunner = DevicePerformanceTunner.getInstance(mContext);
+            }
         }
 
         try {
@@ -14297,7 +14327,8 @@ public class ActivityManagerService extends IActivityManager.Stub
             } catch (RemoteException e) {
             }
 
-            if (!Build.isBuildConsistent()) {
+            if (!Build.isBuildConsistent() 
+                    && ("orange".equals(SystemProperties.get("ro.boot.verifiedbootstate", "red")))) {
                 Slog.e(TAG, "Build fingerprint is not consistent, warning user");
                 mUiHandler.obtainMessage(SHOW_FINGERPRINT_ERROR_UI_MSG).sendToTarget();
             }

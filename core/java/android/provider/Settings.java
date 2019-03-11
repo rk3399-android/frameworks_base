@@ -2853,6 +2853,23 @@ public final class Settings {
          */
         @Deprecated
         public static final String MODE_RINGER = Global.MODE_RINGER;
+        
+        /**
+         * @hide
+         */
+        public static final String PPPOE_ON = Secure.PPPOE_ON;
+        /**
+         * @hide
+         */
+        public static final String PPPOE_USERNAME = Secure.PPPOE_USERNAME;
+        /**
+         * @hide
+         */
+        public static final String PPPOE_PSWD = Secure.PPPOE_PSWD;
+        /**
+         * @hide
+         */
+        public static final String PPPOE_PHY_IFACE = Secure.PPPOE_PHY_IFACE;
 
         /**
          * Whether to use static IP and other static network attributes.
@@ -3595,6 +3612,20 @@ public final class Settings {
         /** @hide */
         public static final Validator HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY_VALIDATOR =
                 sBooleanValidator;
+
+        /**
+         * screenshot location.
+         *
+         * @hide
+         */
+        public static final String SCREENSHOT_LOCATION = "screenshot_location";
+
+        /**
+         * screenshot button show.
+         *
+         * @hide
+         */
+        public static final String SCREENSHOT_BUTTON_SHOW = "screenshot_button_show";
 
         /**
          * Whether the phone vibrates when it is ringing due to an incoming call. This will
@@ -5662,6 +5693,27 @@ public final class Settings {
          */
         @Deprecated
         public static final String ACCESSIBILITY_SPEAK_PASSWORD = "speak_password";
+        
+        /**
+         * flag for pppoe auto connect 
+         * @hide
+         */
+        public static final String PPPOE_ON = "pppoe_on";
+        /**
+         * pppoe username  
+         * @hide
+         */
+        public static final String PPPOE_USERNAME = "pppoe_username";
+        /**
+         * pppoe password
+         * @hide
+         */
+        public static final String PPPOE_PSWD = "pppoe_pswd";
+        /**
+         * pppoe phy iface
+         * @hide
+         */
+        public static final String PPPOE_PHY_IFACE = "pppoe_phy_iface";
 
         /**
          * Whether to draw text with high contrast while in accessibility mode.
@@ -9795,12 +9847,41 @@ public final class Settings {
          public static final int ENCODED_SURROUND_OUTPUT_ALWAYS = 2;
 
         /**
+         * AUDIO OUTPUT DEVICE flags
+         * AUDIO_OUTPUT_DEFAULT
+         * @hide
+         */
+         public static final int AUDIO_OUTPUT_DEFAULT = 0;
+
+        /**
+         * AUDIO OUTPUT DEVICE flags
+         * AUDIO_OUTPUT_SPDIF
+         * @hide
+         */
+         public static final int AUDIO_OUTPUT_SPDIF = 1;
+
+        /**
+         * AUDIO OUTPUT DEVICE flags
+         * AUDIO_OUTPUT_HDMI
+         * @hide
+         */
+         public static final int AUDIO_OUTPUT_HDMI = 2;
+
+        /**
          * Set to ENCODED_SURROUND_OUTPUT_AUTO,
          * ENCODED_SURROUND_OUTPUT_NEVER or
          * ENCODED_SURROUND_OUTPUT_ALWAYS
          * @hide
          */
         public static final String ENCODED_SURROUND_OUTPUT = "encoded_surround_output";
+
+        /**
+         * Set to AUDIO_OUTPUT_DEFAULT,
+         * AUDIO_OUTPUT_SPDIF or
+         * AUDIO_OUTPUT_HDMI
+         * @hide
+         */
+        public static final String AUDIO_OUTPUT_DEVICE = "audio_output_device";
 
         /**
          * Persisted safe headphone volume management state by AudioService
@@ -10305,6 +10386,7 @@ public final class Settings {
             CALL_AUTO_RETRY,
             DOCK_AUDIO_MEDIA_ENABLED,
             ENCODED_SURROUND_OUTPUT,
+            AUDIO_OUTPUT_DEVICE,
             LOW_POWER_MODE_TRIGGER_LEVEL,
             BLUETOOTH_ON
         };
